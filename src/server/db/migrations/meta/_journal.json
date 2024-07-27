@@ -1,0 +1,27 @@
+{
+  "version": "6",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1722037665227,
+      "tag": "0000_chunky_prima",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1722039019260,
+      "tag": "0001_absurd_storm",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1722040731979,
+      "tag": "0002_motionless_warbird",
+      "breakpoints": true
+    }
+  ]
+}

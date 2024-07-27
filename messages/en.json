@@ -1,0 +1,132 @@
+{
+  "login": {
+    "auth_user_credentials": "Using email and password",
+    "forgot_password": "Forgot password",
+    "login": "Login",
+    "email": "Email",
+    "login_welcome": "Welcome Back",
+    "password": "Password",
+    "register": "Register",
+    "signup_bottom_login": "Don't have an account, Sign Up",
+    "errors": {
+      "email": "Email is required",
+      "password": "Password is required"
+    }
+  },
+  "navigation": {
+    "family": "Family",
+    "parents": "Parents",
+    "kids": "Kids",
+    "forms": "Forms"
+  },
+  "new_family_form": {
+    "title": "Create Family",
+    "description": "Fill in the fields below to create a new family",
+    "disclaimer": "Welcome to the Club of Brazilian Temple Adventurers of Fort Lauderdale. To continue with your registration, fill in the fields below with the family's information.",
+    "name": {
+      "label": "Family Name",
+      "placeholder": "Enter the family name",
+      "error": "Family name is required"
+    },
+    "phone": {
+      "label": "Family Phone",
+      "placeholder": "Enter the family phone",
+      "error": "Family phone is required"
+    },
+    "email": {
+      "label": "Family Email",
+      "placeholder": "Enter the family email",
+      "error": "Family email is required"
+    },
+    "button": {
+      "label": "Create Family",
+      "loading": "Creating Family..."
+    },
+    "toast": {
+      "success": "Family created successfully!",
+      "error": "Error creating family"
+    }
+  },
+  "update_family_form": {
+    "title": "Update Family",
+    "description": "Fill in the fields below to update the family",
+    "button": {
+      "label": "Update Family",
+      "loading": "Updating Family..."
+    },
+    "cancel": "Cancel",
+    "toast": {
+      "success": "Family updated successfully!",
+      "error": "Error updating family"
+    },
+    "name": {
+      "label": "Family Name",
+      "placeholder": "Enter the family name",
+      "error": "Family name is required"
+    },
+    "phone": {
+      "label": "Family Phone",
+      "placeholder": "Enter the family phone",
+      "error": "Family phone is required"
+    },
+    "email": {
+      "label": "Family Email",
+      "placeholder": "Enter the family email",
+      "error": "Family email is required"
+    }
+  },
+  "new_parent_form": {
+    "title": "New Guardian",
+    "description": "Fill in the fields below to add a new guardian to the family",
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "Enter first name",
+      "error": "First name is required"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Enter last name",
+      "error": "Last name is required"
+    },
+    "type": {
+      "label": "Guardian Type",
+      "options": {
+        "parent": "Parent",
+        "guardian": "Guardian",
+        "relative": "Relative"
+      },
+      "error": "Please select a guardian type"
+    },
+    "sex": {
+      "label": "Sex",
+      "options": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "error": "Please select a sex"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter phone number",
+      "error": "Phone number is required"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter email address",
+      "error": "Valid email is required"
+    },
+    "main": {
+      "label": "Primary Guardian",
+      "description": "Check if this is the primary guardian"
+    },
+    "button": {
+      "label": "Add Guardian",
+      "loading": "Adding..."
+    },
+    "toast": {
+      "success": "Guardian added successfully!",
+      "error": "Error adding guardian"
+    }
+  }
+}

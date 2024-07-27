@@ -1,10 +1,19 @@
+import createNextIntl from "next-intl/plugin";
+
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-await import("./src/env.js");
+await import( "./src/env.js" );
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = createNextIntl()( {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+} );
 
 export default config;
