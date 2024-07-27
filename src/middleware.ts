@@ -17,36 +17,9 @@ export default authMiddleware({
   },
 
   // Ensure that locale specific sign-in pages are public
-  publicRoutes: (req) => {
-    const url = new URL(req.url)
-    return !url.pathname.includes('/club')
-  },
+  publicRoutes: ['((?!^/club).*)'],
 })
 
 export const config = {
-  matcher: [
-    // Match all paths
-    '/',
-    // Match all paths starting with /pt-BR or /en
-    '/(pt-BR|en)/:path*',
-    // Match API and trpc routes
-    '/(api|trpc)(.*)',
-    // Match all other routes, but exclude static files and Next.js internals
-    '/((?!api|trpc|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 }
-
-// export const config = {
-//   matcher: [
-//     /*
-//      * Match all request paths except for the ones starting with:
-//      * - _next/static (static files)
-//      * - _next/image (image optimization files)
-//      * - favicon.ico (favicon file)
-//      * - api (API routes)
-//      * Feel free to modify this pattern to include more paths.
-//      */
-//     "/(pt-BR|en)/:path*",
-//     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-//   ],
-// };
