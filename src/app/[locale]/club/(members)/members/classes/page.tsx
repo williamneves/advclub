@@ -1,5 +1,5 @@
 'use client'
 
-export default function Classes(){
-    return <p>Classes</p>
+export default function Classes() {
+  return <p>Classes</p>
 }

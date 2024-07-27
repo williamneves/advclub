@@ -1,14 +1,14 @@
-import { type NextRequest } from "next/server";
-import createMiddleware from "next-intl/middleware";
-import { locales, localePrefix } from "./navigation";
+import { type NextRequest } from 'next/server'
+import createMiddleware from 'next-intl/middleware'
+import { locales, localePrefix } from './navigation'
 const intlMiddleware = createMiddleware({
   locales,
-  localePrefix: "as-needed",
-  defaultLocale: "pt-BR",
+  localePrefix: 'as-needed',
+  defaultLocale: 'pt-BR',
   localeDetection: false,
-});
+})
 
-import { authMiddleware } from "@clerk/nextjs/server";
+import { authMiddleware } from '@clerk/nextjs/server'
 
 export default authMiddleware({
   beforeAuth: (req) => {
@@ -19,7 +19,7 @@ export default authMiddleware({
   // Ensure that locale specific sign-in pages are public
   publicRoutes: (req) => {
     const url = new URL(req.url)
-    return !url.pathname.match(/^\/(pt-BR|en)\/club/)
+    return !url.pathname.includes('/club')
   },
 })
 

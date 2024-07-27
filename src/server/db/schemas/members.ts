@@ -1,7 +1,4 @@
-import {
-  boolean,
-  serial, text
-} from 'drizzle-orm/pg-core'
+import { boolean, serial, text } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
@@ -10,7 +7,6 @@ import { z } from 'zod'
 
 export const memberTypeEnum = z.enum(['parent', 'guardian', 'relative'])
 export type MemberType = z.infer<typeof memberTypeEnum>
-
 
 export const MembersTable = createTable('members', {
   id: serial('id').primaryKey(),
@@ -26,12 +22,11 @@ export const MembersTable = createTable('members', {
   ...timestamps,
 })
 
-
 export type MembersSelect = typeof MembersTable.$inferSelect
 export type MembersInsert = typeof MembersTable.$inferInsert
 
 const adjust = {
-  type: memberTypeEnum
+  type: memberTypeEnum,
 }
 
 const membersSelectSchema = createSelectSchema(MembersTable, adjust)

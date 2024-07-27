@@ -5,14 +5,21 @@ import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
 import { z } from 'zod'
 import { FamiliesTable } from './families'
+import { Kidstable } from './kids'
 
-export const formStatusEnum = z.enum(['DRAFT', 'SUBMITTED', 'APPROVED', 'REJECTED'])
+export const formStatusEnum = z.enum([
+  'DRAFT',
+  'SUBMITTED',
+  'APPROVED',
+  'REJECTED',
+])
 export type FormStatus = z.infer<typeof formStatusEnum>
 
 export const FormsTable = createTable('forms', {
   id: serial('id').primaryKey(),
   title: text('title').notNull().default(''),
   familyId: serial('family_id').references(() => FamiliesTable.id),
+  kidId: serial('kid_id').references(() => Kidstable.id),
   slug: text('slug').notNull().default('').unique(),
   status: text('status').$type<FormStatus>().default('DRAFT'),
   fields: jsonb('fields').notNull().default('{}'),
@@ -32,6 +39,11 @@ export const FormsRelations = relations(FormsTable, ({ one }) => ({
     fields: [FormsTable.familyId],
     references: [FamiliesTable.id],
     relationName: 'family_forms',
+  }),
+  kid: one(Kidstable, {
+    fields: [FormsTable.kidId],
+    references: [Kidstable.id],
+    relationName: 'kids_forms',
   }),
 }))
 

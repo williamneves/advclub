@@ -36,6 +36,24 @@ export const parentsRouter = createTRPCRouter({
       return parent
     }),
 
+  getParentsByLoggedInFamily: protectedProcedure.query(async ({ ctx }) => {
+    const family = await ctx.db.query.FamiliesTable.findFirst({
+      where: (family, { eq }) => eq(family.userId, ctx.userId),
+    })
+
+    if (!family) {
+      return []
+    }
+
+    const parents = await ctx.db.query.ParentsTable.findMany({
+      where: (parents, { eq }) => eq(parents.familyId, family.id),
+      orderBy: (parents, { desc }) => [
+        desc(parents.main),
+        desc(parents.lastName),
+      ],
+    })
+    return parents
+  }),
   getParentsByFamilyId: protectedProcedure
     .input(z.object({ familyId: z.number() }))
     .query(async ({ ctx, input }) => {

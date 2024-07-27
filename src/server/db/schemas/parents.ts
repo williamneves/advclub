@@ -18,7 +18,6 @@ import { z } from 'zod'
 export const parentsGuardiansType = z.enum(['parent', 'guardian', 'relative'])
 export type ParentsGuardiansType = z.infer<typeof parentsGuardiansType>
 
-
 export const ParentsTable = createTable('parents', {
   id: serial('id').primaryKey(),
   inactive: boolean('inactive').default(false),
@@ -46,7 +45,7 @@ export type ParentsSelect = typeof ParentsTable.$inferSelect
 export type ParentsInsert = typeof ParentsTable.$inferInsert
 
 const adjust = {
-  type: parentsGuardiansType
+  type: parentsGuardiansType,
 }
 
 const parentsSelectSchema = createSelectSchema(ParentsTable, adjust)

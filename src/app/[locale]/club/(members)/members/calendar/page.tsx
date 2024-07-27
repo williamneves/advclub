@@ -1,5 +1,5 @@
 'use client'
 
-export default function Calendar(){
-    return <p>Calendário</p>
+export default function Calendar() {
+  return <p>Calendário</p>
 }

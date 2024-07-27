@@ -1,5 +1,3 @@
-
-
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -66,7 +64,6 @@ export function UpdateFamilyForm({
   }, [form, initialData])
 
   const onSubmit = async (data: UpdateFamilyData) => {
-
     try {
       await updateFamily.mutateAsync({
         name: data.familyName,
@@ -131,7 +128,11 @@ export function UpdateFamilyForm({
               )}
             />
             <div className="flex justify-end space-x-2">
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
                 {t('cancel')}
               </Button>
               <Button type="submit" disabled={form.formState.isSubmitting}>

@@ -128,5 +128,202 @@
       "success": "Guardian added successfully!",
       "error": "Error adding guardian"
     }
+  },
+  "edit_parent_form": {
+    "title": "Edit Guardian",
+    "description": "Update the guardian's information",
+    "firstName": {
+      "label": "First Name",
+      "error": "First name is required"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "error": "Last name is required"
+    },
+    "type": {
+      "label": "Guardian Type",
+      "options": {
+        "parent": "Parent",
+        "guardian": "Guardian",
+        "relative": "Relative"
+      },
+      "error": "Please select a guardian type"
+    },
+    "sex": {
+      "label": "Sex",
+      "options": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "error": "Please select a sex"
+    },
+    "phone": {
+      "label": "Phone",
+      "error": "Phone number is required"
+    },
+    "email": {
+      "label": "Email",
+      "error": "Valid email is required"
+    },
+    "main": {
+      "label": "Primary Guardian",
+      "description": "Check if this is the primary guardian"
+    },
+    "button": {
+      "label": "Update Guardian",
+      "loading": "Updating..."
+    },
+    "toast": {
+      "success": "Guardian updated successfully!",
+      "error": "Error updating guardian"
+    }
+  },
+  "parents_page": {
+    "title": "Guardians",
+    "loading": "Loading...",
+    "edit_button": "Edit",
+    "add_parent_button": "Add Guardian",
+    "no_parents": {
+      "title": "No Guardians Registered",
+      "description": "Click the button below to add a guardian"
+    },
+    "type": {
+      "parent": "Parent",
+      "guardian": "Guardian",
+      "relative": "Relative"
+    },
+    "sex": {
+      "male": "Male",
+      "female": "Female",
+      "other": "Other"
+    }
+  }
+  ,
+  "family_page": {
+    "title": "Family Registration",
+    "description": "Complete the steps below to register your family in the Adventurers Club",
+    "loading": "Loading...",
+    "go_to": "Add",
+    "register_button": "Fill Registration Form",
+    "add_parents": "Add parents/guardians",
+    "add_children": "Add children",
+    "tasks": {
+      "add_parents": "Add parents/guardians",
+      "add_children": "Add children",
+      "fill_registration": "Fill registration form",
+      "coming_soon_badge": "Coming Soon"
+    }
+  },
+    "family_card": {
+      "welcome": "Welcome, Family {familyName}!",
+      "email": "Email",
+      "phone": "Phone",
+      "update_button": "Update Information"
+    },
+  "new_kid_form": {
+    "title": "New Child",
+    "description": "Fill in the fields below to add a new child to the family",
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "Enter first name",
+      "error": "First name is required"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Enter last name",
+      "error": "Last name is required"
+    },
+    "alias": {
+      "label": "Nickname",
+      "placeholder": "Enter how the child is called"
+    },
+    "phoneNumber": {
+      "label": "Phone Number",
+      "placeholder": "Enter phone number",
+      "error": "Phone number is required"
+    },
+    "sex": {
+      "label": "Sex",
+      "options": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "error": "Please select a sex"
+    },
+    "button": {
+      "label": "Add Child",
+      "loading": "Adding..."
+    },
+    "toast": {
+      "success": "Child added successfully!",
+      "error": "Error adding child"
+    }
+  },
+  "edit_kid_form": {
+    "title": "Edit Child",
+    "description": "Update the child's information below",
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "Enter first name",
+      "error": "First name is required"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Enter last name",
+      "error": "Last name is required"
+    },
+    "alias": {
+      "label": "Nickname",
+      "placeholder": "Enter nickname (optional)"
+    },
+    "phoneNumber": {
+      "label": "Phone Number",
+      "placeholder": "Enter phone number",
+      "error": "Phone number is required"
+    },
+    "sex": {
+      "label": "Sex",
+      "options": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "error": "Please select a sex"
+    },
+    "button": {
+      "label": "Update Child",
+      "loading": "Updating..."
+    },
+    "toast": {
+      "success": "Child updated successfully!",
+      "error": "Error updating child"
+    }
+  },
+  "kids_page": {
+    "title": "Children",
+    "add_kid_button": "Add Child",
+    "edit_button": "Edit",
+    "alias": "Nickname",
+    "no_kids": {
+      "title": "No Children Registered",
+      "description": "Click the button above to add a child"
+    },
+    "sex": {
+      "male": "Male",
+      "female": "Female",
+      "other": "Other"
+    }
+  },
+  "forms_page": {
+    "title": "Registration",
+    "under_construction": {
+      "title": "Page Under Development (Coming Soon)",
+      "description": "The registration forms will be available soon",
+      "message": "The registration forms for children will be available soon. In the meantime, after registering your family and children, please contact one of the following people:",
+      "contact_info": "Contact information:",
+      "contact_template": "{name}: {phone}"
+    }
   }
 }

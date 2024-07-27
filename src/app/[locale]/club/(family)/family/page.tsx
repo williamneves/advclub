@@ -15,24 +15,25 @@ type Family = {
 }
 
 export default function Family() {
-    const [hasParentAndChild, setHasParentAndChild] = useState(false)
-    
-    const { data: family, isLoading: isFamilyLoading } = api.club.families.getLoggedInFamily.useQuery()
+  const family = api.club.families.getLoggedInFamily.useQuery(undefined, {
+    retry: 1,
+  })
 
-    if (isFamilyLoading) {
-        return <Loader size="md" />
-    }
+  if (family.isLoading) {
+    return <Loader size="md" />
+  }
 
-  if (!family) {
+  if (family.status !== 'success' || !family.data) {
     return <NewFamilyForm />
   }
 
   return (
     <Suspense fallback={<Loader size="md" />}>
-      <FamilyCard
-        family={family}
+      <FamilyCard family={family.data} />
+      <InboundBlock
+        familyHasParents={!!family.data?.parents?.length}
+        familyHasChildren={!!family.data?.kids?.length}
       />
-      {(!family.parents?.length || !family.kids?.length) && <InboundBlock />}
     </Suspense>
   )
 }

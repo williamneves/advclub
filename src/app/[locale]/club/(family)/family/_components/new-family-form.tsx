@@ -26,7 +26,7 @@ import { Separator } from '@/components/ui/separator'
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-
+import { revalidatePath } from 'next/cache'
 
 // Definindo o esquema de validação
 const createFamilySchema = (t: (key: string) => string) =>
@@ -53,18 +53,21 @@ export function NewFamilyForm() {
     },
   })
 
-  const createFamily = api.club.families.createFamily.useMutation({})
+  const utils = api.useUtils()
+  const createFamily = api.club.families.createFamily.useMutation({
+    onSettled: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
+    },
+  })
 
   const onSubmit = async (data: NewFamilyFormData) => {
     try {
       // Aqui você faria a chamada para a API para criar a família
-      console.log('Dados do formulário:', data)
-      const family = await createFamily.mutateAsync({
+      await createFamily.mutateAsync({
         name: data.familyName,
         phoneNumber: data.familyPhone,
         email: data.familyEmail,
       })
-      console.log(family)
       toast.success(t('toast.success'))
       form.reset()
       router.push('/club/family')
@@ -104,18 +107,18 @@ export function NewFamilyForm() {
                 </FormItem>
               )}
             />
-              <FormField
-                control={form.control}
-                name="familyPhone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('phone.label')}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t('phone.placeholder')} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            <FormField
+              control={form.control}
+              name="familyPhone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('phone.label')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('phone.placeholder')} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}

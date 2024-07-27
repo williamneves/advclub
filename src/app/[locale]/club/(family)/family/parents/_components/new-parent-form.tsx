@@ -27,6 +27,7 @@ import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 import { parentsGuardiansType } from '@/server/db/schemas/parents'
 import { sexEnumSchema } from '@/server/db/schemas'
+import { useRouter } from 'next/navigation'
 
 const createParentSchema = (t: (key: string) => string) =>
   z.object({
@@ -42,6 +43,8 @@ const createParentSchema = (t: (key: string) => string) =>
 type NewParentFormData = z.infer<ReturnType<typeof createParentSchema>>
 
 export function NewParentForm({ familyId }: { familyId: number }) {
+  const router = useRouter()
+
   const t = useTranslations('new_parent_form')
   const schema = createParentSchema(t)
 
@@ -65,6 +68,8 @@ export function NewParentForm({ familyId }: { familyId: number }) {
       await createParent.mutateAsync({ ...data, familyId })
       toast.success(t('toast.success'))
       form.reset()
+
+      router.push(`/club/family/parents`)
     } catch (error) {
       console.error('Error creating parent:', error)
       toast.error(t('toast.error'))

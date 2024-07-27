@@ -1,6 +1,9 @@
-
-import { createCallerFactory, createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { clubRouter } from "./routers/club/";
+import {
+  createCallerFactory,
+  createTRPCRouter,
+  publicProcedure,
+} from '@/server/api/trpc'
+import { clubRouter } from './routers/club/'
 
 /**
  * This is the primary router for your server.
@@ -10,12 +13,12 @@ import { clubRouter } from "./routers/club/";
 export const appRouter = createTRPCRouter({
   club: clubRouter,
   test: publicProcedure.query(() => {
-    return "Hello World";
+    return 'Hello World'
   }),
-});
+})
 
 // export type definition of API
-export type AppRouter = typeof appRouter;
+export type AppRouter = typeof appRouter
 
 /**
  * Create a server-side caller for the tRPC API.
@@ -24,4 +27,4 @@ export type AppRouter = typeof appRouter;
  * const res = await trpc.post.all();
  *       ^? Post[]
  */
-export const createCaller = createCallerFactory(appRouter);
+export const createCaller = createCallerFactory(appRouter)

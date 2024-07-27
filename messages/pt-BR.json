@@ -128,5 +128,202 @@
       "success": "Responsável adicionado com sucesso!",
       "error": "Erro ao adicionar responsável"
     }
+  },
+  "edit_parent_form": {
+    "title": "Editar Responsável",
+    "description": "Atualize as informações do responsável",
+    "firstName": {
+      "label": "Nome",
+      "error": "Nome é obrigatório"
+    },
+    "lastName": {
+      "label": "Sobrenome",
+      "error": "Sobrenome é obrigatório"
+    },
+    "type": {
+      "label": "Tipo de Responsável",
+      "options": {
+        "parent": "Pai/Mãe",
+        "guardian": "Guardião",
+        "relative": "Parente"
+      },
+      "error": "Selecione o tipo de responsável"
+    },
+    "sex": {
+      "label": "Sexo",
+      "options": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "other": "Outro"
+      },
+      "error": "Selecione o sexo"
+    },
+    "phone": {
+      "label": "Telefone",
+      "error": "Telefone é obrigatório"
+    },
+    "email": {
+      "label": "Email",
+      "error": "Email válido é obrigatório"
+    },
+    "main": {
+      "label": "Responsável Principal",
+      "description": "Marque se este é o responsável principal"
+    },
+    "button": {
+      "label": "Atualizar Responsável",
+      "loading": "Atualizando..."
+    },
+    "toast": {
+      "success": "Responsável atualizado com sucesso!",
+      "error": "Erro ao atualizar responsável"
+    }
+  },
+  "parents_page": {
+    "title": "Responsáveis",
+    "loading": "Carregando...",
+    "edit_button": "Editar",
+    "add_parent_button": "Adicionar Responsável",
+    "no_parents": {
+      "title": "Nenhum Responsável Cadastrado",
+      "description": "Clique no botão abaixo para adicionar um responsável"
+    },
+    "type": {
+      "parent": "Pai/Mãe",
+      "guardian": "Guardião",
+      "relative": "Parente"
+    },
+    "sex": {
+      "male": "Masculino",
+      "female": "Feminino",
+      "other": "Outro"
+    }
+
+  },
+  "family_page": {
+    "title": "Cadastro da Família",
+    "description": "Complete as etapas abaixo para inscrever sua família no Clube de Aventureiros",
+    "loading": "Carregando...",
+    "go_to": "Adicionar",
+    "register_button": "Preencher Formulário de Inscrição",
+    "add_parents": "Adicionar pais/responsáveis",
+    "add_children": "Adicionar crianças",
+    "tasks": {
+      "add_parents": "Adicionar pais/responsáveis",
+      "add_children": "Adicionar crianças",
+      "fill_registration": "Preencher formulário de inscrição", 
+      "coming_soon_badge": "Em Breve"
+    }
+  },
+  "family_card": {
+    "welcome": "Bem-vindos, Família {familyName}!",
+    "email": "Email",
+    "phone": "Telefone",
+    "update_button": "Atualizar Dados"
+  },
+  "new_kid_form": {
+    "title": "Nova Criança",
+    "description": "Preencha os campos abaixo para adicionar uma nova criança à família",
+    "firstName": {
+      "label": "Nome",
+      "placeholder": "Digite o nome",
+      "error": "Nome é obrigatório"
+    },
+    "lastName": {
+      "label": "Sobrenome",
+      "placeholder": "Digite o sobrenome",
+      "error": "Sobrenome é obrigatório"
+    },
+    "alias": {
+      "label": "Apelido",
+      "placeholder": "Como seu filho é chamado"
+    },
+    "phoneNumber": {
+      "label": "Telefone",
+      "placeholder": "Digite o telefone",
+      "error": "Telefone é obrigatório"
+    },
+    "sex": {
+      "label": "Sexo",
+      "options": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "other": "Outro"
+      },
+      "error": "Selecione o sexo"
+    },
+    "button": {
+      "label": "Adicionar Criança",
+      "loading": "Adicionando..."
+    },
+    "toast": {
+      "success": "Criança adicionada com sucesso!",
+      "error": "Erro ao adicionar criança"
+    }
+  },
+  "edit_kid_form": {
+    "title": "Editar Criança",
+    "description": "Atualize as informações da criança abaixo",
+    "firstName": {
+      "label": "Nome",
+      "placeholder": "Digite o nome",
+      "error": "Nome é obrigatório"
+    },
+    "lastName": {
+      "label": "Sobrenome",
+      "placeholder": "Digite o sobrenome",
+      "error": "Sobrenome é obrigatório"
+    },
+    "alias": {
+      "label": "Apelido",
+      "placeholder": "Digite o apelido (opcional)"
+    },
+    "phoneNumber": {
+      "label": "Telefone",
+      "placeholder": "Digite o telefone",
+      "error": "Telefone é obrigatório"
+    },
+    "sex": {
+      "label": "Sexo",
+      "options": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "other": "Outro"
+      },
+      "error": "Selecione o sexo"
+    },
+    "button": {
+      "label": "Atualizar Criança",
+      "loading": "Atualizando..."
+    },
+    "toast": {
+      "success": "Criança atualizada com sucesso!",
+      "error": "Erro ao atualizar criança"
+    }
+  },
+  "kids_page": {
+    "title": "Crianças",
+    "add_kid_button": "Adicionar Criança",
+    "edit_button": "Editar",
+    "alias": "Apelido",
+    "no_kids": {
+      "title": "Nenhuma Criança Cadastrada",
+      "description": "Clique no botão acima para adicionar uma criança"
+    },
+    "sex": {
+      "male": "Masculino",
+      "female": "Feminino",
+      "other": "Outro"
+    }
+  },
+  "forms_page": {
+    "title": "Formulários",
+    "under_construction": {
+      "title": "Página em Desenvolvimento (Em Breve)",
+      "description": "Os formulários de inscrição estarão disponíveis em breve",
+      "message": "Os formulários para inscrição das crianças estarão disponíveis em breve. Enquanto isso, após cadastrar a família e as crianças, por favor entre em contato com uma das seguintes pessoas:",
+      "contact_info": "Informações de contato:",
+      "contact_template": "{name}: {phone}"
+    }
   }
 }

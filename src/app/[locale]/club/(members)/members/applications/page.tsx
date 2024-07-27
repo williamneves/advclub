@@ -1,5 +1,5 @@
 'use client'
 
-export default function Applications(){
-    return <p>Formulários</p>
+export default function Applications() {
+  return <p>Formulários</p>
 }

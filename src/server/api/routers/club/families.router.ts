@@ -35,7 +35,7 @@ export const familiesRouter = createTRPCRouter({
         forms: true,
       },
     })
-    return family
+    return family ?? null
   }),
 
   getFamilyById: protectedProcedure

@@ -1,9 +1,20 @@
+import { api } from '@/trpc/server'
 import { Shell } from './shell'
 
-export default function ClubLayout({
+export default async function ClubLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: {
+    locale: string
+  }
 }) {
-  return <Shell>{children}</Shell>
+  const family = await api.club.families.getLoggedInFamily()
+  const familyCreated = !!family
+  return (
+    <Shell familyCreated={familyCreated} locale={params.locale}>
+      {children}
+    </Shell>
+  )
 }
