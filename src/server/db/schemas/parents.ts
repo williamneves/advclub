@@ -1,16 +1,11 @@
-import { relations, sql } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 import {
   boolean,
-  serial,
-  timestamp,
-  text,
-  uuid,
-  primaryKey,
+  serial, text
 } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
-import { Kidstable } from './kids'
 import { FamiliesTable } from './families'
 import { sexEnum } from './enums'
 import { z } from 'zod'
