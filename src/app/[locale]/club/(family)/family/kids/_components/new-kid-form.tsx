@@ -54,7 +54,13 @@ export function NewKidForm({ familyId }: { familyId: number }) {
     },
   })
 
-  const createKid = api.club.kids.createKid.useMutation({})
+  const utils = api.useUtils()
+
+  const createKid = api.club.kids.createKid.useMutation({
+    onSuccess: async () => {
+      await utils.club.kids.getKidsByLoggedInFamily.invalidate()
+    },
+  })
 
   const onSubmit = async (data: NewKidFormData) => {
     try {

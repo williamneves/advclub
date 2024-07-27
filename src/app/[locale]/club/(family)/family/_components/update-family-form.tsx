@@ -57,6 +57,7 @@ export function UpdateFamilyForm({
   const updateFamily = api.club.families.updateLoggedInFamily.useMutation({
     onSettled: async () => {
       await utils.club.families.getLoggedInFamily.invalidate()
+      await utils.club.parents.getParentsByLoggedInFamily.invalidate()
     },
   })
   useEffect(() => {

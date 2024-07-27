@@ -7,7 +7,7 @@ import { TRPCReactProvider } from '@/trpc/react'
 import { getMessages } from 'next-intl/server'
 import { NextIntlClientProvider } from 'next-intl'
 import { Toaster } from '@/components/ui/sonner'
-
+import { Analytics } from '@vercel/analytics/react'
 import { ClerkProvider } from '@clerk/nextjs'
 import { enUS, ptBR } from '@clerk/localizations'
 export const metadata: Metadata = {
@@ -35,6 +35,7 @@ export default async function RootLayout({
           </body>
         </html>
       </ClerkProvider>
+      <Analytics />
     </NextIntlClientProvider>
   )
 }
