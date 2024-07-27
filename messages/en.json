@@ -215,6 +215,17 @@
       "coming_soon_badge": "Coming Soon"
     }
   },
+  "Home": {
+    "welcome": "Welcome to the Adventurers Club!",
+    "description": "We're glad to have you here! This site is constantly evolving to better serve our community.",
+    "currentFeatures": "Currently, you can already:",
+    "registerFamily": "• Register your family",
+    "moreComingSoon": "• More features coming soon!",
+    "stayTuned": "Stay tuned for news and updates!",
+    "registerButton": "Register Family",
+    "loginButton": "Login",
+    "goToClubButton": "Access Family Area"
+  },
     "family_card": {
       "welcome": "Welcome, Family {familyName}!",
       "email": "Email",

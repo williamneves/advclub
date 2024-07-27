@@ -198,7 +198,17 @@
       "female": "Feminino",
       "other": "Outro"
     }
-
+  },
+  "Home": {
+    "welcome": "Bem-vindo ao Clube de Aventureiros!",
+    "description": "Estamos felizes em ter você aqui! Este site está em constante evolução para melhor servir nossa comunidade.",
+    "currentFeatures": "Atualmente, você já pode:",
+    "registerFamily": "• Registrar sua família",
+    "moreComingSoon": "• Mais recursos em breve!",
+    "stayTuned": "Fique atento para novidades e atualizações!",
+    "registerButton": "Registrar Família",
+    "loginButton": "Entrar",
+    "goToClubButton": "Acessar Área da Família"
   },
   "family_page": {
     "title": "Cadastro da Família",
@@ -211,7 +221,7 @@
     "tasks": {
       "add_parents": "Adicionar pais/responsáveis",
       "add_children": "Adicionar crianças",
-      "fill_registration": "Preencher formulário de inscrição", 
+      "fill_registration": "Preencher formulário de inscrição",
       "coming_soon_badge": "Em Breve"
     }
   },
