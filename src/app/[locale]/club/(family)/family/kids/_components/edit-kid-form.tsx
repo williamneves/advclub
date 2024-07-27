@@ -63,6 +63,7 @@ export function EditKidForm({ kid }: EditKidFormProps) {
   const updateKid = api.club.kids.updateKid.useMutation({
     onSettled: async () => {
       await utils.club.kids.getKidsByLoggedInFamily.invalidate()
+      await utils.club.families.getLoggedInFamily.invalidate()
     },
   })
 

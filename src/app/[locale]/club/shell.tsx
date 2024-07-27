@@ -11,20 +11,15 @@ import { UserButton } from '@clerk/nextjs'
 import { NavLinkButton } from './nav-link'
 import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
-import { api } from '@/trpc/server'
 import { LanguageSelector } from '@/components/language-selector'
-import LanguageChanger from '@/components/lang-changer'
+import { NavBlock } from './nav-block'
 
 export function Shell({
   children,
-  familyCreated,
-  locale,
 }: {
   children: React.ReactNode
-  familyCreated: boolean
-  locale: string
+
 }) {
-  const t = useTranslations('navigation')
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -33,7 +28,7 @@ export function Shell({
           <Logo />
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <NavBlock isMobile={false} familyCreated={familyCreated} />
+              <NavBlock isMobile={false} />
             </nav>
           </div>
         </div>
@@ -72,7 +67,7 @@ export function Shell({
                     </span>
                   </Link>
                 </Link>
-                <NavBlock isMobile={true} familyCreated={familyCreated} />
+                <NavBlock isMobile={true} />
               </nav>
             </SheetContent>
           </Sheet>
@@ -108,45 +103,4 @@ export function Shell({
   )
 }
 
-function NavBlock({
-  isMobile,
-  familyCreated,
-}: {
-  isMobile?: boolean
-  familyCreated?: boolean
-}) {
-  const t = useTranslations('navigation')
 
-  return (
-    <Fragment>
-      <NavLinkButton
-        href="/club/family"
-        icon={<LayoutDashboard className="size-5" />}
-      >
-        {t('family')}
-      </NavLinkButton>
-      {familyCreated && (
-        <>
-          <NavLinkButton
-            href="/club/family/parents"
-            icon={<Contact className="size-5" />}
-          >
-            {t('parents')}
-          </NavLinkButton>
-          <NavLinkButton
-            href="/club/family/kids"
-            icon={<Baby className="size-5" />}
-          >
-            {t('kids')}
-          </NavLinkButton>
-          <NavLinkButton
-            href="/club/family/forms"
-            icon={<FileStack className="size-5" />}
-          >
-            {t('forms')}
-          </NavLinkButton>
-        </>
-      )}
-    </Fragment>
-  )
-}

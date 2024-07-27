@@ -59,6 +59,8 @@ export function NewKidForm({ familyId }: { familyId: number }) {
   const createKid = api.club.kids.createKid.useMutation({
     onSuccess: async () => {
       await utils.club.kids.getKidsByLoggedInFamily.invalidate()
+      await utils.club.families.getLoggedInFamily.invalidate()
+
     },
   })
 
@@ -67,7 +69,7 @@ export function NewKidForm({ familyId }: { familyId: number }) {
       await createKid.mutateAsync({ ...data, familyId })
       toast.success(t('toast.success'))
       form.reset()
-      router.push(`/club/family/kids`)
+      router.push(`/club/family`)
     } catch (error) {
       console.error('Error creating kid:', error)
       toast.error(t('toast.error'))

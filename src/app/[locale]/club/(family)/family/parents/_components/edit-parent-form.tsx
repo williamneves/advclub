@@ -70,6 +70,7 @@ export function EditParentForm({ parent }: EditParentFormProps) {
   const updateParent = api.club.parents.updateParent.useMutation({
     onSuccess: async () => {
       await utils.club.parents.getParentsByLoggedInFamily.invalidate()
+      await utils.club.families.getLoggedInFamily.invalidate()
     },
   })
 

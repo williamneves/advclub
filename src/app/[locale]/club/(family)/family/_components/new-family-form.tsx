@@ -70,6 +70,7 @@ export function NewFamilyForm() {
       })
       toast.success(t('toast.success'))
       form.reset()
+      router.refresh()
       router.push('/club/family')
     } catch (error) {
       console.error('Erro ao criar família:', error)

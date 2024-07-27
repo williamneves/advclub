@@ -13,7 +13,7 @@ export default async function ClubLayout({
   const family = await api.club.families.getLoggedInFamily()
   const familyCreated = !!family
   return (
-    <Shell familyCreated={familyCreated} locale={params.locale}>
+    <Shell>
       {children}
     </Shell>
   )

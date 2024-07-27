@@ -30,7 +30,6 @@ import type { NextRequest } from 'next/server'
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const { userId } = auth()
 
-  console.log(userId)
   return {
     db,
     userId,
