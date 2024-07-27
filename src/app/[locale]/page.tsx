@@ -37,10 +37,10 @@ export default function Home() {
           ) : (
             <div className="w-full space-y-2">
               <Button asChild className="w-full">
-                <Link href="/sign-up">{t('registerButton')}</Link>
+                <Link href="/register">{t('registerButton')}</Link>
               </Button>
               <Button asChild variant="outline" className="w-full">
-                <Link href="/sign-in">{t('loginButton')}</Link>
+                <Link href="/login">{t('loginButton')}</Link>
               </Button>
             </div>
           )}
