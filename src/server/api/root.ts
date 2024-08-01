@@ -12,7 +12,7 @@ import { clubRouter } from './routers/club/'
  */
 export const appRouter = createTRPCRouter({
   club: clubRouter,
-  test: publicProcedure.query(() => {
+  hello: publicProcedure.query(() => {
     return 'Hello World'
   }),
 })
