@@ -20,9 +20,10 @@
     "forms": "Forms"
   },
   "new_family_form": {
-    "title": "Create Family",
-    "description": "Fill in the fields below to create a new family",
-    "disclaimer": "Welcome to the Club of Brazilian Temple Adventurers of Fort Lauderdale. To continue with your registration, fill in the fields below with the family's information.",
+    "title": "New Family Registration",
+    "welcome_message": "Welcome to the Adventurers Club!",
+    "description": "To start your registration, please fill in the fields below with the family's information.",
+    "disclaimer": "You and your family are very important to our community. Instructing children on the path of Christ is our mission and responsibility.",
     "name": {
       "label": "Family Name",
       "placeholder": "Enter the family name",
@@ -37,6 +38,28 @@
       "label": "Family Email",
       "placeholder": "Enter the family email",
       "error": "Family email is required"
+    },
+    "streetAddress": {
+      "label": "Street Address",
+      "placeholder": "1234 Main St",
+      "error": "Street address is required"
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Spring Valley",
+      "error": "City is required"
+    },
+    "state": {
+      "label": "State",
+      "placeholder": "Search...",
+      "searchPlaceholder": "Search for the state",
+      "noResults": "No state found",
+      "error": "State is required"
+    },
+    "zipCode": {
+      "label": "Zip Code",
+      "placeholder": "10977",
+      "error": "Zip code is invalid"
     },
     "button": {
       "label": "Create Family",
@@ -102,7 +125,8 @@
       "options": {
         "male": "Male",
         "female": "Female",
-        "other": "Other"
+        "other": "Other",
+        "": "Not Informed"
       },
       "error": "Please select a sex"
     },
@@ -154,7 +178,8 @@
       "options": {
         "male": "Male",
         "female": "Female",
-        "other": "Other"
+        "other": "Other",
+        "": "Not Informed"
       },
       "error": "Please select a sex"
     },
@@ -196,7 +221,8 @@
     "sex": {
       "male": "Male",
       "female": "Female",
-      "other": "Other"
+      "other": "Other",
+      "": "Not Informed"
     }
   }
   ,
@@ -259,7 +285,8 @@
       "options": {
         "male": "Male",
         "female": "Female",
-        "other": "Other"
+        "other": "Other",
+        "": "Not Informed"
       },
       "error": "Please select a sex"
     },
@@ -299,7 +326,8 @@
       "options": {
         "male": "Male",
         "female": "Female",
-        "other": "Other"
+        "other": "Other",
+        "": "Not Informed"
       },
       "error": "Please select a sex"
     },
@@ -324,7 +352,8 @@
     "sex": {
       "male": "Male",
       "female": "Female",
-      "other": "Other"
+      "other": "Other",
+      "": "Not Informed"
     }
   },
   "forms_page": {

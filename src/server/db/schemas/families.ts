@@ -1,25 +1,29 @@
 import { relations } from 'drizzle-orm'
-import { serial, text } from 'drizzle-orm/pg-core'
+import { boolean, serial, text } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
 import { Kidstable } from './kids'
 import { ParentsTable } from './parents'
-import { FormsTable } from './forms'
 
 export const FamiliesTable = createTable('families', {
   id: serial('id').primaryKey(),
+  inactive: boolean('inactive').default(false),
   userId: text('user_id').notNull(),
   name: text('name').notNull().default(''),
+  familyAvatar: text('family_avatar').default(''),
   phoneNumber: text('phone_number').notNull().default(''),
   email: text('email').notNull().default(''),
+  streetAddress: text('street_address').default(''),
+  city: text('city').default(''),
+  state: text('state').default(''),
+  zipCode: text('zip_code').default(''),
   ...timestamps,
 })
 
 export const familyRelations = relations(FamiliesTable, ({ many }) => ({
   kids: many(Kidstable, { relationName: 'family_kids' }),
   parents: many(ParentsTable, { relationName: 'family_parents' }),
-  forms: many(FormsTable, { relationName: 'family_forms' }),
 }))
 
 export type FamilySelect = typeof FamiliesTable.$inferSelect

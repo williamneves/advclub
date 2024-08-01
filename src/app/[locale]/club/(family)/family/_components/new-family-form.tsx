@@ -22,19 +22,40 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import states from 'states-us'
 import { Separator } from '@/components/ui/separator'
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { Check, ChevronDown } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 // Definindo o esquema de validação
 const createFamilySchema = (t: (key: string) => string) =>
-  z.object({
-    familyName: z.string().min(1, t('name.error')),
-    familyPhone: z.string().min(4, t('phone.error')),
-    familyEmail: z.string().email(t('email.error')),
-  })
+  z
+    .object({
+      familyName: z.string().min(1, t('name.error')),
+      familyPhone: z.string().min(4, t('phone.error')),
+      familyEmail: z.string().email(t('email.error')),
+      streetAddress: z.string(),
+      city: z.string(),
+      state: z.string(),
+      zipCode: z.string(),
+    })
 
 type NewFamilyFormData = z.infer<ReturnType<typeof createFamilySchema>>
 
@@ -50,6 +71,10 @@ export function NewFamilyForm() {
       familyName: '',
       familyPhone: '',
       familyEmail: '',
+      streetAddress: '',
+      city: '',
+      state: '',
+      zipCode: '',
     },
   })
 
@@ -79,9 +104,12 @@ export function NewFamilyForm() {
   }
 
   return (
-    <Card className="max-w-2xl">
+    <Card className="w-full">
       <CardHeader className="space-y-2">
         <CardTitle>{t('title')}</CardTitle>
+        <CardDescription className="text-md text-gray-700">
+          {t('welcome_message')}
+        </CardDescription>
         <CardDescription className="text-md text-gray-500">
           {t('disclaimer')}
         </CardDescription>
@@ -129,6 +157,64 @@ export function NewFamilyForm() {
                   <FormLabel>{t('email.label')}</FormLabel>
                   <FormControl>
                     <Input placeholder={t('email.placeholder')} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Separator />
+            <FormField
+              control={form.control}
+              name="streetAddress"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('streetAddress.label')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t('streetAddress.placeholder')}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('city.label')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('city.placeholder')} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('state.label')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('state.placeholder')} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="zipCode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('zipCode.label')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('zipCode.placeholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

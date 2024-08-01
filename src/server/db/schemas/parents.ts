@@ -14,7 +14,9 @@ export const ParentsTable = createTable('parents', {
   id: serial('id').primaryKey(),
   inactive: boolean('inactive').default(false),
   main: boolean('main').default(false),
-  familyId: serial('family_id').references(() => FamiliesTable.id),
+  familyId: serial('family_id').references(() => FamiliesTable.id, {
+    onDelete: 'cascade',
+  }),
   type: text('type').$type<ParentsGuardiansType>().notNull(),
   firstName: text('first_name').default(''),
   lastName: text('last_name').default(''),
@@ -22,6 +24,13 @@ export const ParentsTable = createTable('parents', {
   avatar: text('avatar'),
   phone: text('phone').default(''),
   email: text('email').default(''),
+  useFamilyAddress: boolean('use_family_address').default(true),
+  streetAddress: text('street_address').default(''),
+  city: text('city').default(''),
+  state: text('state').default(''),
+  zipCode: text('zip_code').default(''),
+  allowToPickUp: boolean('allow_to_pick_up').default(false),
+  allowToAssignSignatures: boolean('allow_to_assign_signatures').default(false),
   ...timestamps,
 })
 

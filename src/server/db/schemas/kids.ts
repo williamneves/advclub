@@ -5,16 +5,19 @@ import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
 import { FamiliesTable } from './families'
 import { sexEnum } from './enums'
-import { FormsTable } from './forms'
 
 export const Kidstable = createTable('kids', {
   id: serial('id').primaryKey(),
-  familyId: serial('family_id').references(() => FamiliesTable.id),
+  familyId: serial('family_id').references(() => FamiliesTable.id, {
+    onDelete: 'cascade',
+  }),
   inactive: boolean('inactive').default(false),
   firstName: text('first_name').notNull().default(''),
   lastName: text('last_name').notNull().default(''),
   alias: text('alias').default(''),
   phoneNumber: text('phone_number').notNull().default(''),
+  height: text('height').default(''),
+  weight: text('weight').default(''),
   sex: sexEnum('sex'),
   avatar: text('avatar'),
   ...timestamps,
@@ -25,12 +28,7 @@ export const kidsRelations = relations(Kidstable, ({ one }) => ({
     fields: [Kidstable.familyId],
     references: [FamiliesTable.id],
     relationName: 'family_kids',
-  }),
-  forms: one(FormsTable, {
-    fields: [Kidstable.id],
-    references: [FormsTable.kidId],
-    relationName: 'kids_forms',
-  }),
+  })
 }))
 
 export type KidsSelect = typeof Kidstable.$inferSelect

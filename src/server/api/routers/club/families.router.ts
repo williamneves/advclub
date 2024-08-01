@@ -15,7 +15,6 @@ export const familiesRouter = createTRPCRouter({
       with: {
         kids: true,
         parents: true,
-        forms: true,
       },
       orderBy: (families, { desc }) => desc(families.createdAt),
     })
@@ -32,7 +31,6 @@ export const familiesRouter = createTRPCRouter({
       with: {
         kids: true,
         parents: true,
-        forms: true,
       },
     })
     return family ?? null
@@ -46,7 +44,6 @@ export const familiesRouter = createTRPCRouter({
         with: {
           kids: true,
           parents: true,
-          forms: true,
         },
       })
       return family

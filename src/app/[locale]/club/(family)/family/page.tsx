@@ -1,11 +1,9 @@
-'use client'
-
-import { useState, useEffect, Suspense } from 'react'
-import { NewFamilyForm } from './_components/new-family-form'
+import { Suspense } from 'react'
 import { FamilyCard } from './_components/family-card'
 import { InboundBlock } from './_components/inbound-block'
-import { api } from '@/trpc/react'
+import { api } from '@/trpc/server'
 import Loader from '@/components/loader'
+import { redirect } from 'next/navigation'
 
 // Tipos mock para demonstração
 type Family = {
@@ -14,25 +12,19 @@ type Family = {
   familyPhone: string
 }
 
-export default function Family() {
-  const family = api.club.families.getLoggedInFamily.useQuery(undefined, {
-    retry: 1,
-  })
+export default async function Family() {
+  const family = await api.club.families.getLoggedInFamily()
 
-  if (family.isLoading) {
-    return <Loader size="md" />
-  }
-
-  if (family.status !== 'success' || !family.data) {
-    return <NewFamilyForm />
+  if (!family) {
+    redirect('/club/family/new_family')
   }
 
   return (
     <Suspense fallback={<Loader size="md" />}>
-      <FamilyCard family={family.data} />
+      <FamilyCard family={family} />
       <InboundBlock
-        familyHasParents={!!family.data?.parents?.length}
-        familyHasChildren={!!family.data?.kids?.length}
+        familyHasParents={!!family.parents?.length}
+        familyHasChildren={!!family.kids?.length}
       />
     </Suspense>
   )
