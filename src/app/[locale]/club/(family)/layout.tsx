@@ -1,4 +1,4 @@
-import { api } from '@/trpc/server'
+import { api, HydrateClient } from '@/trpc/server'
 
 export default async function Layout({
   children,
@@ -6,5 +6,5 @@ export default async function Layout({
   children: React.ReactNode
 }) {
   void (await api.club.families.getLoggedInFamily.prefetch())
-  return <>{children}</>
+  return <HydrateClient>{children}</HydrateClient>
 }

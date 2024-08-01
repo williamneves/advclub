@@ -1,15 +1,16 @@
-import '@/styles/globals.css'
 
-import { GeistSans } from 'geist/font/sans'
+
+
 import { type Metadata } from 'next'
 
 import { TRPCReactProvider } from '@/trpc/react'
 import { getMessages } from 'next-intl/server'
 import { NextIntlClientProvider } from 'next-intl'
-import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/react'
 import { ClerkProvider } from '@clerk/nextjs'
 import { enUS, ptBR } from '@clerk/localizations'
+
+import { BaseThemeProvider } from '@/theme/provider'
 export const metadata: Metadata = {
   title: 'AdvClub',
   description: 'AdvClub',
@@ -28,10 +29,11 @@ export default async function RootLayout({
         afterSignOutUrl={'/login'}
         localization={params.locale === 'pt-BR' ? ptBR : enUS}
       >
-        <html lang={params.locale} className={`${GeistSans.variable}`}>
-          <body>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-            <Toaster />
+        <html lang={params.locale}>
+          <body suppressContentEditableWarning suppressHydrationWarning>
+            <BaseThemeProvider>
+              <TRPCReactProvider>{children}</TRPCReactProvider>
+            </BaseThemeProvider>
           </body>
         </html>
       </ClerkProvider>

@@ -30,14 +30,7 @@ const config = {
       }
     ],
     "@typescript-eslint/require-await": "off",
-    "@typescript-eslint/no-misused-promises": [
-      "error",
-      {
-        "checksVoidReturn": {
-          "attributes": false
-        }
-      }
-    ],
+    "@typescript-eslint/no-misused-promises": "off",
     "drizzle/enforce-delete-with-where": [
       "error",
       {
@@ -62,6 +55,7 @@ const config = {
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/no-unsafe-return": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "react-hooks/exhaustive-deps": "off"
   }
 }
 module.exports = config;

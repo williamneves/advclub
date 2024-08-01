@@ -1,106 +1,133 @@
-import Link from 'next/link'
-import { Baby, Contact, FileStack, LayoutDashboard, Menu } from 'lucide-react'
+'use client'
 
-import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { AppShell, Burger, Flex, Group, Skeleton, Stack, Text } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import Image from 'next/image'
-
 import LOGO from '@/assets/images/LOGO-BLUE-CROSS.png'
-import { Logo } from '@/components/logo'
-import { UserButton } from '@clerk/nextjs'
-import { NavLinkButton } from './nav-link'
-import { useTranslations } from 'next-intl'
-import { Fragment } from 'react'
 import { LanguageSelector } from '@/components/language-selector'
-import { NavBlock } from './nav-block'
+import { UserButton } from '@clerk/nextjs'
 
-export function Shell({
-  children,
-}: {
-  children: React.ReactNode
 
-}) {
+
+export function MantineShell({ children }: { children: React.ReactNode }) {
+  const [opened, { toggle }] = useDisclosure()
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2">
-          <Logo />
-          <div className="flex-1">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <NavBlock isMobile={false} />
-            </nav>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col">
-        <header className="container mx-auto flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="shrink-0 md:hidden"
-              >
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle navigation menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col pt-0">
-              <nav className="grid gap-2 text-lg font-medium">
-                <Link
-                  href="#"
-                  className="flex h-14 items-center gap-2 lg:h-[60px]"
-                >
-                  <Link
-                    href="/"
-                    className="flex items-center gap-2 font-semibold"
-                  >
-                    <Image
-                      src={LOGO}
-                      priority
-                      alt="BT Adventurer's Club"
-                      className="size-10 lg:size-12"
-                    />
-                    <span className="text-lg font-bold">
-                      BT Adventurer&apos;s
-                    </span>
-                  </Link>
-                </Link>
-                <NavBlock isMobile={true} />
-              </nav>
-            </SheetContent>
-          </Sheet>
-          {/* <div className="w-full flex-1">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                />
-              </div>
-            </form>
-          </div> */}
-          <div className="ml-auto flex items-center gap-4">
-            <LanguageSelector />
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox:
-                    'h-9 w-9 rounded-md ring-2 ring-primary/50 hover:ring-primary/70 transition-all duration-200 ease-in-out ring-offset-2 ring-offset-background hover:ring-offset-0',
-                },
-              }}
+    <AppShell
+      layout='alt'
+      header={{ height: 60 }}
+      navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md">
+          <Group>
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
             />
-          </div>
-        </header>
-        <main className="container mx-auto flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          {children}
-        </main>
-      </div>
-    </div>
+            
+          </Group>
+          <Group className="ml-auto" align='center'>
+              <LanguageSelector />
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox:
+                      'h-9 w-9 rounded-md ring-2 ring-primary/50 hover:ring-primary/70 transition-all duration-200 ease-in-out ring-offset-2 ring-offset-background hover:ring-offset-0',
+                  },
+                }}
+              />
+          </Group>
+        </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p="md" pt={0}>
+        <NavBlock />
+      </AppShell.Navbar>
+      <AppShell.Main bg={'gray.0'}>{children}</AppShell.Main>
+    </AppShell>
   )
 }
 
+import React, { Fragment } from 'react'
+import { LayoutDashboard, Contact, Baby, FileStack } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { api } from '@/trpc/react'
+import { NavLink } from '@mantine/core'
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
+import { MdFamilyRestroom, MdChildCare } from 'react-icons/md'
+import { TbFriends } from 'react-icons/tb'
+function NavBlock({ isMobile }: { isMobile?: boolean }) {
+  const t = useTranslations('navigation')
+  const pathname = usePathname()
+  const family = api.club.families.getLoggedInFamily.useQuery(undefined, {
+    retry: 0,
+  })
+  const familyCreated = !family.isLoading && !!family.data
 
+  return (
+    <Stack>
+      <Flex h={60} className="w-full items-center justify-center gap-2">
+        <Image
+          src={LOGO}
+          priority
+          alt="BT Adventurer Club"
+          className="size-10 lg:size-12"
+        />
+        <Text component="span" fz={'lg'} fw={'bold'} className="no-underline">
+          BT Adventurer&apos;s
+        </Text>
+      </Flex>
+      <Stack gap={6}>
+        <NavLink
+          component={Link}
+          href="/club/family"
+          leftSection={<MdFamilyRestroom className="size-5" />}
+          label={t('family')}
+          data-active={isActive(pathname, '/club/family')}
+          className={cn('rounded-md data-[active]:font-semibold')}
+        />
+        {familyCreated && (
+          <>
+            <NavLink
+              component={Link}
+              href="/club/family/parents"
+              leftSection={<TbFriends className="size-5" />}
+              label={t('parents')}
+              data-active={isActive(pathname, '/club/family/parents')}
+              className={cn('rounded-md data-[active]:font-semibold')}
+            />
+            <NavLink
+              component={Link}
+              href="/club/family/kids"
+              leftSection={<MdChildCare className="size-5" />}
+              label={t('kids')}
+              data-active={isActive(pathname, '/club/family/kids')}
+              className={cn('rounded-md data-[active]:font-semibold')}
+            />
+            <NavLink
+              component={Link}
+              href="/club/family/forms"
+              leftSection={<FileStack className="size-5" />}
+              label={t('forms')}
+              data-active={isActive(pathname, '/club/family/forms')}
+              className={cn('rounded-md data-[active]:font-semibold')}
+            />
+          </>
+        )}
+      </Stack>
+    </Stack>
+  )
+}
+
+function isActive(pathname: string, href: string) {
+  return (
+    pathname.endsWith(href) ||
+    pathname === href ||
+    pathname.match(new RegExp(`^/(en|pt-BR)?${href}$`))
+  )
+}

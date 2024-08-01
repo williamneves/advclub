@@ -1,9 +1,8 @@
-import { Suspense } from 'react'
 import { FamilyCard } from './_components/family-card'
 import { InboundBlock } from './_components/inbound-block'
 import { api } from '@/trpc/server'
-import Loader from '@/components/loader'
 import { redirect } from 'next/navigation'
+import { Stack } from '@mantine/core'
 
 // Tipos mock para demonstração
 type Family = {
@@ -12,20 +11,22 @@ type Family = {
   familyPhone: string
 }
 
-export default async function Family() {
-  const family = await api.club.families.getLoggedInFamily()
+export const dynamic = 'force-dynamic'
 
-  if (!family) {
-    redirect('/club/family/new_family')
+export default async function Family() {
+  const familyResponse = await api.club.families.getLoggedInFamily()
+
+  if (!familyResponse[0]) {
+    redirect('/club/family/new')
   }
 
+  void await api.club.families.getLoggedInFamily.prefetch()
+
   return (
-    <Suspense fallback={<Loader size="md" />}>
-      <FamilyCard family={family} />
+    <Stack>
+      <FamilyCard />
       <InboundBlock
-        familyHasParents={!!family.parents?.length}
-        familyHasChildren={!!family.kids?.length}
       />
-    </Suspense>
+    </Stack>
   )
 }

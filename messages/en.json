@@ -24,41 +24,44 @@
     "welcome_message": "Welcome to the Adventurers Club!",
     "description": "To start your registration, please fill in the fields below with the family's information.",
     "disclaimer": "You and your family are very important to our community. Instructing children on the path of Christ is our mission and responsibility.",
+    "family_info_label": "Family Information",
+    "user_has_family": "User already has a family registered, redirecting to the family page",
     "name": {
       "label": "Family Name",
-      "placeholder": "Enter the family name",
+      "placeholder": "Ex: Smith (Usually the family's last name)",
       "error": "Family name is required"
     },
     "phone": {
       "label": "Family Phone",
-      "placeholder": "Enter the family phone",
+      "placeholder": "Ex: (123) 456-7890",
       "error": "Family phone is required"
     },
     "email": {
       "label": "Family Email",
-      "placeholder": "Enter the family email",
+      "placeholder": "Ex: email@email.com",
       "error": "Family email is required"
     },
+    "address_label": "Address Information",
     "streetAddress": {
       "label": "Street Address",
-      "placeholder": "1234 Main St",
+      "placeholder": "Ex: 1234 Main St",
       "error": "Street address is required"
     },
     "city": {
       "label": "City",
-      "placeholder": "Spring Valley",
+      "placeholder": "Ex: Spring Valley",
       "error": "City is required"
     },
     "state": {
       "label": "State",
-      "placeholder": "Search...",
+      "placeholder": "Ex: FL",
       "searchPlaceholder": "Search for the state",
       "noResults": "No state found",
       "error": "State is required"
     },
     "zipCode": {
       "label": "Zip Code",
-      "placeholder": "10977",
+      "placeholder": "Ex: 33045",
       "error": "Zip code is invalid"
     },
     "button": {
@@ -96,6 +99,29 @@
       "label": "Family Email",
       "placeholder": "Enter the family email",
       "error": "Family email is required"
+    },
+    "address_label": "Address Information",
+    "streetAddress": {
+      "label": "Street Address",
+      "placeholder": "Ex: 1234 Main St",
+      "error": "Street address is required"
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Ex: Spring Valley",
+      "error": "City is required"
+    },
+    "state": {
+      "label": "State",
+      "placeholder": "Ex: FL",
+      "searchPlaceholder": "Search for the state",
+      "noResults": "No state found",
+      "error": "State is required"
+    },
+    "zipCode": {
+      "label": "Zip Code",
+      "placeholder": "Ex: 33045",
+      "error": "Zip code is invalid"
     }
   },
   "new_parent_form": {
@@ -237,7 +263,7 @@
     "tasks": {
       "add_parents": "Add parents/guardians",
       "add_children": "Add children",
-      "fill_registration": "Fill registration form",
+      "fill_registration": "Fill registration form for each child",
       "coming_soon_badge": "Coming Soon"
     }
   },
@@ -256,7 +282,8 @@
       "welcome": "Welcome, Family {familyName}!",
       "email": "Email",
       "phone": "Phone",
-      "update_button": "Update Information"
+      "update_button": "Update Information",
+      "address": "Address"
     },
   "new_kid_form": {
     "title": "New Child",

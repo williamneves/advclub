@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import LOGO from '@/assets/images/LOGO-BLUE-CROSS.png'
 import { cn } from '@/lib/utils'
+import { Anchor, Text } from '@mantine/core'
 
 export function Logo({ withBorder = true }: { withBorder?: boolean }) {
   return (
@@ -10,14 +11,14 @@ export function Logo({ withBorder = true }: { withBorder?: boolean }) {
         'border-b': withBorder,
       })}
     >
-      <Link href="/" className="flex items-center gap-2 font-semibold">
+      <Link  href="/" className="flex items-center  gap-2 font-semibold">
         <Image
           src={LOGO}
           priority
           alt="BT Adventurer Club"
           className="size-9 lg:size-11"
         />
-        <span className="text-lg font-bold">BT Adventurer&apos;s</span>
+        <Text component='span' fz={'lg'} fw={'bold'} className='no-underline'>BT Adventurer&apos;s</Text>
       </Link>
     </div>
   )

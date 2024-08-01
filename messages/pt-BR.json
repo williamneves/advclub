@@ -24,41 +24,44 @@
     "welcome_message": "Seja muito bem-vindo ao Clube dos Aventureiros da Igreja Brazilian Temple de Fort Lauderdale.",
     "description": "Para dar início ao seu cadastro, por favor, preencha os campos abaixo com as informações da sua família.",
     "disclaimer": "Você e sua família são muito importantes para nossa comunidade. Instruir as crianças nos caminhos de cristo é a nossa missão e responsabilidade.",
+    "family_info_label": "Informações da Família",
+    "user_has_family": "Usuário já tem uma família cadastrada, redirecionando para a página da família",
     "name": {
       "label": "Nome da Família",
-      "placeholder": "Digite o nome da família",
+      "placeholder": "Ex: Silva (Geralmente o sobrenome da família)",
       "error": "Nome da família é necessário"
     },
     "phone": {
       "label": "Telefone da Família",
-      "placeholder": "Digite o telefone da família",
+      "placeholder": "Ex: (123) 456-7890",
       "error": "Telefone da família é necessário"
     },
     "email": {
       "label": "Email da Família",
-      "placeholder": "Digite o email da família",
+      "placeholder": "Ex: email@email.com",
       "error": "Email da família é necessário"
     },
+    "address_label": "Informações de Endereço",
     "streetAddress": {
       "label": "Endereço",
-      "placeholder": "1234 Main St",
+      "placeholder": "Ex: 1234 Main St",
       "error": "Endereço da família é necessário"
     },
     "city": {
       "label": "Cidade",
-      "placeholder": "Spring Valley",
+      "placeholder": "Ex: Spring Valley",
       "error": "Endereço incompleto"
     },
     "state": {
       "label": "Estado",
-      "placeholder": "Pesquise...",
+      "placeholder": "Ex: FL",
       "searchPlaceholder": "Pesquise pelo estado",
       "noResults": "Nenhum estado encontrado",
       "error": "Endereço incompleto"
     },
     "zipCode": {
       "label": "Zip Code",
-      "placeholder": "10977",
+      "placeholder": "Ex: 33045",
       "error": "Endereço incompleto"
     },
     "button": {
@@ -96,6 +99,29 @@
       "label": "Email da Família",
       "placeholder": "Digite o email da família",
       "error": "Email da família é necessário"
+    },
+    "address_label": "Informações de Endereço",
+    "streetAddress": {
+      "label": "Endereço",
+      "placeholder": "Ex: 1234 Main St",
+      "error": "Endereço da família é necessário"
+    },
+    "city": {
+      "label": "Cidade",
+      "placeholder": "Ex: Spring Valley",
+      "error": "Endereço incompleto"
+    },
+    "state": {
+      "label": "Estado",
+      "placeholder": "Ex: FL",
+      "searchPlaceholder": "Pesquise pelo estado",
+      "noResults": "Nenhum estado encontrado",
+      "error": "Endereço incompleto"
+    },
+    "zipCode": {
+      "label": "Zip Code",
+      "placeholder": "Ex: 33045",
+      "error": "Endereço incompleto"
     }
   },
   "new_parent_form": {
@@ -227,8 +253,8 @@
     "welcome": "Bem-vindo ao Clube de Aventureiros!",
     "description": "Estamos felizes em ter você aqui! Este site está em constante evolução para melhor servir nossa comunidade.",
     "currentFeatures": "Atualmente, você já pode:",
-    "registerFamily": "• Registrar sua família",
-    "moreComingSoon": "• Mais recursos em breve!",
+    "registerFamily": "Registrar sua família",
+    "moreComingSoon": "Mais recursos em breve!",
     "stayTuned": "Fique atento para novidades e atualizações!",
     "registerButton": "Registrar Família",
     "loginButton": "Entrar",
@@ -245,7 +271,7 @@
     "tasks": {
       "add_parents": "Adicionar pais/responsáveis",
       "add_children": "Adicionar crianças",
-      "fill_registration": "Preencher formulário de inscrição",
+      "fill_registration": "Preencher formulário de inscrição para cada criança",
       "coming_soon_badge": "Em Breve"
     }
   },
@@ -253,7 +279,8 @@
     "welcome": "Bem-vindos, Família {familyName}!",
     "email": "Email",
     "phone": "Telefone",
-    "update_button": "Atualizar Dados"
+    "update_button": "Atualizar Dados",
+    "address": "Endereço"
   },
   "new_kid_form": {
     "title": "Nova Criança",

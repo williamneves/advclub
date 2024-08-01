@@ -8,6 +8,7 @@ import {
 } from '@/server/api/trpc'
 
 import { FamiliesTable, familySchema } from '@/server/db/schemas/families'
+import { revalidatePath } from 'next/cache'
 
 export const familiesRouter = createTRPCRouter({
   getAllFamilies: publicProcedure.query(async ({ ctx }) => {
@@ -23,7 +24,7 @@ export const familiesRouter = createTRPCRouter({
 
   getLoggedInFamily: protectedProcedure.query(async ({ ctx }) => {
     if (!ctx.userId) {
-      return null
+      return []
     }
 
     const family = await ctx.db.query.FamiliesTable.findFirst({
@@ -33,7 +34,10 @@ export const familiesRouter = createTRPCRouter({
         parents: true,
       },
     })
-    return family ?? null
+    if (!family) {
+      return []
+    }
+    return [family]
   }),
 
   getFamilyById: protectedProcedure
@@ -56,6 +60,7 @@ export const familiesRouter = createTRPCRouter({
         ...input,
         userId: ctx.userId,
       })
+      revalidatePath('/', 'layout')
       return family
     }),
 
@@ -80,6 +85,8 @@ export const familiesRouter = createTRPCRouter({
         .update(FamiliesTable)
         .set(input)
         .where(eq(FamiliesTable.userId, ctx.userId))
+      
+      revalidatePath('/', 'layout')
       return family
     }),
 

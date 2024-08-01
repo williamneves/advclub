@@ -8,6 +8,12 @@ await import( "./src/env.js" );
 
 /** @type {import("next").NextConfig} */
 const config = createNextIntl()( {
+  experimental: {
+    optimizePackageImports: [
+      "@mantine/core",
+      "@mantine/hooks"
+    ],
+  },
 } );
 
 

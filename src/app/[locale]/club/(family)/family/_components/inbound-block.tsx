@@ -2,31 +2,27 @@
 
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { api } from '@/trpc/react'
-import Link from 'next/link'
-import { ArrowRight, CheckCircle2 } from 'lucide-react'
-import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
+import {
+  Badge,
+  Button,
+  Card,
+  Checkbox,
+  Divider,
+  Group,
+  List,
+  Text,
+  Title,
+} from '@mantine/core'
 
-export function InboundBlock({
-  familyHasParents,
-  familyHasChildren,
-}: {
-  familyHasParents: boolean
-  familyHasChildren: boolean
-}) {
+export function InboundBlock() {
   const t = useTranslations('family_page')
   const router = useRouter()
+
+  const [family] = api.club.families.getLoggedInFamily.useSuspenseQuery()
+  const familyHasParents = !!family[0]?.parents?.length
+  const familyHasChildren = !!family[0]?.kids?.length
 
   const tasks = [
     {
@@ -50,60 +46,53 @@ export function InboundBlock({
   ]
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>{t('title')}</CardTitle>
-        <CardDescription>{t('description')}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-y-4">
-          <Separator />
+    <Card withBorder>
+      <Title>{t('title')}</Title>
+      <Text>{t('description')}</Text>
+      <div className="flex flex-col gap-y-4">
+        <Divider />
 
-          <ul className="space-y-4">
-            {tasks.map((task) => (
-              <li key={task.key} className="flex items-center space-x-2">
-                <Checkbox checked={task.disabled} disabled />
+        <List>
+          {tasks.map((task) => (
+            <List.Item key={task.key} icon={<Checkbox checked={task.disabled} disabled />}>
                 <span
                   className={cn('text-md', {
                     'line-through': task.disabled,
                   })}
                 >
-                  {task.label}
-                  {task.badge && (
-                    <Badge className="ml-4 bg-orange-500 hover:bg-orange-600">
-                      {task.badge}
-                    </Badge>
-                  )}
+                  <Group align="center">
+                    {task.label}
+                    {task.badge && <Badge color="orange">{task.badge}</Badge>}
+                  </Group>
                 </span>
-              </li>
-            ))}
-          </ul>
-          <Separator />
-          <div className="mt-4 flex flex-col gap-4 sm:flex-row">
-            <Button
-              onClick={() => router.push('/club/family/parents')}
-              variant={familyHasParents ? 'outline' : 'default'}
-            >
-              {t('add_parents')}
-            </Button>
-            <Button
-              onClick={() => router.push('/club/family/kids')}
-              variant={familyHasChildren ? 'outline' : 'default'}
-            >
-              {t('add_children')}
-            </Button>
-            <Button
-              className={cn({
-                'cursor-not-allowed': !familyHasChildren || !familyHasParents,
-              })}
-              disabled={!familyHasChildren || !familyHasParents}
-              onClick={() => router.push('/club/family/forms')}
-            >
-              {t('register_button')}
-            </Button>
-          </div>
+            </List.Item>
+          ))}
+        </List>
+        <Divider />
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+          <Button
+            onClick={() => router.push('/club/family/parents')}
+            variant={familyHasParents ? 'outline' : 'default'}
+          >
+            {t('add_parents')}
+          </Button>
+          <Button
+            onClick={() => router.push('/club/family/kids')}
+            variant={familyHasChildren ? 'outline' : 'default'}
+          >
+            {t('add_children')}
+          </Button>
+          <Button
+            className={cn({
+              'cursor-not-allowed': !familyHasChildren || !familyHasParents,
+            })}
+            disabled={!familyHasChildren || !familyHasParents}
+            onClick={() => router.push('/club/family/forms')}
+          >
+            {t('register_button')}
+          </Button>
         </div>
-      </CardContent>
+      </div>
     </Card>
   )
 }

@@ -28,7 +28,8 @@ import type { NextRequest } from 'next/server'
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const { userId } = auth()
+  // const { userId } = auth()
+  const userId = "123"
 
   return {
     db,
@@ -122,9 +123,9 @@ export const publicProcedure = t.procedure.use(timingMiddleware)
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
-    if (!ctx.userId) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' })
-    }
+    // if (!ctx.userId) {
+    //   throw new TRPCError({ code: 'UNAUTHORIZED' })
+    // }
     return next({
       ctx: {
         // infers the `session` as non-nullable

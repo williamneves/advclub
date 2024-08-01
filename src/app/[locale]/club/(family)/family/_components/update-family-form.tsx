@@ -1,34 +1,27 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from '@mantine/form'
 import { z } from 'zod'
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { useTranslations } from 'next-intl'
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import { useEffect } from 'react'
+import { Modal, Stack, Title, TextInput, Input, Select, Button, Divider, SimpleGrid, Group, CardSection } from '@mantine/core'
+import { zodResolver } from 'mantine-form-zod-resolver'
+import { notifications } from '@mantine/notifications'
+import { IconCheck, IconX } from '@tabler/icons-react'
+import states from "states-us"
+import { PatternFormat } from 'react-number-format'
+
 
 // Definindo o esquema de validação
 const updateFamilySchema = (t: (key: string) => string) =>
   z.object({
-    familyName: z.string().min(1, t('name.error')),
-    familyPhone: z.coerce.string().min(4, t('phone.error')),
-    familyEmail: z.string().email(t('email.error')),
+    name: z.string().min(1, t('name.error')),
+    phoneNumber: z.coerce.string().min(4, t('phone.error')),
+    email: z.string().email(t('email.error')),
+    streetAddress: z.string().nullish(),
+    city: z.string().nullish(),
+    state: z.string().nullish(),
+    zipCode: z.string().nullish(),
   })
 
 type UpdateFamilyData = z.infer<ReturnType<typeof updateFamilySchema>>
@@ -49,8 +42,11 @@ export function UpdateFamilyForm({
   const schema = updateFamilySchema(t)
 
   const form = useForm<UpdateFamilyData>({
-    resolver: zodResolver(schema),
-    defaultValues: initialData,
+    initialValues: initialData,
+    validate: zodResolver(schema),
+    enhanceGetInputProps: () => ({
+      disabled: updateFamily.isPending,
+    }),
   })
 
   const utils = api.useUtils()
@@ -60,91 +56,124 @@ export function UpdateFamilyForm({
       await utils.club.parents.getParentsByLoggedInFamily.invalidate()
     },
   })
-  useEffect(() => {
-    form.reset(initialData)
-  }, [form, initialData])
 
-  const onSubmit = async (data: UpdateFamilyData) => {
+  useEffect(() => {
+    console.log(initialData)
+  }, [initialData])
+
+  useEffect(() => {
+    form.setInitialValues(initialData)
+    form.reset()
+  }, [initialData, isOpen])
+
+  const handleSubmit = async (data: UpdateFamilyData) => {
     try {
       await updateFamily.mutateAsync({
-        name: data.familyName,
-        phoneNumber: data.familyPhone,
-        email: data.familyEmail,
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+        streetAddress: data.streetAddress,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
       })
-      toast.success(t('toast.success'))
+      notifications.show({
+        message: t('toast.success'),
+        icon: <IconCheck />,
+        color: 'teal',
+      })
       onOpenChange(false)
       form.reset()
     } catch (error) {
       console.error('Erro ao atualizar família:', error)
-      toast.error(t('toast.error'))
+      notifications.show({
+        message: t('toast.error'),
+        icon: <IconX   />,
+        color: 'red',
+      })
     }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>{t('description')}</DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="familyName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('name.label')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t('name.placeholder')} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+    <Modal
+      opened={isOpen}
+      onClose={() => onOpenChange(false)}
+      title={t('title')}
+      classNames={{
+        header: 'border-solid border-b border-gray-200 py-0 mb-4'
+      }}
+    >
+      <form onSubmit={form.onSubmit(handleSubmit)} className="space-y-6">
+        <Stack>
+
+          <Stack gap={6}>
+            <TextInput
+              label={t('name.label')}
+              placeholder={t('name.placeholder')}
+              {...form.getInputProps('name')}
             />
-            <FormField
-              control={form.control}
-              name="familyPhone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('phone.label')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t('phone.placeholder')} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+            <Input.Wrapper label={t('phone.label')}>
+              <Input
+                placeholder={t('phone.placeholder')}
+                component={PatternFormat}
+                mask={'_'}
+                format={'(###) ###-####'}
+                {...form.getInputProps('phoneNumber')}
+              />
+            </Input.Wrapper>
+            <TextInput
+              label={t('email.label')}
+              placeholder={t('email.placeholder')}
+              {...form.getInputProps('email')}
             />
-            <FormField
-              control={form.control}
-              name="familyEmail"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('email.label')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t('email.placeholder')} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+          </Stack>
+          <Stack gap={6}>
+            <TextInput
+              placeholder={t('streetAddress.placeholder')}
+              label={t('streetAddress.label')}
+              {...form.getInputProps('streetAddress')}
             />
-            <div className="flex justify-end space-x-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                {t('cancel')}
-              </Button>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting
-                  ? t('button.loading')
-                  : t('button.label')}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+            <SimpleGrid cols={{ base: 1, md: 2 }} verticalSpacing={6}>
+              <TextInput
+                placeholder={t('city.placeholder')}
+                label={t('city.label')}
+                {...form.getInputProps('city')}
+              />
+              <Select
+                searchable
+                data={states.map((state) => ({
+                  label: `${state.name}`,
+                  value: state.abbreviation,
+                }))}
+                placeholder={t('state.placeholder')}
+                label={t('state.label')}
+                {...form.getInputProps('state')}
+              />
+              <Input.Wrapper label={t('zipCode.label')}>
+                <Input
+                  placeholder={t('zipCode.placeholder')}
+                  component={PatternFormat}
+                  mask={'_'}
+                  format={'#####'}
+                  {...form.getInputProps('zipCode')}
+                />
+              </Input.Wrapper>
+            </SimpleGrid>
+          </Stack>
+          <Group justify='flex-end' grow>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
+              {t('cancel')}
+            </Button>
+            <Button type="submit" disabled={updateFamily.isPending}>
+              {updateFamily.isPending ? t('button.loading') : t('button.label')}
+            </Button>
+          </Group>
+        </Stack>
+      </form>
+    </Modal>
   )
 }

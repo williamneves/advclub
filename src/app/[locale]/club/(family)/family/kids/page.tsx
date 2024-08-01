@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { api } from '@/trpc/react'
 import Link from 'next/link'
-import Loader from '@/components/loader'
+
 
 export default function KidsPage() {
   const t = useTranslations('kids_page')
@@ -22,7 +22,7 @@ export default function KidsPage() {
     api.club.kids.getKidsByLoggedInFamily.useQuery(undefined)
 
   if (isLoading) {
-    return <Loader />
+    return <div>loading...</div>
   }
 
   return (
