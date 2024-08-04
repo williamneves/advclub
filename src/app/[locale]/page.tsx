@@ -1,7 +1,6 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useAuth } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button, Card, Divider, Flex, Group, List, Stack, Text, Title } from '@mantine/core'
 import LOGO from '@/assets/images/LOGO-BLUE-CROSS.png'
@@ -9,8 +8,6 @@ import Image from 'next/image'
 
 export default function Home() {
   const t = useTranslations('Home')
-  const { isSignedIn } = useAuth()
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-white p-4">
       <Card shadow="lg" withBorder p={'lg'} maw={460} miw={320}>
@@ -39,7 +36,7 @@ export default function Home() {
             </List>
             <Text className="text-sm italic text-gray-500">{t('stayTuned')}</Text>
           </Stack>
-          <Group grow py={'xs'}>
+          {/* <Group grow py={'xs'}>
             {isSignedIn ? (
               <Button component={Link} href="/club/family" size='md' className="w-full">
                 {t('goToClubButton')}
@@ -54,7 +51,7 @@ export default function Home() {
                 </Button>
               </div>
             )}
-          </Group>
+          </Group> */}
         </Stack>
       </Card>
     </div>

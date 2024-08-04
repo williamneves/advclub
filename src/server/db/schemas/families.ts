@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { boolean, serial, text } from 'drizzle-orm/pg-core'
+import { boolean, serial, text, uuid } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
@@ -8,6 +8,7 @@ import { ParentsTable } from './parents'
 
 export const FamiliesTable = createTable('families', {
   id: serial('id').primaryKey(),
+  uuid: uuid('uuid').defaultRandom().notNull(),
   inactive: boolean('inactive').default(false),
   userId: text('user_id').notNull(),
   name: text('name').notNull().default(''),

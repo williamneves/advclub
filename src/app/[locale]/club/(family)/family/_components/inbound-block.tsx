@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { api } from '@/trpc/react'
+import { api, RouterOutputs } from '@/trpc/react'
 import { cn } from '@/lib/utils'
 import {
   Badge,
@@ -16,13 +16,17 @@ import {
   Title,
 } from '@mantine/core'
 
-export function InboundBlock() {
+export function InboundBlock({initialData}: {initialData: RouterOutputs['club']['families']['getLoggedInFamily']}) {
   const t = useTranslations('family_page')
   const router = useRouter()
 
-  const [family] = api.club.families.getLoggedInFamily.useSuspenseQuery()
-  const familyHasParents = !!family[0]?.parents?.length
-  const familyHasChildren = !!family[0]?.kids?.length
+  const [family] = api.club.families.getLoggedInFamily.useSuspenseQuery(undefined, {
+    initialData,
+  })
+  const parentsLength = family?.parents?.length
+  const kidsLength = family?.kids?.length
+  const familyHasParents = !!parentsLength
+  const familyHasChildren = !!kidsLength
 
   const tasks = [
     {
@@ -54,17 +58,42 @@ export function InboundBlock() {
 
         <List>
           {tasks.map((task) => (
-            <List.Item key={task.key} icon={<Checkbox checked={task.disabled} disabled />}>
-                <span
-                  className={cn('text-md', {
-                    'line-through': task.disabled,
-                  })}
-                >
-                  <Group align="center">
-                    {task.label}
-                    {task.badge && <Badge color="orange">{task.badge}</Badge>}
-                  </Group>
-                </span>
+            <List.Item
+              key={task.key}
+              icon={
+                <Checkbox
+                  checked={!!task.disabled}
+                  onChange={() => ({})}
+                  readOnly
+                />
+              }
+            >
+              <span
+                className={cn('text-md', {
+                  'line-through': task.disabled,
+                })}
+              >
+                <Group align="center">
+                  {task.label}
+                  {task.badge && <Badge color="orange">{task.badge}</Badge>}
+                  {task.key === 'hasParents' && (
+                    <Badge
+                      color="blue"
+                      variant={parentsLength ? 'outline' : 'filled'}
+                    >
+                      {parentsLength}
+                    </Badge>
+                  )}
+                  {task.key === 'hasChildren' && (
+                    <Badge
+                      color="blue"
+                      variant={kidsLength ? 'outline' : 'filled'}
+                    >
+                      {kidsLength}
+                    </Badge>
+                  )}
+                </Group>
+              </span>
             </List.Item>
           ))}
         </List>
@@ -72,13 +101,13 @@ export function InboundBlock() {
         <div className="mt-4 flex flex-col gap-4 sm:flex-row">
           <Button
             onClick={() => router.push('/club/family/parents')}
-            variant={familyHasParents ? 'outline' : 'default'}
+            variant={familyHasParents ? 'outline' : 'filled'}
           >
             {t('add_parents')}
           </Button>
           <Button
             onClick={() => router.push('/club/family/kids')}
-            variant={familyHasChildren ? 'outline' : 'default'}
+            variant={familyHasChildren ? 'outline' : 'filled'}
           >
             {t('add_children')}
           </Button>

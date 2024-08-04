@@ -2,6 +2,8 @@ import { api } from '@/trpc/server'
 import { notFound } from 'next/navigation'
 import { EditParentForm } from '../../_components/edit-parent-form'
 
+export const dynamic = 'force-dynamic'
+
 export default async function EditParentPage({
   params,
 }: {
@@ -14,6 +16,8 @@ export default async function EditParentPage({
   if (!parent) {
     notFound()
   }
+
+  console.log(parent)
 
   return <EditParentForm parent={parent} />
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "advclub_families" ALTER COLUMN "uuid" SET NOT NULL;

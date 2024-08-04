@@ -1,54 +1,19 @@
 {
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "6",
-      "when": 1722037665227,
-      "tag": "0000_chunky_prima",
+      "version": "7",
+      "when": 1722717665539,
+      "tag": "20240803204105_hot_screwball",
       "breakpoints": true
     },
     {
       "idx": 1,
-      "version": "6",
-      "when": 1722039019260,
-      "tag": "0001_absurd_storm",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1722040731979,
-      "tag": "0002_motionless_warbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1722051785956,
-      "tag": "0003_organic_colleen_wing",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1722483346255,
-      "tag": "0004_flippant_gabe_jones",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1722487009884,
-      "tag": "0005_bent_jasper_sitwell",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "6",
-      "when": 1722487285196,
-      "tag": "0006_third_bruce_banner",
+      "version": "7",
+      "when": 1722755325564,
+      "tag": "20240804070845_medical_wolfsbane",
       "breakpoints": true
     }
   ]

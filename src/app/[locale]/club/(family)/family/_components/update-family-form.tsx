@@ -2,9 +2,8 @@ import { useForm } from '@mantine/form'
 import { z } from 'zod'
 import { useTranslations } from 'next-intl'
 import { api } from '@/trpc/react'
-import { toast } from 'sonner'
 import { useEffect } from 'react'
-import { Modal, Stack, Title, TextInput, Input, Select, Button, Divider, SimpleGrid, Group, CardSection } from '@mantine/core'
+import { Modal, Stack, TextInput, Input, Select, Button, SimpleGrid, Group, Divider } from '@mantine/core'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { notifications } from '@mantine/notifications'
 import { IconCheck, IconX } from '@tabler/icons-react'
@@ -58,16 +57,13 @@ export function UpdateFamilyForm({
   })
 
   useEffect(() => {
-    console.log(initialData)
-  }, [initialData])
-
-  useEffect(() => {
     form.setInitialValues(initialData)
     form.reset()
   }, [initialData, isOpen])
 
-  const handleSubmit = async (data: UpdateFamilyData) => {
+  const handleSubmit = async (values: UpdateFamilyData) => {
     try {
+      const data = schema.parse(values)
       await updateFamily.mutateAsync({
         name: data.name,
         phoneNumber: data.phoneNumber,
@@ -90,6 +86,7 @@ export function UpdateFamilyForm({
         message: t('toast.error'),
         icon: <IconX   />,
         color: 'red',
+        autoClose: false
       })
     }
   }
@@ -100,8 +97,9 @@ export function UpdateFamilyForm({
       onClose={() => onOpenChange(false)}
       title={t('title')}
       classNames={{
-        header: 'border-solid border-b border-gray-200 py-0 mb-4'
+        header: 'border-solid border-0 border-b border-mtn-default-border shadow-md min-h-[48px] py-0 mb-2'
       }}
+      
     >
       <form onSubmit={form.onSubmit(handleSubmit)} className="space-y-6">
         <Stack>
@@ -160,15 +158,17 @@ export function UpdateFamilyForm({
               </Input.Wrapper>
             </SimpleGrid>
           </Stack>
+          <Divider />
           <Group justify='flex-end' grow>
             <Button
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={updateFamily.isPending}
             >
               {t('cancel')}
             </Button>
-            <Button type="submit" disabled={updateFamily.isPending}>
+            <Button type="submit" loading={updateFamily.isPending}>
               {updateFamily.isPending ? t('button.loading') : t('button.label')}
             </Button>
           </Group>

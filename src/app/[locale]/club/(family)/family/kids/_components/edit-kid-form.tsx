@@ -1,194 +1,272 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { useState } from 'react'
+import { useForm } from '@mantine/form'
 import { useTranslations } from 'next-intl'
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { api } from '@/trpc/react'
-import { toast } from 'sonner'
+  Stack,
+  Title,
+  Text,
+  SimpleGrid,
+  TextInput,
+  Select,
+  Divider,
+  Group,
+  Button,
+  Box,
+  LoadingOverlay,
+  Image,
+} from '@mantine/core'
+import { IconX } from '@tabler/icons-react'
+import { FileButton } from '@mantine/core'
+import { useUploadAvatar } from '@/lib/useUploadFiles'
+import { api, type RouterOutputs } from '@/trpc/react'
+import { z } from 'zod'
 import { sexEnumSchema } from '@/server/db/schemas'
+import { zodResolver } from 'mantine-form-zod-resolver'
 import { useRouter } from 'next/navigation'
-import { type KidsSelect } from '@/server/db/schemas/kids'
+import { notifications } from '@mantine/notifications'
 
 const editKidSchema = (t: (key: string) => string) =>
   z.object({
-    firstName: z.string().min(1, t('firstName.error')),
-    lastName: z.string().min(1, t('lastName.error')),
-    alias: z.string().optional(),
-    phoneNumber: z.string().min(4, t('phoneNumber.error')),
-    sex: sexEnumSchema,
+    firstName: z.string().min(1, t('firstName.error')).nullish(),
+    lastName: z.string().min(1, t('lastName.error')).nullish(),
+    alias: z.string().optional().nullish(),
+    phoneNumber: z
+      .string()
+      .transform((value) => value.replace(/\D/g, ''))
+      .nullish(),
+    height: z.string().optional().nullish(),
+    weight: z.string().optional().nullish(),
+    sex: sexEnumSchema.nullish(),
+    avatar: z.string().nullish(),
   })
 
 type EditKidFormData = z.infer<ReturnType<typeof editKidSchema>>
 
-interface EditKidFormProps {
-  kid: KidsSelect
+type EditKidFormProps = {
+  kidId: string
 }
 
-export function EditKidForm({ kid }: EditKidFormProps) {
+export function EditKidForm({ kidId }: EditKidFormProps) {
   const router = useRouter()
-  const t = useTranslations('edit_kid_form')
+  const t = useTranslations('kid_form')
   const schema = editKidSchema(t)
 
-  const form = useForm<EditKidFormData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      firstName: kid.firstName,
-      lastName: kid.lastName,
-      alias: kid.alias ?? '',
-      phoneNumber: kid.phoneNumber,
-      sex: kid.sex ?? '',
-    },
+  const [kid] = api.club.kids.getKidById.useSuspenseQuery({
+    id: parseInt(kidId)
   })
+
+  const form = useForm<EditKidFormData>({
+    initialValues: {
+      firstName: kid?.firstName ?? '',
+      lastName: kid?.lastName ?? '',
+      alias: kid?.alias ?? '',
+      phoneNumber: kid?.phoneNumber ?? '',
+      height: kid?.height ?? '',
+      weight: kid?.weight ?? '',
+      sex: kid?.sex ?? '',
+      avatar: kid?.avatar ?? '',
+    },
+    validate: zodResolver(schema),
+    enhanceGetInputProps: () => ({
+      disabled: loading,
+    }),
+  })
+  const [loading, setLoading] = useState(false)
 
   const utils = api.useUtils()
+
   const updateKid = api.club.kids.updateKid.useMutation({
-    onSettled: async () => {
+    onSuccess: async () => {
       await utils.club.kids.getKidsByLoggedInFamily.invalidate()
-      await utils.club.families.getLoggedInFamily.invalidate()
+      await utils.club.kids.getKidById.invalidate(
+        {
+          id: parseInt(kidId),
+        },
+        {
+          exact: false,
+        },
+      )
     },
   })
 
-  const onSubmit = async (data: EditKidFormData) => {
+  const { uploadAvatar, avatarFile, setAvatarFile } = useUploadAvatar()
+
+  const handleRemoveAvatar = () => {
+    form.setFieldValue('avatar', '')
+    setAvatarFile(null)
+  }
+
+  const handleSubmit = async (values: typeof form.values) => {
+    const data = editKidSchema(t).parse(values)
     try {
-      await updateKid.mutateAsync({ id: kid.id, data: { ...data } })
-      toast.success(t('toast.success'))
+      let avatarFileUrl = kid?.avatar ?? ''
+
+      // If avatar file changed, upload new avatar
+      if (avatarFile) {
+        const newAvatarUrl = await uploadAvatar(kid?.family.uuid ?? '', kid?.id ?? 0)
+        if (newAvatarUrl) {
+          avatarFileUrl = newAvatarUrl
+        }
+      }
+
+      // Update kid with new data
+      await updateKid.mutateAsync({
+        id: parseInt(kidId),
+        data: {
+          ...data,
+          firstName: data.firstName ?? kid?.firstName,
+          lastName: data.lastName ?? kid?.lastName,
+          alias: data.alias ?? kid?.alias,
+          phoneNumber: data.phoneNumber ?? kid?.phoneNumber,
+          height: data.height ?? kid?.height,
+          weight: data.weight ?? kid?.weight,
+          sex: data.sex ?? kid?.sex,
+          avatar: avatarFileUrl ?? kid?.avatar ?? '',
+        },
+      })
+
+      form.setValues({
+        ...form.values,
+        avatar: avatarFileUrl,
+      })
+
+      form.reset()
+
+      notifications.show({
+        message: t('edit_toast.success'),
+        color: 'teal',
+      })
       router.push(`/club/family/kids`)
     } catch (error) {
-      console.error('Error updating kid:', error)
-      toast.error(t('toast.error'))
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
+  const avatarUrl = avatarFile
+    ? URL.createObjectURL(avatarFile)
+    : form.getValues().avatar
+      ? form.getValues().avatar
+      : null
+
   return (
-    <Card className="max-w-2xl">
-      <CardHeader>
-        <CardTitle>{t('title')}</CardTitle>
-        <CardDescription>{t('description')}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="flex space-x-4">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>{t('firstName.label')}</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder={t('firstName.placeholder')}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>{t('lastName.label')}</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder={t('lastName.placeholder')}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name="alias"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('alias.label')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder={t('alias.placeholder')} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+    <Card withBorder w={'100%'}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          <Title order={3}>{t('edit_title')}</Title>
+          <Text>{t('edit_description')}</Text>
+
+          <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            <TextInput
+              label={t('firstName.label')}
+              placeholder={t('firstName.placeholder')}
+              {...form.getInputProps('firstName')}
+              required
             />
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('phoneNumber.label')}</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder={t('phoneNumber.placeholder')}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+            <TextInput
+              label={t('lastName.label')}
+              placeholder={t('lastName.placeholder')}
+              {...form.getInputProps('lastName')}
+              required
             />
-            <FormField
-              control={form.control}
-              name="sex"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('sex.label')}</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex space-x-4"
+            <TextInput
+              label={t('alias.label')}
+              placeholder={t('alias.placeholder')}
+              {...form.getInputProps('alias')}
+            />
+            <TextInput
+              label={t('phoneNumber.label')}
+              placeholder={t('phoneNumber.placeholder')}
+              {...form.getInputProps('phoneNumber')}
+              required
+            />
+            <TextInput
+              label={t('height.label')}
+              placeholder={t('height.placeholder')}
+              {...form.getInputProps('height')}
+            />
+            <TextInput
+              label={t('weight.label')}
+              placeholder={t('weight.placeholder')}
+              {...form.getInputProps('weight')}
+            />
+            <Select
+              label={t('sex.label')}
+              data={[
+                { value: 'male', label: t('sex.options.male') },
+                { value: 'female', label: t('sex.options.female') },
+                { value: 'other', label: t('sex.options.other') },
+              ]}
+              {...form.getInputProps('sex')}
+              required
+            />
+          </SimpleGrid>
+
+          <Divider label={t('files.divider')} labelPosition="left" />
+
+          <Stack>
+            <div className="flex flex-col gap-4 md:flex-row">
+              {!avatarUrl ? (
+                <Box className="align-center flex h-[160px] w-[160px] flex-col justify-center gap-2 rounded-md border-4 border-dashed border-gray-400 bg-gray-50 p-6">
+                  <Text ta={'center'}>{t('files.avatar.placeholder')}</Text>
+                </Box>
+              ) : (
+                <Box className="relative h-[160px] w-[160px] overflow-hidden rounded-md ring-4 ring-gray-400 ring-offset-4 ring-offset-white">
+                  <LoadingOverlay visible={loading} />
+                  <Image
+                    src={avatarUrl}
+                    alt="avatar"
+                    className="h-[160px] w-[160px] object-cover"
+                    width={160}
+                    height={160}
+                  />
+                  <IconX
+                    className="absolute right-2 top-2 cursor-pointer rounded-full bg-white p-1"
+                    onClick={handleRemoveAvatar}
+                  />
+                </Box>
+              )}
+
+              <Stack align="flex-start" justify="flex-end" gap={4}>
+                <Text fz={'sm'} c={'dimmed'}>
+                  {t('files.avatar.disclaimer')}
+                </Text>
+                <Group justify="center">
+                  {!avatarUrl && (
+                    <FileButton onChange={setAvatarFile} accept="image/*">
+                      {(props) => (
+                        <Button variant="light" {...props} disabled={loading}>
+                          {t('files.avatar.label')}
+                        </Button>
+                      )}
+                    </FileButton>
+                  )}
+                  {avatarUrl && (
+                    <Button
+                      onClick={handleRemoveAvatar}
+                      color="red"
+                      rightSection={<IconX />}
+                      disabled={loading}
                     >
-                      {['male', 'female', 'other'].map((sex) => (
-                        <FormItem
-                          key={sex}
-                          className="flex items-center space-x-2"
-                        >
-                          <FormControl>
-                            <RadioGroupItem value={sex} />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {t(`sex.options.${sex}`)}
-                          </FormLabel>
-                        </FormItem>
-                      ))}
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting
-                ? t('button.loading')
-                : t('button.label')}
+                      {t('files.avatar.remove')}
+                    </Button>
+                  )}
+                </Group>
+              </Stack>
+            </div>
+          </Stack>
+          <Divider />
+          <Group justify="flex-start">
+            <Button type="submit" loading={loading}>
+              {loading ? t('edit_button.loading') : t('edit_button.label')}
             </Button>
-          </form>
-        </Form>
-      </CardContent>
+          </Group>
+        </Stack>
+      </form>
     </Card>
   )
 }

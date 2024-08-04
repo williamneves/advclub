@@ -80,9 +80,12 @@ export const parentsRouter = createTRPCRouter({
   createParent: protectedProcedure
     .input(parentsSchema.insert)
     .mutation(async ({ ctx, input }) => {
-      const parent = await ctx.db.insert(ParentsTable).values(input)
+      const parent = await ctx.db.insert(ParentsTable).values(input).returning({
+        id: ParentsTable.id,
+      })
       return parent
-    }),
+    })
+  ,
 
   updateParent: protectedProcedure
     .input(

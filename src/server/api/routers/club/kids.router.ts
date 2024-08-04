@@ -60,7 +60,9 @@ export const kidsRouter = createTRPCRouter({
   createKid: protectedProcedure
     .input(kidsSchema.insert)
     .mutation(async ({ ctx, input }) => {
-      const kid = await ctx.db.insert(Kidstable).values(input)
+      const kid = await ctx.db.insert(Kidstable).values(input).returning({
+        id: Kidstable.id,
+      })
       return kid
     }),
 

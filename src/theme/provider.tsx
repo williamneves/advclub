@@ -30,7 +30,7 @@ export const BaseThemeProvider = ({
 }: ThemeProviderProps) => {
   return (
     <MantineProvider theme={defaultTheme}>
-      <Notifications position="top-right" limit={6} />
+      <Notifications position="top-center" limit={6} mt={60} />
       <ModalsProvider>{children}</ModalsProvider>
     </MantineProvider>
   )

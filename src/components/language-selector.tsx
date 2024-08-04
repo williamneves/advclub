@@ -3,7 +3,7 @@
 import { useLocale } from 'next-intl'
 import { useRouter, usePathname } from '@/navigation'
 import { GiBrazilFlag, GiUsaFlag } from "react-icons/gi"
-import { Group, Menu, ThemeIcon } from '@mantine/core'
+import { Flex, Group, Menu, Text, ThemeIcon } from '@mantine/core'
 import Image from 'next/image'
 import BRAZIL from '@/assets/images/brazil_flag.png'
 import USA from '@/assets/images/usa_flag.png'
@@ -27,21 +27,33 @@ export function LanguageSelector() {
   return (
     <Menu position="bottom-end" withArrow withinPortal shadow="md">
       <Menu.Target>
-        <div
+        <Flex
           className={cn(
-            'group size-9 cursor-pointer overflow-hidden rounded-md ring-2 ring-offset-2 ring-offset-background transition-all duration-300 ease-in-out hover:ring-offset-0',
+            'group cursor-pointer items-center gap-2 rounded-full pr-2 ring-2',
             {
-              'ring-red-700/80': locale === 'en',
-              'ring-green-600/80': locale === 'pt-BR',
+              'ring-[#b22335]': locale === 'en',
+              'bg-[#b22335]/10': locale === 'en',
+              'ring-[#4cad53]': locale === 'pt-BR',
+              'bg-[#4cad53]/10': locale === 'pt-BR',
             },
           )}
         >
-          <Image
-            src={flag}
-            alt="flag"
-            className="h-full w-full object-cover transition-all duration-300 ease-in-out group-hover:scale-110"
-          />
-        </div>
+          <div className="size-7 overflow-hidden rounded-full transition-all duration-300 ease-in-out">
+            <Image
+              src={flag}
+              alt="flag"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <Text
+            fz={'sm'}
+            fw={500}
+            lh={'1.3'}
+            c={locale === 'en' ? '#b22335' : '#4cad53'}
+          >
+            {locale === 'en' ? 'EN' : 'PT'}
+          </Text>
+        </Flex>
       </Menu.Target>
       <Menu.Dropdown>
         {languages.map((lang) => (
@@ -49,17 +61,17 @@ export function LanguageSelector() {
             <Group align="center" gap={'8'}>
               <div
                 className={cn(
-                  'size-6 cursor-pointer overflow-hidden rounded-md ring-2 ring-offset-2 ring-offset-background',
+                  'ring-offset-background size-6 cursor-pointer overflow-hidden rounded-full ring-2 ring-offset-2',
                   {
-                    'ring-red-500': lang.code === 'en',
-                    'ring-green-500': lang.code === 'pt-BR',
+                    'ring-[#b22335]': lang.code === 'en',
+                    'ring-[#4cad53]': lang.code === 'pt-BR',
                   },
                 )}
               >
                 <Image
                   src={lang.flag}
                   alt="flag"
-                  className="h-full w-full object-cover transition-all duration-300 ease-in-out hover:scale-110"
+                  className="h-full w-full object-cover"
                 />
               </div>
               {lang.name}

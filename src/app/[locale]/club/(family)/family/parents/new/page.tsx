@@ -8,5 +8,6 @@ export default async function NewParentPage() {
   if (!family) {
     notFound()
   }
-  return <NewParentForm familyId={family.id} />
+
+  return <NewParentForm familyId={family.id} familyUUID={family.uuid} isFirstParent={family.parents.length === 0} />
 }

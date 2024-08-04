@@ -9,5 +9,5 @@ export default async function NewKidPage() {
     notFound()
   }
 
-  return <NewKidForm familyId={family.id} />
+  return <NewKidForm familyId={family.id} familyUUID={family.uuid} />
 }

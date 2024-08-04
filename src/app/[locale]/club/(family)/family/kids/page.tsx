@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { api } from '@/trpc/react'
 import Link from 'next/link'
+import { Center, Loader } from '@mantine/core'
 
 
 export default function KidsPage() {
@@ -22,11 +23,15 @@ export default function KidsPage() {
     api.club.kids.getKidsByLoggedInFamily.useQuery(undefined)
 
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <Center className="flex-1">
+        <Loader />
+      </Center>
+    )
   }
 
   return (
-    <div>
+    <div className="flex flex-col w-full">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t('title')}</h1>
         <Link href="/club/family/kids/new" passHref>

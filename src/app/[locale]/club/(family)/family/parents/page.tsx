@@ -2,18 +2,19 @@
 
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { api } from '@/trpc/react'
 import Link from 'next/link'
-
+import {
+  Button,
+  Card,
+  Center,
+  Group,
+  Loader,
+  SimpleGrid,
+  Stack,
+  Title,
+  Text,
+} from '@mantine/core'
 
 export default function ParentsPage() {
   const t = useTranslations('parents_page')
@@ -22,58 +23,58 @@ export default function ParentsPage() {
     api.club.parents.getParentsByLoggedInFamily.useQuery(undefined)
 
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <Center w="100%" h="100%">
+        <Loader />
+      </Center>
+    )
   }
 
   return (
-    <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{t('title')}</h1>
-        <Link href="/club/family/parents/new" passHref>
-          <Button>{t('add_parent_button')}</Button>
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {parents && parents.length > 0 ? (
-          parents.map((parent) => (
-            <Card key={parent.id} className="w-full">
-              <CardHeader>
-                <CardTitle>{`${parent.firstName} ${parent.lastName}`}</CardTitle>
-                <CardDescription>
-                  {t(`type.${parent.type}`)} - {t(`sex.${parent.sex}`)}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>{parent.email}</p>
-                <p>{parent.phone}</p>
-              </CardContent>
-              <CardFooter>
+    <Stack gap={'sm'} w={'100%'}>
+      <Group justify="space-between" align="center">
+        <Title order={3}>{t('title')}</Title>
+        <Button component={Link} href="/club/family/parents/new">
+          {t('add_parent_button')}
+        </Button>
+      </Group>
+      {!!parents?.length && (
+        <SimpleGrid cols={{ base: 1, md: 2 }}>
+          {parents?.map((parent) => (
+            <Card withBorder key={parent.id} className="w-full">
+              <Stack>
+                <Title
+                  order={4}
+                >{`${parent.firstName} ${parent.lastName}`}</Title>
+                <Group>
+                  <Text>
+                    {t(`type.${parent.type}`)} - {t(`sex.${parent.sex}`)}
+                  </Text>
+                </Group>
+                <Text>{parent.email}</Text>
+                <Text>{parent.phone}</Text>
                 <Button
-                  onClick={() =>
-                    router.push(`/club/family/parents/edit/${parent.id}`)
-                  }
-                  className="w-full"
+                  component={Link}
+                  href={`/club/family/parents/edit/${parent.id}`}
                 >
                   {t('edit_button')}
                 </Button>
-              </CardFooter>
+              </Stack>
             </Card>
-          ))
-        ) : (
-          <Card className="w-full md:col-span-2">
-            <CardHeader>
-              <CardTitle>{t('no_parents.title')}</CardTitle>
-              <CardDescription>{t('no_parents.description')}</CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Link href="/club/family/parents/new" passHref className="w-full">
-                <Button className="w-full">{t('add_parent_button')}</Button>
-              </Link>
-            </CardFooter>
-          </Card>
-        )}
-      </div>
-    </div>
+          ))}
+        </SimpleGrid>
+      )}
+      {!parents?.length && (
+        <Card withBorder>
+          <Stack>
+            <Title order={4}>{t('no_parents.title')}</Title>
+            <Text>{t('no_parents.description')}</Text>
+            <Button component={Link} href="/club/family/parents/new">
+              {t('add_parent_button')}
+            </Button>
+          </Stack>
+        </Card>
+      )}
+    </Stack>
   )
 }

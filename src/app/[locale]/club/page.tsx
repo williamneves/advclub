@@ -1,6 +1,8 @@
-import { api } from '@/trpc/server'
+'use client'
 
-export default async function ClubPage() {
-  const test = await api.hello()
-  return <div>{test}</div>
+import { api } from '@/trpc/react'
+
+export default  function ClubPage() {
+  const test =  api.hello.useQuery()
+  return <div>{test.data}</div>
 }

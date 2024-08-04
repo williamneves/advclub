@@ -19,6 +19,58 @@
     "kids": "Crianças",
     "forms": "Documentos"
   },
+  "common": {
+    "logout": "Sair",
+    "language_chooser": "Escolher Idioma",
+    "language_chooser_label": "Idioma",
+    "language_chooser_options": {
+      "pt-BR": "Português",
+      "en": "Inglês"
+    },
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "notifications": "Notificações",
+    "notifications_label": "Notificações",
+    "notifications_options": {
+      "all": "Todas",
+      "none": "Nenhuma"
+    },
+    "logout_button": "Sair",
+    "logout_modal": {
+      "title": "Você tem certeza que deseja sair?",
+      "message": "Ao confirmar, sua sessão será encerrada e você será redirecionado para a página de login.",
+      "confirmation_message": "Você realmente deseja sair?",
+      "confirm": "SIM!",
+      "cancel": "CANCELAR"
+    },
+    "success": "Sucesso",
+    "error": "Erro",
+    "warning": "Aviso",
+    "info": "Informação",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "loading": "Carregando...",
+    "edit": "Editar",
+    "delete": "Deletar",
+    "add": "Adicionar",
+    "view": "Visualizar",
+    "phone": "Telefone",
+    "email": "Email",
+    "password": "Senha",
+    "confirm_password": "Confirmar Senha",
+    "register": "Cadastrar",
+    "login": "Entrar",
+    "welcome": "Bem-vindo",
+    "sorry": "Desculpe",
+    "no_auth": "Não autorizado",
+    "not_found": "Não encontrado",
+    "not_implemented": "Não implementado",
+    "not_available": "Não disponível",
+    "user": "Usuário",
+    "users": "Usuários",
+    "family": "Família",
+    "families": "Famílias"
+  },
   "new_family_form": {
     "title": "Cadastro de Nova Família",
     "welcome_message": "Seja muito bem-vindo ao Clube dos Aventureiros da Igreja Brazilian Temple de Fort Lauderdale.",
@@ -124,9 +176,11 @@
       "error": "Endereço incompleto"
     }
   },
-  "new_parent_form": {
+  "parent_form": {
     "title": "Novo Responsável",
+    "edit_title": "Editar Responsável",
     "description": "Preencha os campos abaixo para adicionar um novo responsável à família",
+    "edit_description": "Atualize as informações do responsável abaixo",
     "firstName": {
       "label": "Nome",
       "placeholder": "Digite o nome",
@@ -165,6 +219,39 @@
       "placeholder": "Digite o email",
       "error": "Email válido é obrigatório"
     },
+    "divider": "Permissões",
+    "permissions": {
+      "firstParentAlert": {
+        "title": "Primeiro Responsável",
+        "description": "Este é o primeiro responsável da família, portanto, todas as permissões estão habilitadas por padrão"
+      },
+      "pickup": {
+        "label": "Permitido Pick-up",
+        "description": "Permite ao responsável retirar a criança do local da atividade (igreja/evento) e levar consigo",
+        "error": "Você deve enviar o avatar e a drive licence para permitir o Pick-up"
+      },
+      "sign_document": {
+        "label": "Permitido Assinar Documentos",
+        "description": "Permite ao responsável assinar documentos da criança"
+      }
+    },
+    "files": {
+      "divider": "Arquivos",
+      "driverLicence": {
+        "label": "Driver Licence",
+        "disclaimer": "A Driver Licence é OBRIGATÓRIA para quem for permitido Pick-up/Drop-off",
+        "placeholder": "Upload da Driver Licence",
+        "error": "Algo deu errado ao tentar upload da Driver Licence",
+        "remove": "Remover Driver Licence"
+      },
+      "avatar": {
+        "label": "Avatar",
+        "disclaimer": "O avatar é opcional, mas é recomendado para facilitar a identificação do responsável",
+        "placeholder": "Upload avatar",
+        "error": "Algo deu errado ao tentar upload do Avatar",
+        "remove": "Remover avatar"
+      }
+    },
     "main": {
       "label": "Responsável Principal",
       "description": "Marque se este é o responsável principal"
@@ -173,57 +260,15 @@
       "label": "Adicionar Responsável",
       "loading": "Adicionando..."
     },
-    "toast": {
-      "success": "Responsável adicionado com sucesso!",
-      "error": "Erro ao adicionar responsável"
-    }
-  },
-  "edit_parent_form": {
-    "title": "Editar Responsável",
-    "description": "Atualize as informações do responsável",
-    "firstName": {
-      "label": "Nome",
-      "error": "Nome é obrigatório"
-    },
-    "lastName": {
-      "label": "Sobrenome",
-      "error": "Sobrenome é obrigatório"
-    },
-    "type": {
-      "label": "Tipo de Responsável",
-      "options": {
-        "parent": "Pai/Mãe",
-        "guardian": "Guardião",
-        "relative": "Parente"
-      },
-      "error": "Selecione o tipo de responsável"
-    },
-    "sex": {
-      "label": "Sexo",
-      "options": {
-        "male": "Masculino",
-        "female": "Feminino",
-        "other": "Outro"
-      },
-      "error": "Selecione o sexo"
-    },
-    "phone": {
-      "label": "Telefone",
-      "error": "Telefone é obrigatório"
-    },
-    "email": {
-      "label": "Email",
-      "error": "Email válido é obrigatório"
-    },
-    "main": {
-      "label": "Responsável Principal",
-      "description": "Marque se este é o responsável principal"
-    },
-    "button": {
+    "edit_button": {
       "label": "Atualizar Responsável",
       "loading": "Atualizando..."
     },
     "toast": {
+      "success": "Responsável adicionado com sucesso!",
+      "error": "Erro ao adicionar responsável"
+    },
+    "edit_toast": {
       "success": "Responsável atualizado com sucesso!",
       "error": "Erro ao atualizar responsável"
     }
@@ -282,49 +327,11 @@
     "update_button": "Atualizar Dados",
     "address": "Endereço"
   },
-  "new_kid_form": {
+  "kid_form": {
     "title": "Nova Criança",
+    "edit_title": "Editar Criança",
     "description": "Preencha os campos abaixo para adicionar uma nova criança à família",
-    "firstName": {
-      "label": "Nome",
-      "placeholder": "Digite o nome",
-      "error": "Nome é obrigatório"
-    },
-    "lastName": {
-      "label": "Sobrenome",
-      "placeholder": "Digite o sobrenome",
-      "error": "Sobrenome é obrigatório"
-    },
-    "alias": {
-      "label": "Apelido",
-      "placeholder": "Como seu filho é chamado"
-    },
-    "phoneNumber": {
-      "label": "Telefone",
-      "placeholder": "Digite o telefone",
-      "error": "Telefone é obrigatório"
-    },
-    "sex": {
-      "label": "Sexo",
-      "options": {
-        "male": "Masculino",
-        "female": "Feminino",
-        "other": "Outro"
-      },
-      "error": "Selecione o sexo"
-    },
-    "button": {
-      "label": "Adicionar Criança",
-      "loading": "Adicionando..."
-    },
-    "toast": {
-      "success": "Criança adicionada com sucesso!",
-      "error": "Erro ao adicionar criança"
-    }
-  },
-  "edit_kid_form": {
-    "title": "Editar Criança",
-    "description": "Atualize as informações da criança abaixo",
+    "edit_description": "Atualize as informações da criança abaixo",
     "firstName": {
       "label": "Nome",
       "placeholder": "Digite o nome",
@@ -344,6 +351,14 @@
       "placeholder": "Digite o telefone",
       "error": "Telefone é obrigatório"
     },
+    "height": {
+      "label": "Altura",
+      "placeholder": "Digite a altura (opcional)"
+    },
+    "weight": {
+      "label": "Peso",
+      "placeholder": "Digite o peso (opcional)"
+    },
     "sex": {
       "label": "Sexo",
       "options": {
@@ -353,11 +368,29 @@
       },
       "error": "Selecione o sexo"
     },
+    "files": {
+      "divider": "Arquivos",
+      "avatar": {
+        "label": "Avatar",
+        "disclaimer": "O avatar é opcional, mas é recomendado para facilitar a identificação da criança",
+        "placeholder": "Upload avatar",
+        "error": "Algo deu errado ao tentar upload do Avatar",
+        "remove": "Remover avatar"
+      }
+    },
     "button": {
+      "label": "Adicionar Criança",
+      "loading": "Adicionando..."
+    },
+    "edit_button": {
       "label": "Atualizar Criança",
       "loading": "Atualizando..."
     },
     "toast": {
+      "success": "Criança adicionada com sucesso!",
+      "error": "Erro ao adicionar criança"
+    },
+    "edit_toast": {
       "success": "Criança atualizada com sucesso!",
       "error": "Erro ao atualizar criança"
     }

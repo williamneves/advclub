@@ -24,7 +24,7 @@ export const familiesRouter = createTRPCRouter({
 
   getLoggedInFamily: protectedProcedure.query(async ({ ctx }) => {
     if (!ctx.userId) {
-      return []
+      return null
     }
 
     const family = await ctx.db.query.FamiliesTable.findFirst({
@@ -35,9 +35,9 @@ export const familiesRouter = createTRPCRouter({
       },
     })
     if (!family) {
-      return []
+      return null
     }
-    return [family]
+    return family
   }),
 
   getFamilyById: protectedProcedure

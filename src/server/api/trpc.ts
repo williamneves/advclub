@@ -14,6 +14,7 @@ import { auth } from '@clerk/nextjs/server'
 
 import { db } from '@/server/db'
 import type { NextRequest } from 'next/server'
+import { createClient } from '@/utils/supabase/server'
 
 /**
  * 1. CONTEXT
@@ -28,12 +29,14 @@ import type { NextRequest } from 'next/server'
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  // const { userId } = auth()
-  const userId = "123"
+  const supabase = createClient()
+  const user = await supabase.auth.getUser()
+  const userId = user.data.user?.id
 
   return {
     db,
     userId,
+    user,
     ...opts,
   }
 }
@@ -123,13 +126,14 @@ export const publicProcedure = t.procedure.use(timingMiddleware)
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
-    // if (!ctx.userId) {
-    //   throw new TRPCError({ code: 'UNAUTHORIZED' })
-    // }
+    if (!ctx.userId || !ctx.user) {
+      throw new TRPCError({ code: 'UNAUTHORIZED' })
+    }
     return next({
       ctx: {
         // infers the `session` as non-nullable
         userId: ctx.userId,
+        user: ctx.user,
       },
     })
   })

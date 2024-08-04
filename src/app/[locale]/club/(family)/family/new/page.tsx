@@ -2,7 +2,6 @@
 
 import { api } from '@/trpc/react'
 import { useRouter } from 'next/navigation'
-import { useUser } from '@clerk/nextjs'
 import { useEffect } from 'react'
 import {
   Button,
@@ -28,6 +27,8 @@ import { PatternFormat } from 'react-number-format'
 import states from 'states-us'
 import { notifications } from '@mantine/notifications'
 import { IconPlus, IconX } from '@tabler/icons-react'
+import { createClient } from '@/utils/supabase/client'
+import { getLastName } from '@/utils/stringUtils'
 
 const createFamilySchema = (t: (key: string) => string) =>
   z.object({
@@ -46,7 +47,7 @@ type NewFamilyFormData = z.infer<ReturnType<typeof createFamilySchema>>
 
 export default function NewFamilyPage() {
   const router = useRouter()
-  const { user, isLoaded } = useUser()
+  const supabase = createClient()
   const t = useTranslations('new_family_form')
 
   const schema = createFamilySchema(t)
@@ -72,15 +73,18 @@ export default function NewFamilyPage() {
     },
   })
 
-  const family = api.club.families.getLoggedInFamily.useQuery()
-
-  const handleSubmit = async (data: NewFamilyFormData) => {
+  const handleSubmit = async (values: NewFamilyFormData) => {
+    const data = schema.parse(values)
     try {
       // Aqui você faria a chamada para a API para criar a família
       await createFamily.mutateAsync({
         name: data.familyName,
         phoneNumber: data.familyPhone,
         email: data.familyEmail,
+        streetAddress: data.streetAddress,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
       })
       form.reset()
       router.push('/club/family')
@@ -95,30 +99,28 @@ export default function NewFamilyPage() {
   }
 
   useEffect(() => {
-    if (user?.lastName) {
-      form.setFieldValue('familyName', user.lastName)
-    }
-    if (user?.primaryEmailAddress) {
-      form.setFieldValue('familyEmail', user.primaryEmailAddress.emailAddress)
-    }
-    if (user?.primaryPhoneNumber) {
-      // remove international prefix with +1 or +55 and let just the number
-      const phoneNumber = user.primaryPhoneNumber.phoneNumber.replace("+55", "").replace("+1", "")
-      form.setFieldValue('familyPhone', phoneNumber)
-    }
-  }, [user?.primaryEmailAddress, user?.primaryPhoneNumber])
-
-  if (family.isLoading || !isLoaded) {
-    return (
-      <Center h={'100vh'} w={'100%'}>
-        <Loader />
-      </Center>
-    )
-  }
-
-  if (family.data?.length) {
-    router.push('/club/family')
-  }
+    supabase.auth
+      .getUser()
+      .then(({ data: { user } }) => {
+        if (user) {
+          form.setFieldValue(
+            'familyName',
+            getLastName(user.user_metadata?.name) ?? '',
+          )
+          form.setFieldValue(
+            'familyEmail',
+            user.email ?? '',
+          )
+          form.setFieldValue(
+            'familyPhone',
+            user.phone ?? user.user_metadata?.phone ?? '',
+          )
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao obter usuário:', error)
+      })
+  }, [])
 
   return (
     <Card withBorder>
@@ -181,6 +183,7 @@ export default function NewFamilyPage() {
                 placeholder={t('state.placeholder')}
                 label={t('state.label')}
                 {...form.getInputProps('state')}
+                autoComplete="off"
               />
               <Input.Wrapper label={t('zipCode.label')}>
                 <Input
