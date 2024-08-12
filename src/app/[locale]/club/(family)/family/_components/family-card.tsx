@@ -7,6 +7,7 @@ import { Card, Stack, Text, Title, Button } from '@mantine/core'
 import { IconEdit } from '@tabler/icons-react'
 import { api, RouterOutputs } from '@/trpc/react'
 import { useRouter } from 'next/navigation'
+import { capitalizeWords } from '@/utils/stringUtils'
 
 export function FamilyCard({initialData}: {initialData: RouterOutputs['club']['families']['getLoggedInFamily']}) {
 
@@ -21,7 +22,10 @@ export function FamilyCard({initialData}: {initialData: RouterOutputs['club']['f
     <Fragment>
       <Card withBorder>
         <Stack>
-          <Title order={3}>{t('welcome', { familyName: family?.name ?? '' })}</Title>
+          <Stack gap={0}>
+            <Text className='text-md font-semibold'>{t('welcome')}</Text>
+            <Title order={3}>{t('welcome2', { familyName: family?.name ?? '' })}</Title>
+          </Stack>
           <Stack gap={2}>
             <Text>
               <b>{t('email')}</b>: {family?.email ?? ''}
@@ -35,7 +39,7 @@ export function FamilyCard({initialData}: {initialData: RouterOutputs['club']['f
             </Text>
             {family?.streetAddress && (
               <Text>
-                <b>{t('address')}</b>: {family.streetAddress}, {family.city?.toUpperCase()}, {family.state?.toUpperCase()}, {family.zipCode}
+                <b>{t('address')}</b>: {capitalizeWords(family.streetAddress)}, {capitalizeWords(family.city ?? "")}, {family.state?.toUpperCase()}, {family.zipCode}
               </Text>
             )}
           </Stack>

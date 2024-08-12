@@ -1,0 +1,1 @@
+ALTER TABLE "advclub_parents" ALTER COLUMN "birth_date" DROP NOT NULL;

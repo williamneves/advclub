@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from '@mantine/form'
 import { useTranslations } from 'next-intl'
 
@@ -32,8 +32,9 @@ import { zodResolver } from 'mantine-form-zod-resolver'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { notifications } from '@mantine/notifications'
+import { deleteFileByUrl } from '@/utils/supabase/uploads'
 
-const editParentSchema = (t: (key: string) => string) =>
+export const getParentFormSchema = (t: (key: string) => string) =>
   z
     .object({
       firstName: z.string().min(1, t('firstName.error')).nullish(),
@@ -57,16 +58,16 @@ const editParentSchema = (t: (key: string) => string) =>
       message: t('sex.error'),
     })
 
-type EditParentFormData = z.infer<ReturnType<typeof editParentSchema>>
+export type EditParentFormData = z.infer<ReturnType<typeof getParentFormSchema>>
 
-type EditParentFormProps = {
+export type EditParentFormProps = {
   parent: NonNullable<RouterOutputs['club']['parents']['getParentById']>
 }
 
 export function EditParentForm({ parent }: EditParentFormProps) {
   const router = useRouter()
   const t = useTranslations('parent_form')
-  const schema = editParentSchema(t)
+  const schema = getParentFormSchema(t)
   const form = useForm<EditParentFormData>({
     initialValues: {
       firstName: parent.firstName,
@@ -121,7 +122,7 @@ export function EditParentForm({ parent }: EditParentFormProps) {
   }
 
   const handleSubmit = async (values: typeof form.values) => {
-    const data = editParentSchema(t).parse(values)
+    const data = getParentFormSchema(t).parse(values)
     try {
       let avatarFileUrl = parent.avatar
       let driverLicenseFileUrl = parent.driverLicense
@@ -131,6 +132,10 @@ export function EditParentForm({ parent }: EditParentFormProps) {
         const newAvatarUrl = await uploadAvatar(parent.family.uuid, parent.id)
         if (newAvatarUrl) {
           avatarFileUrl = newAvatarUrl
+          // Delete old avatar
+          if (parent.avatar && newAvatarUrl !== parent.avatar) {
+            await deleteFileByUrl(parent.avatar)
+          }
         }
       }
 
@@ -142,6 +147,13 @@ export function EditParentForm({ parent }: EditParentFormProps) {
         )
         if (newDriverLicenceUrl) {
           driverLicenseFileUrl = newDriverLicenceUrl
+          // Delete old driver licence
+          if (
+            parent.driverLicense &&
+            newDriverLicenceUrl !== parent.driverLicense
+          ) {
+            await deleteFileByUrl(parent.driverLicense)
+          }
         }
       }
 
@@ -188,6 +200,7 @@ export function EditParentForm({ parent }: EditParentFormProps) {
       ? form.getValues().avatar
       : null
 
+  
   return (
     <Card withBorder w={'100%'}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -325,7 +338,7 @@ export function EditParentForm({ parent }: EditParentFormProps) {
                     src={driverLicenseUrl + '?cache=false'}
                     alt="driver licence"
                     className={cn('h-[161px] w-[210px] object-cover', {
-                      hidden: driverLicenseFile?.type.includes('application'),
+                      hidden: driverLicenseFile?.name.includes('pdf') && !driverLicenseUrl.includes('pdf'),
                     })}
                     width={210}
                     height={161}
@@ -335,7 +348,7 @@ export function EditParentForm({ parent }: EditParentFormProps) {
                     color="blue"
                     size={'xl'}
                     className={cn({
-                      hidden: !driverLicenseFile?.type.includes('application'),
+                      hidden: !driverLicenseFile?.name.includes('pdf') || !driverLicenseUrl.includes('pdf'),
                     })}
                   >
                     <IconPdf size={64} />

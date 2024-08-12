@@ -13,13 +13,11 @@ export async function uploadFile(
 
   const fileExt = file.name.split('.').pop()
 
-  
-
   try {
     const { data, error } = await supabaseClient.storage
       .from(bucket)
       .upload(`${pathToSave ?? file.name}.${fileExt}`, file, {
-        cacheControl: '0',
+        cacheControl: '3600',
         upsert,
       })
 
@@ -39,7 +37,9 @@ export async function uploadFile(
 export function getFileUrl(path: string) {
   const supabaseClient = createClient()
 
-  const { data } = supabaseClient.storage.from(DEFAULT_BUCKET).getPublicUrl(path)
+  const { data } = supabaseClient.storage
+    .from(DEFAULT_BUCKET)
+    .getPublicUrl(path)
 
   return data.publicUrl
 }
@@ -48,10 +48,17 @@ export async function uploadAvatar(
   file: File,
   familyUUID: string,
   avatarUserId: string | number,
+  withTimestamp = true,
 ) {
   try {
+    let pathToSave = `avatar/${familyUUID}-${avatarUserId}-avatar`
+
+    if (withTimestamp) {
+      pathToSave = `${pathToSave}-${new Date().getTime()}`
+    }
+
     const { path } = await uploadFile(file, {
-      pathToSave: `avatar/${familyUUID}-${avatarUserId}-avatar`,
+      pathToSave,
       bucket: DEFAULT_BUCKET,
     })
 
@@ -67,10 +74,17 @@ export async function uploadDriverLicense(
   file: File,
   familyUUID: string,
   driverLicenseUserId: string | number,
+  withTimestamp = true,
 ) {
   try {
+    let pathToSave = `driver-license/${familyUUID}-${driverLicenseUserId}-driver-license`
+
+    if (withTimestamp) {
+      pathToSave = `${pathToSave}-${new Date().getTime()}`
+    }
+
     const { path } = await uploadFile(file, {
-      pathToSave: `driver-license/${familyUUID}-${driverLicenseUserId}-driver-license`,
+      pathToSave,
       bucket: DEFAULT_BUCKET,
     })
 
@@ -82,10 +96,20 @@ export async function uploadDriverLicense(
   }
 }
 
-export async function uploadFamilyPhoto(file: File, familyUUID: string) {
+export async function uploadFamilyPhoto(
+  file: File,
+  familyUUID: string,
+  withTimestamp = true,
+) {
   try {
+    let pathToSave = `family-photo/${familyUUID}-family-photo`
+
+    if (withTimestamp) {
+      pathToSave = `${pathToSave}-${new Date().getTime()}`
+    }
+
     const { path } = await uploadFile(file, {
-      pathToSave: `family-photo/${familyUUID}-family-photo`,
+      pathToSave,
       bucket: DEFAULT_BUCKET,
     })
 
@@ -98,14 +122,22 @@ export async function uploadFamilyPhoto(file: File, familyUUID: string) {
   }
 }
 
-export async function uploadGeneralFile(file: File, fileName: string) {
+export async function uploadGeneralFile(
+  file: File,
+  fileName: string,
+  withTimestamp = true,
+) {
   // Timestamp the file name to prevent overwriting
- 
-  const timestamp = new Date().getTime()
 
   try {
+    let pathToSave = `general/${fileName}`
+
+    if (withTimestamp) {
+      pathToSave = `${pathToSave}-${new Date().getTime()}`
+    }
+
     const { path } = await uploadFile(file, {
-      pathToSave: `general/${fileName}-${timestamp}`,
+      pathToSave,
       bucket: DEFAULT_BUCKET,
     })
 
@@ -115,5 +147,26 @@ export async function uploadGeneralFile(file: File, fileName: string) {
   } catch (err) {
     console.error('Error uploading general file:', err)
     throw err
+  }
+}
+
+export async function deleteFileByUrl(url: string) {
+  const DEFAULT_URL = `public/${DEFAULT_BUCKET}/`
+
+  // Split the URL by the DEFAULT_URL string
+  const urlParts = url.split(DEFAULT_URL)
+
+  // If the URL contains the DEFAULT_URL, urlParts[1] will be the path
+  const path = urlParts.length > 1 ? urlParts[1]! : url
+
+  const supabaseClient = createClient()
+
+  const { error } = await supabaseClient.storage
+    .from(DEFAULT_BUCKET)
+    .remove([path])
+  
+  if (error) {
+    console.error('Error deleting file:', error)
+    throw error
   }
 }

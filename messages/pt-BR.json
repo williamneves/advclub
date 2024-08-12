@@ -219,7 +219,43 @@
       "placeholder": "Digite o email",
       "error": "Email válido é obrigatório"
     },
-    "divider": "Permissões",
+    "birthDate": {
+      "label": "Data de Nascimento",
+      "placeholder": "Ex: 12/31/2015",
+      "error": "Data de nascimento é obrigatório"
+    },
+    "divider": {
+      "type": "Tipo de Responsável",
+      "address": "Endereço",
+      "permissions": "Permissões",
+      "personal_info": "Informações Pessoais",
+      "documents": "Documentos"
+    },
+    "family_address": {
+      "label": "Usar Endereço da Família",
+      "description": "Usar o endereço da família como endereço do responsável",
+      "error": "Endereço é obrigatório"
+    },
+    "streetAddress": {
+      "label": "Endereço",
+      "placeholder": "Digite o endereço",
+      "error": "Endereço é obrigatório"
+    },
+    "city": {
+      "label": "Cidade",
+      "placeholder": "Digite a cidade",
+      "error": "Cidade é obrigatório"
+    },
+    "state": {
+      "label": "Estado",
+      "placeholder": "Digite o estado",
+      "error": "Estado Inválido"
+    },
+    "zipCode": {
+      "label": "CEP",
+      "placeholder": "Digite o CEP",
+      "error": "CEP é obrigatório"
+    }, 
     "permissions": {
       "firstParentAlert": {
         "title": "Primeiro Responsável",
@@ -243,18 +279,27 @@
         "placeholder": "Upload da Driver Licence",
         "error": "Algo deu errado ao tentar upload da Driver Licence",
         "remove": "Remover Driver Licence"
-      },
-      "avatar": {
-        "label": "Avatar",
-        "disclaimer": "O avatar é opcional, mas é recomendado para facilitar a identificação do responsável",
-        "placeholder": "Upload avatar",
-        "error": "Algo deu errado ao tentar upload do Avatar",
-        "remove": "Remover avatar"
       }
+    },
+    "driverLicence": {
+      "label": "Driver Licence",
+      "disclaimer": "Images/PDFs máx. 5MB",
+      "buttonNoFile": "Upload da Driver Licence",
+      "buttonWithFile": "Alterar Driver Licence",
+      "error": "Algo deu errado ao tentar upload da Driver Licence",
+      "remove": "Remover Driver Licence"
+    },
+    "profile_picture": {
+      "label": "Foto de Perfil",
+      "disclaimer": "Imagens / máx. 5MB",
+      "buttonNoFile": "Selecionar Foto",
+      "buttonWithFile": "Alterar Foto",
+      "error": "Algo deu errado ao tentar upload do Avatar",
+      "remove": "Remover foto de perfil"
     },
     "main": {
       "label": "Responsável Principal",
-      "description": "Marque se este é o responsável principal"
+      "description": "Marque se este é o responsável principal (Somente um responsável pode ser o principal)"
     },
     "button": {
       "label": "Adicionar Responsável",
@@ -277,7 +322,7 @@
     "title": "Responsáveis",
     "loading": "Carregando...",
     "edit_button": "Editar",
-    "add_parent_button": "Adicionar Responsável",
+    "add_parent_button": "Novo",
     "no_parents": {
       "title": "Nenhum Responsável Cadastrado",
       "description": "Clique no botão abaixo para adicionar um responsável"
@@ -321,15 +366,16 @@
     }
   },
   "family_card": {
-    "welcome": "Bem-vindos, Família {familyName}!",
+    "welcome": "Bem-vindos,",
+    "welcome2": "Família {familyName}!",
     "email": "Email",
     "phone": "Telefone",
     "update_button": "Atualizar Dados",
     "address": "Endereço"
   },
   "kid_form": {
-    "title": "Nova Criança",
-    "edit_title": "Editar Criança",
+    "title": "Formulário de Cadastro de Criança / Aventureiro",
+    "edit_title": "Formulário de Edição de Criança / Aventureiro",
     "description": "Preencha os campos abaixo para adicionar uma nova criança à família",
     "edit_description": "Atualize as informações da criança abaixo",
     "firstName": {
@@ -344,7 +390,11 @@
     },
     "alias": {
       "label": "Apelido",
-      "placeholder": "Digite o apelido (opcional)"
+      "placeholder": "Como a criança gostaria de ser chamada"
+    },
+    "birthDate": {
+      "label": "Data de Nascimento (US Format)",
+      "placeholder": "Ex: 12/31/2015"
     },
     "phoneNumber": {
       "label": "Telefone",
@@ -352,12 +402,12 @@
       "error": "Telefone é obrigatório"
     },
     "height": {
-      "label": "Altura",
-      "placeholder": "Digite a altura (opcional)"
+      "label": "Altura (US Format)",
+      "placeholder": "Ex: 5'10\""
     },
     "weight": {
-      "label": "Peso",
-      "placeholder": "Digite o peso (opcional)"
+      "label": "Peso (US Format)",
+      "placeholder": "Ex: 150 lbs"
     },
     "sex": {
       "label": "Sexo",
@@ -371,7 +421,9 @@
     "files": {
       "divider": "Arquivos",
       "avatar": {
-        "label": "Avatar",
+        "error_required": "Para facilitar a identificação da criança, é necessário enviar um avatar",
+        "label": "Selecionar Avatar",
+        "accept": "Imagens (.jpg, .png) max 5MB",
         "disclaimer": "O avatar é opcional, mas é recomendado para facilitar a identificação da criança",
         "placeholder": "Upload avatar",
         "error": "Algo deu errado ao tentar upload do Avatar",
@@ -380,11 +432,13 @@
     },
     "button": {
       "label": "Adicionar Criança",
-      "loading": "Adicionando..."
+      "loading": "Adicionando...",
+      "cancel": "Voltar"
     },
     "edit_button": {
       "label": "Atualizar Criança",
-      "loading": "Atualizando..."
+      "loading": "Atualizando...",
+      "cancel": "Cancelar"
     },
     "toast": {
       "success": "Criança adicionada com sucesso!",
@@ -393,6 +447,10 @@
     "edit_toast": {
       "success": "Criança atualizada com sucesso!",
       "error": "Erro ao atualizar criança"
+    },
+    "notes": {
+      "label": "Notas",
+      "placeholder": "Digite notas sobre a criança"
     }
   },
   "kids_page": {

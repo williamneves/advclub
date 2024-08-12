@@ -6,7 +6,7 @@ import { timestamps } from './_defaults'
 import { FamiliesTable } from './families'
 import { sexEnum } from './enums'
 import { z } from 'zod'
-
+import { date } from 'drizzle-orm/pg-core'
 export const parentsGuardiansType = z.enum(['parent', 'guardian', 'relative'])
 export type ParentsGuardiansType = z.infer<typeof parentsGuardiansType>
 
@@ -20,6 +20,7 @@ export const ParentsTable = createTable('parents', {
   type: text('type').$type<ParentsGuardiansType>().notNull(),
   firstName: text('first_name').default(''),
   lastName: text('last_name').default(''),
+  birthDate: date('birth_date'),
   sex: sexEnum('sex').default(''),
   avatar: text('avatar').default(''),
   driverLicense: text('driver_license').default(''),
@@ -48,6 +49,7 @@ export type ParentsInsert = typeof ParentsTable.$inferInsert
 
 const adjust = {
   type: parentsGuardiansType,
+  birthDate: z.coerce.string().transform((val) => new Date(val).toISOString()),
 }
 
 const parentsSelectSchema = createSelectSchema(ParentsTable, adjust)

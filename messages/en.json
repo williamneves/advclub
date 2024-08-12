@@ -199,64 +199,108 @@
         "guardian": "Guardian",
         "relative": "Relative"
       },
-      "error": "Please select a guardian type"
+      "error": "Select guardian type"
     },
     "sex": {
       "label": "Sex",
       "options": {
         "male": "Male",
         "female": "Female",
-        "other": "Other",
-        "": "Not Informed"
+        "other": "Other"
       },
-      "error": "Please select a sex"
+      "error": "Select sex"
     },
     "phone": {
       "label": "Phone",
       "placeholder": "Enter phone number",
-      "error": "Phone number is required"
+      "error": "Phone is required"
     },
     "email": {
       "label": "Email",
-      "placeholder": "Enter email address",
+      "placeholder": "Enter email",
       "error": "Valid email is required"
     },
-    "main": {
-      "label": "Primary Guardian",
-      "description": "Check if this is the primary guardian"
+    "birthDate": {
+      "label": "Date of Birth",
+      "placeholder": "Ex: 12/31/2015",
+      "error": "Date of birth is required"
     },
-    "divider": "Permissions",
+    "divider": {
+      "type": "Guardian Type",
+      "address": "Address",
+      "permissions": "Permissions",
+      "personal_info": "Personal Information",
+      "documents": "Documents"
+    },
+    "family_address": {
+      "label": "Use Family Address",
+      "description": "Use the family's address as the guardian's address",
+      "error": "Address is required"
+    },
+    "streetAddress": {
+      "label": "Address",
+      "placeholder": "Enter address",
+      "error": "Address is required"
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Enter city",
+      "error": "City is required"
+    },
+    "state": {
+      "label": "State",
+      "placeholder": "Enter state",
+      "error": "Invalid State"
+    },
+    "zipCode": {
+      "label": "ZIP Code",
+      "placeholder": "Enter ZIP code",
+      "error": "ZIP code is required"
+    },
     "permissions": {
       "firstParentAlert": {
         "title": "First Guardian",
-        "description": "This is the first guardian of the family, therefore, all permissions are enabled by default"
+        "description": "This is the first guardian of the family, so all permissions are enabled by default"
       },
       "pickup": {
-        "label": "Allow Pick-up",
-        "description": "Allows the guardian to pick up the child from the activity location (church/event) and take them with them",
-        "error": "You must upload a driver licence and avatar to allow pick up"
+        "label": "Allowed Pick-up",
+        "description": "Allows the guardian to pick up the child from the activity location (church/event) and take them",
+        "error": "You must upload the avatar and driver's license to allow Pick-up"
       },
       "sign_document": {
-        "label": "Allow Sign Documents",
-        "description": "Allows the guardian to sign documents of the child"
+        "label": "Allowed to Sign Documents",
+        "description": "Allows the guardian to sign documents for the child"
       }
     },
     "files": {
       "divider": "Files",
       "driverLicence": {
-        "label": "Driver Licence",
-        "disclaimer": "A Driver Licence is REQUIRED for those who are allowed to pick up/drop off children",
-        "placeholder": "Upload driver licence",
-        "error": "Driver licence is required",
-        "remove": "Remove driver licence"
-      },
-      "avatar": {
-        "label": "Avatar",
-        "disclaimer": "The avatar is optional, but it is recommended for easier identification of the responsible person",
-        "placeholder": "Upload avatar",
-        "error": "Avatar is required",
-        "remove": "Remove avatar"
+        "label": "Driver's License",
+        "disclaimer": "A Driver's License is REQUIRED for those allowed Pick-up/Drop-off",
+        "placeholder": "Upload Driver's License",
+        "error": "Something went wrong while trying to upload the Driver's License",
+        "remove": "Remove Driver's License"
       }
+    },
+    "driverLicence": {
+      "label": "Driver's License",
+      "disclaimer": "Images/PDFs max. 5MB",
+      "buttonNoFile": "Upload Driver's License",
+      "buttonWithFile": "Change Driver's License",
+      "error": "Something went wrong while trying to upload the Driver's License",
+      "remove": "Remove Driver's License"
+    },
+    "profile_picture": {
+      "label": "Profile Picture",
+      "disclaimer": "Images / max. 5MB",
+      "buttonNoFile": "Select Photo",
+      "buttonWithFile": "Change Photo",
+      "error": "Something went wrong while trying to upload the Avatar",
+      "remove": "Remove profile picture"
+    },
+    "main": {
+      "label": "Primary Guardian",
+      "description": "Check if this is the primary guardian (Only one guardian can be the primary)"
     },
     "button": {
       "label": "Add Guardian",
@@ -279,7 +323,7 @@
     "title": "Guardians",
     "loading": "Loading...",
     "edit_button": "Edit",
-    "add_parent_button": "Add Guardian",
+    "add_parent_button": "New",
     "no_parents": {
       "title": "No Guardians Registered",
       "description": "Click the button below to add a guardian"
@@ -324,7 +368,8 @@
     "goToClubButton": "Access Family Area"
   },
     "family_card": {
-      "welcome": "Welcome, Family {familyName}!",
+      "welcome": "Welcome,",
+      "welcome2": "Family {familyName}!",
       "email": "Email",
       "phone": "Phone",
       "update_button": "Update Information",
@@ -347,7 +392,11 @@
     },
     "alias": {
       "label": "Alias",
-      "placeholder": "Enter alias (optional)"
+      "placeholder": "How the child would like to be called"
+    },
+    "birthDate": {
+      "label": "Birth Date (US Format)",
+      "placeholder": "Ex: 12/31/2015"
     },
     "phoneNumber": {
       "label": "Phone Number",
@@ -355,12 +404,12 @@
       "error": "Phone number is required"
     },
     "height": {
-      "label": "Height",
-      "placeholder": "Enter height (optional)"
+      "label": "Height (US Format)",
+      "placeholder": "Ex: 5'10\""
     },
     "weight": {
-      "label": "Weight",
-      "placeholder": "Enter weight (optional)"
+      "label": "Weight (US Format)",
+      "placeholder": "Ex: 150 lbs"
     },
     "sex": {
       "label": "Sex",
@@ -375,6 +424,7 @@
       "divider": "Files",
       "avatar": {
         "label": "Avatar",
+        "error_required": "To facilitate kid identification, an avatar is required",
         "disclaimer": "The avatar is optional, but recommended to facilitate kid identification",
         "placeholder": "Upload avatar",
         "error": "Something went wrong while uploading the avatar",
@@ -383,11 +433,13 @@
     },
     "button": {
       "label": "Add Kid",
-      "loading": "Adding..."
+      "loading": "Adding...",
+      "cancel": "Go Back"
     },
     "edit_button": {
       "label": "Update Kid",
-      "loading": "Updating..."
+      "loading": "Updating...",
+      "cancel": "Cancel"
     },
     "toast": {
       "success": "Kid added successfully!",
@@ -396,6 +448,10 @@
     "edit_toast": {
       "success": "Kid updated successfully!",
       "error": "Error updating kid"
+    },
+    "notes": {
+      "label": "Notes",
+      "placeholder": "Enter notes about the kid"
     }
   },
   "kids_page": {

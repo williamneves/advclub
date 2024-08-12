@@ -1,6 +1,7 @@
-import { api } from '@/trpc/server'
-import { notFound } from 'next/navigation'
+import { api, HydrateClient } from '@/trpc/server'
+import { notFound, redirect } from 'next/navigation'
 import { EditParentForm } from '../../_components/edit-parent-form'
+import { CreateParent } from '../../_components/create-parent'
 
 export const dynamic = 'force-dynamic'
 
@@ -9,6 +10,12 @@ export default async function EditParentPage({
 }: {
   params: { parent_id: string }
 }) {
+  const family = await api.club.families.getLoggedInFamily()
+
+  if (!family) {
+    redirect('/login')
+  }
+
   const parent = await api.club.parents.getParentById({
     id: Number(params.parent_id),
   })
@@ -17,7 +24,19 @@ export default async function EditParentPage({
     notFound()
   }
 
-  console.log(parent)
+  void (await api.club.parents.getParentById.prefetch({
+    id: Number(params.parent_id),
+  }))
 
-  return <EditParentForm parent={parent} />
+  return (
+    <HydrateClient>
+      <CreateParent
+        isFirstParent={false}
+        familyId={family.id}
+        familyUUID={family.uuid}
+        parentId={parent.id}
+        mode="edit"
+      />
+    </HydrateClient>
+  )
 }

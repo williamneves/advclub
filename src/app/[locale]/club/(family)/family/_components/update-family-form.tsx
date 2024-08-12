@@ -97,13 +97,12 @@ export function UpdateFamilyForm({
       onClose={() => onOpenChange(false)}
       title={t('title')}
       classNames={{
-        header: 'border-solid border-0 border-b border-mtn-default-border shadow-md min-h-[48px] py-0 mb-2'
+        header:
+          'border-solid border-0 border-b border-mtn-default-border shadow-md min-h-[48px] py-0 mb-2',
       }}
-      
     >
       <form onSubmit={form.onSubmit(handleSubmit)} className="space-y-6">
         <Stack>
-
           <Stack gap={6}>
             <TextInput
               label={t('name.label')}
@@ -139,10 +138,26 @@ export function UpdateFamilyForm({
               />
               <Select
                 searchable
-                data={states.map((state) => ({
-                  label: `${state.name}`,
-                  value: state.abbreviation,
-                }))}
+                data={[
+                  {
+                    group: 'Local',
+                    items: [
+                      {
+                        label: 'Florida',
+                        value: 'FL',
+                      },
+                    ],
+                  },
+                  {
+                    group: 'Nacional',
+                    items: states
+                      .filter((state) => state.abbreviation !== 'FL')
+                      .map((state) => ({
+                        label: `${state.name}`,
+                        value: state.abbreviation,
+                      })),
+                  },
+                ]}
                 placeholder={t('state.placeholder')}
                 label={t('state.label')}
                 {...form.getInputProps('state')}
@@ -159,7 +174,7 @@ export function UpdateFamilyForm({
             </SimpleGrid>
           </Stack>
           <Divider />
-          <Group justify='flex-end' grow>
+          <Group justify="flex-end" grow>
             <Button
               type="button"
               variant="outline"

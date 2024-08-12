@@ -1,6 +1,6 @@
 'use client'
 
-import { AppShell, Burger, Group } from '@mantine/core'
+import { AppShell, Burger, Group, LoadingOverlay, Overlay } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import type { RouterOutputs } from '@/trpc/react'
@@ -16,11 +16,13 @@ export function MantineShell({
 }) {
   const [opened, { toggle }] = useDisclosure()
 
+  const breakpoint = 'md'
+
   return (
     <AppShell
       layout="alt"
       header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+      navbar={{ width: 300, breakpoint, collapsed: { mobile: !opened } }}
       padding="md"
     >
       <AppShell.Header>
@@ -29,8 +31,8 @@ export function MantineShell({
             <Burger
               opened={opened}
               onClick={toggle}
-              hiddenFrom="sm"
-              size="sm"
+              hiddenFrom={breakpoint}
+              size={breakpoint}
             />
           </Group>
           <Group className="ml-auto" align="center">
@@ -38,13 +40,11 @@ export function MantineShell({
           </Group>
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar p="md" pt={0}>
-        <NavBlock initialData={initialData} />
+      <AppShell.Navbar p="md" pt={0} maw={300} zIndex={1000} id="side-nav">
+        <NavBlock opened={opened} onClose={toggle} initialData={initialData} />
       </AppShell.Navbar>
-      {/* <AppShell.Main bg={'gray.0'} className="flex">
-        <div className="flex-1">{children}</div>
-      </AppShell.Main> */}
-      <AppShell.Main bg={'gray.0'} className="flex flex-col">
+      <AppShell.Main bg={'gray.0'} className="flex flex-col relative">
+       {opened && <Overlay blur={2} />}
         <div className="flex-grow flex flex-col w-full">{children}</div>
       </AppShell.Main>
     </AppShell>

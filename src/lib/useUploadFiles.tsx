@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { uploadAvatar, uploadDriverLicense } from '../utils/supabase/uploads'
 
 interface UseUploadAvatarResult {
@@ -17,7 +17,10 @@ export function useUploadAvatar(): UseUploadAvatarResult {
   const [error, setError] = useState<string | null>(null)
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
 
-  const uploadAvatarFile = async (familyUUID: string, avatarUserId: string | number) => {
+  const uploadAvatarFile = async (
+    familyUUID: string,
+    avatarUserId: string | number,
+  ) => {
     if (!avatarFile) return null
 
     setIsUploading(true)
@@ -40,7 +43,13 @@ export function useUploadAvatar(): UseUploadAvatarResult {
     }
   }
 
-  return { uploadAvatar: uploadAvatarFile, isUploading, error, avatarFile, setAvatarFile }
+  return {
+    uploadAvatar: uploadAvatarFile,
+    isUploading,
+    error,
+    avatarFile,
+    setAvatarFile,
+  }
 }
 
 interface UseUploadDriverLicenseResult {

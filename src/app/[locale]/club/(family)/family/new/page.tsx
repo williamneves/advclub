@@ -176,10 +176,26 @@ export default function NewFamilyPage() {
               />
               <Select
                 searchable
-                data={states.map((state) => ({
-                  label: `${state.name}`,
-                  value: state.abbreviation,
-                }))}
+                data={[
+                  {
+                    group: 'Local',
+                    items: [
+                      {
+                        label: 'Florida',
+                        value: 'FL',
+                      },
+                    ],
+                  },
+                  {
+                    group: 'Nacional',
+                    items: states
+                      .filter((state) => state.abbreviation !== 'FL')
+                      .map((state) => ({
+                        label: `${state.name}`,
+                        value: state.abbreviation,
+                      })),
+                  },
+                ]}
                 placeholder={t('state.placeholder')}
                 label={t('state.label')}
                 {...form.getInputProps('state')}

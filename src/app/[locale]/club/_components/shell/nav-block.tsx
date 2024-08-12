@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { LayoutDashboard, Contact, Baby, FileStack } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { api, RouterOutputs } from '@/trpc/react'
-import { Flex, NavLink, Stack, Text } from '@mantine/core'
+import { ActionIcon, Flex, NavLink, Stack, Text } from '@mantine/core'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
@@ -10,12 +10,17 @@ import { MdFamilyRestroom, MdChildCare } from 'react-icons/md'
 import { TbFriends } from 'react-icons/tb'
 import Image from 'next/image'
 import LOGO from '@/assets/images/LOGO-BLUE-CROSS.png'
+import { IconX } from '@tabler/icons-react'
 export function NavBlock({
   isMobile,
   initialData,
+  opened,
+  onClose,
 }: {
   isMobile?: boolean
   initialData: RouterOutputs['club']['families']['getLoggedInFamily']
+  opened: boolean
+  onClose: () => void
 }) {
   const t = useTranslations('navigation')
   const pathname = usePathname()
@@ -28,9 +33,20 @@ export function NavBlock({
   )
   const familyCreated = !!family
 
+  useEffect(() => {
+    // if click outside of the nav block, close it
+    const handleClickOutside = (event: MouseEvent) => {
+      if (opened && !(event.target as HTMLElement)?.closest('#side-nav')) {
+        onClose()
+      }
+    }
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [opened, onClose])
+
   return (
     <Stack>
-      <Flex h={60} className="w-full items-center justify-center gap-2">
+      <Flex h={60} className="w-full items-center justify-between gap-2">
         <Image
           src={LOGO}
           priority
@@ -40,6 +56,11 @@ export function NavBlock({
         <Text component="span" fz={'lg'} fw={'bold'} className="no-underline">
           BT Adventurer&apos;s
         </Text>
+        {opened && (
+          <ActionIcon variant='subtle' color='dark'  onClick={onClose}>
+            <IconX size={20} stroke={1.5}/>
+          </ActionIcon>
+        )}
       </Flex>
       <Stack gap={6}>
         <NavLink

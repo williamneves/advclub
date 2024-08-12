@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from '@mantine/form'
 import { useTranslations } from 'next-intl'
 import {
@@ -17,8 +17,13 @@ import {
   Box,
   LoadingOverlay,
   Image,
+  Alert,
+  Flex,
+  ThemeIcon,
+  Radio,
+  Textarea,
 } from '@mantine/core'
-import { IconX } from '@tabler/icons-react'
+import { IconPhotoUp, IconX } from '@tabler/icons-react'
 import { FileButton } from '@mantine/core'
 import { useUploadAvatar } from '@/lib/useUploadFiles'
 import { api, type RouterOutputs } from '@/trpc/react'
@@ -27,21 +32,30 @@ import { sexEnumSchema } from '@/server/db/schemas'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { useRouter } from 'next/navigation'
 import { notifications } from '@mantine/notifications'
+import { cn } from '@/lib/utils'
+import { DateInput, DateInputProps } from '@mantine/dates'
+import dayjs from 'dayjs'
+import { deleteFileByUrl } from '@/utils/supabase/uploads'
 
 const editKidSchema = (t: (key: string) => string) =>
-  z.object({
-    firstName: z.string().min(1, t('firstName.error')).nullish(),
-    lastName: z.string().min(1, t('lastName.error')).nullish(),
-    alias: z.string().optional().nullish(),
-    phoneNumber: z
-      .string()
-      .transform((value) => value.replace(/\D/g, ''))
-      .nullish(),
-    height: z.string().optional().nullish(),
-    weight: z.string().optional().nullish(),
-    sex: sexEnumSchema.nullish(),
-    avatar: z.string().nullish(),
-  })
+  z
+    .object({
+      firstName: z.string().min(1, t('firstName.error')),
+      lastName: z.string().min(1, t('lastName.error')),
+      avatar: z.string().optional(),
+      alias: z.string().optional(),
+      height: z.string().optional(),
+      weight: z.string().optional(),
+      sex: sexEnumSchema,
+      birthDate: z.coerce
+        .string()
+        .transform((value) => new Date(value).toISOString()),
+      notes: z.string().optional(),
+    })
+    .refine((data) => data.sex !== '', {
+      path: ['sex'],
+      message: t('sex.error'),
+    })
 
 type EditKidFormData = z.infer<ReturnType<typeof editKidSchema>>
 
@@ -53,9 +67,10 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
   const router = useRouter()
   const t = useTranslations('kid_form')
   const schema = editKidSchema(t)
+  const [loading, setLoading] = useState(false)
 
   const [kid] = api.club.kids.getKidById.useSuspenseQuery({
-    id: parseInt(kidId)
+    id: parseInt(kidId),
   })
 
   const form = useForm<EditKidFormData>({
@@ -63,18 +78,17 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
       firstName: kid?.firstName ?? '',
       lastName: kid?.lastName ?? '',
       alias: kid?.alias ?? '',
-      phoneNumber: kid?.phoneNumber ?? '',
       height: kid?.height ?? '',
       weight: kid?.weight ?? '',
       sex: kid?.sex ?? '',
       avatar: kid?.avatar ?? '',
+      birthDate: kid?.birthDate ?? '',
     },
     validate: zodResolver(schema),
     enhanceGetInputProps: () => ({
       disabled: loading,
     }),
   })
-  const [loading, setLoading] = useState(false)
 
   const utils = api.useUtils()
 
@@ -102,13 +116,22 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
   const handleSubmit = async (values: typeof form.values) => {
     const data = editKidSchema(t).parse(values)
     try {
+      setLoading(true)
       let avatarFileUrl = kid?.avatar ?? ''
 
       // If avatar file changed, upload new avatar
       if (avatarFile) {
-        const newAvatarUrl = await uploadAvatar(kid?.family.uuid ?? '', kid?.id ?? 0)
+        const newAvatarUrl = await uploadAvatar(
+          kid?.family.uuid ?? '',
+          kid?.id ?? 0,
+        )
         if (newAvatarUrl) {
           avatarFileUrl = newAvatarUrl
+
+          // Delete old avatar
+          if (kid?.avatar && newAvatarUrl !== kid.avatar) {
+            await deleteFileByUrl(kid.avatar)
+          }
         }
       }
 
@@ -120,11 +143,11 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
           firstName: data.firstName ?? kid?.firstName,
           lastName: data.lastName ?? kid?.lastName,
           alias: data.alias ?? kid?.alias,
-          phoneNumber: data.phoneNumber ?? kid?.phoneNumber,
           height: data.height ?? kid?.height,
           weight: data.weight ?? kid?.weight,
           sex: data.sex ?? kid?.sex,
           avatar: avatarFileUrl ?? kid?.avatar ?? '',
+          birthDate: data.birthDate ?? kid?.birthDate,
         },
       })
 
@@ -158,8 +181,84 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <Title order={3}>{t('edit_title')}</Title>
-          <Text>{t('edit_description')}</Text>
-
+          <Alert>{t('edit_description')}</Alert>
+          <Divider />
+          <Flex>
+            <Stack gap={8}>
+              <div className="flex flex-shrink flex-col gap-4">
+                {!avatarUrl ? (
+                  <FileButton onChange={setAvatarFile} accept="image/*">
+                    {(props) => (
+                      <Card
+                        onClick={props.onClick}
+                        withBorder
+                        shadow="md"
+                        className="align-center flex h-[168px] w-[168px] cursor-pointer flex-col items-center justify-center gap-2 rounded-md"
+                      >
+                        <ThemeIcon size={64} variant="light" color="gray">
+                          <IconPhotoUp size={44} stroke={1.5} />
+                        </ThemeIcon>
+                        <Text fz={'sm'} c={'dimmed'} ta={'center'}>
+                          {t('files.avatar.placeholder').toLocaleUpperCase()}
+                        </Text>
+                      </Card>
+                    )}
+                  </FileButton>
+                ) : (
+                  <Card
+                    withBorder
+                    shadow="md"
+                    className="relative h-[168px] w-[168px]"
+                  >
+                    <LoadingOverlay visible={loading} />
+                    <Card.Section>
+                      <Image
+                        src={avatarUrl}
+                        alt="avatar"
+                        className="h-[168px] w-[168px] object-cover"
+                        width={168}
+                        height={168}
+                      />
+                      <IconX
+                        stroke={2}
+                        color="white"
+                        className="shadow-md absolute right-2 top-2 cursor-pointer rounded-full border border-solid border-white bg-red-500 p-1 shadow-mtn-md ring-2 ring-red-500 transition-all ease-in-out hover:scale-110"
+                        onClick={handleRemoveAvatar}
+                      />
+                    </Card.Section>
+                  </Card>
+                )}
+              </div>
+              <Stack align="flex-start" justify="center">
+                <Flex direction={'column'} w={'100%'} gap={4}>
+                  <Group justify="center">
+                    {!avatarUrl && (
+                      <FileButton onChange={setAvatarFile} accept="image/*">
+                        {(props) => (
+                          <Button w={'100%'} {...props} disabled={loading}>
+                            {t('files.avatar.label')}
+                          </Button>
+                        )}
+                      </FileButton>
+                    )}
+                    {avatarUrl && (
+                      <Button
+                        onClick={handleRemoveAvatar}
+                        color="red"
+                        rightSection={<IconX />}
+                        disabled={loading}
+                      >
+                        {t('files.avatar.remove')}
+                      </Button>
+                    )}
+                  </Group>
+                  <Text fz={'xs'} c={'dimmed'} ta={'center'}>
+                    {t('files.avatar.accept')}
+                  </Text>
+                </Flex>
+              </Stack>
+            </Stack>
+          </Flex>
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
             <TextInput
               label={t('firstName.label')}
@@ -178,12 +277,36 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
               placeholder={t('alias.placeholder')}
               {...form.getInputProps('alias')}
             />
-            <TextInput
-              label={t('phoneNumber.label')}
-              placeholder={t('phoneNumber.placeholder')}
-              {...form.getInputProps('phoneNumber')}
-              required
+            <DateInput
+              valueFormat="MM/DD/YYYY"
+              label={t('birthDate.label')}
+              placeholder={t('birthDate.placeholder')}
+              {...form.getInputProps('birthDate')}
+              value={new Date(form.getInputProps('birthDate').value)}
             />
+            <Radio.Group label={t('sex.label')} {...form.getInputProps('sex')}>
+              <Group align="center" gap={12} grow>
+                {['male', 'female'].map((sex) => (
+                  <Radio
+                    iconColor={'white'}
+                    color={sex === 'male' ? 'blue' : 'pink'}
+                    className={cn(
+                      'flex h-[36px] items-center justify-start rounded-md border border-solid border-gray-300 px-4',
+                      {
+                        'bg-blue-100': sex === 'male',
+                        'bg-pink-100': sex === 'female',
+                        'border-blue-300': sex === 'male',
+                        'border-pink-300': sex === 'female',
+                      },
+                    )}
+                    key={sex}
+                    value={sex}
+                    label={t(`sex.options.${sex}`)}
+                    disabled={loading}
+                  />
+                ))}
+              </Group>
+            </Radio.Group>
             <TextInput
               label={t('height.label')}
               placeholder={t('height.placeholder')}
@@ -194,71 +317,16 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
               placeholder={t('weight.placeholder')}
               {...form.getInputProps('weight')}
             />
-            <Select
-              label={t('sex.label')}
-              data={[
-                { value: 'male', label: t('sex.options.male') },
-                { value: 'female', label: t('sex.options.female') },
-                { value: 'other', label: t('sex.options.other') },
-              ]}
-              {...form.getInputProps('sex')}
-              required
-            />
           </SimpleGrid>
 
-          <Divider label={t('files.divider')} labelPosition="left" />
-
-          <Stack>
-            <div className="flex flex-col gap-4 md:flex-row">
-              {!avatarUrl ? (
-                <Box className="align-center flex h-[160px] w-[160px] flex-col justify-center gap-2 rounded-md border-4 border-dashed border-gray-400 bg-gray-50 p-6">
-                  <Text ta={'center'}>{t('files.avatar.placeholder')}</Text>
-                </Box>
-              ) : (
-                <Box className="relative h-[160px] w-[160px] overflow-hidden rounded-md ring-4 ring-gray-400 ring-offset-4 ring-offset-white">
-                  <LoadingOverlay visible={loading} />
-                  <Image
-                    src={avatarUrl}
-                    alt="avatar"
-                    className="h-[160px] w-[160px] object-cover"
-                    width={160}
-                    height={160}
-                  />
-                  <IconX
-                    className="absolute right-2 top-2 cursor-pointer rounded-full bg-white p-1"
-                    onClick={handleRemoveAvatar}
-                  />
-                </Box>
-              )}
-
-              <Stack align="flex-start" justify="flex-end" gap={4}>
-                <Text fz={'sm'} c={'dimmed'}>
-                  {t('files.avatar.disclaimer')}
-                </Text>
-                <Group justify="center">
-                  {!avatarUrl && (
-                    <FileButton onChange={setAvatarFile} accept="image/*">
-                      {(props) => (
-                        <Button variant="light" {...props} disabled={loading}>
-                          {t('files.avatar.label')}
-                        </Button>
-                      )}
-                    </FileButton>
-                  )}
-                  {avatarUrl && (
-                    <Button
-                      onClick={handleRemoveAvatar}
-                      color="red"
-                      rightSection={<IconX />}
-                      disabled={loading}
-                    >
-                      {t('files.avatar.remove')}
-                    </Button>
-                  )}
-                </Group>
-              </Stack>
-            </div>
-          </Stack>
+          <Textarea
+            autosize
+            minRows={3}
+            maxRows={7}
+            label={t('notes.label')}
+            placeholder={t('notes.placeholder')}
+            {...form.getInputProps('notes')}
+          />
           <Divider />
           <Group justify="flex-start">
             <Button type="submit" loading={loading}>
@@ -269,4 +337,10 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
       </form>
     </Card>
   )
+}
+
+const dateParser: DateInputProps['dateParser'] = (input) => {
+  console.log(input)
+
+  return dayjs(input, 'DD/MM/YYYY').toDate()
 }

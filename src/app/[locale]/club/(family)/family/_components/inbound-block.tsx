@@ -51,8 +51,8 @@ export function InboundBlock({initialData}: {initialData: RouterOutputs['club'][
 
   return (
     <Card withBorder>
-      <Title>{t('title')}</Title>
-      <Text>{t('description')}</Text>
+      <Title order={2}>{t('title')}</Title>
+      <Text fz={'md'} c={'dimmed'}>{t('description')}</Text>
       <div className="flex flex-col gap-y-4">
         <Divider />
 

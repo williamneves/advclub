@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { boolean, serial, text } from 'drizzle-orm/pg-core'
+import { boolean, date, serial, text } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
@@ -20,6 +20,8 @@ export const Kidstable = createTable('kids', {
   weight: text('weight').default(''),
   sex: sexEnum('sex'),
   avatar: text('avatar'),
+  birthDate: date('birth_date', { mode: 'string'}).notNull(),
+  notes: text('notes').default(''),
   ...timestamps,
 })
 

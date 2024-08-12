@@ -14,7 +14,12 @@ import {
   Stack,
   Title,
   Text,
+  Avatar,
 } from '@mantine/core'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import { formatPhoneNumber } from '@/utils/stringUtils'
+import { IconEdit, IconPlus } from '@tabler/icons-react'
 
 export default function ParentsPage() {
   const t = useTranslations('parents_page')
@@ -34,7 +39,7 @@ export default function ParentsPage() {
     <Stack gap={'sm'} w={'100%'}>
       <Group justify="space-between" align="center">
         <Title order={3}>{t('title')}</Title>
-        <Button component={Link} href="/club/family/parents/new">
+        <Button component={Link} rightSection={<IconPlus size={18} />} href="/club/family/parents/new">
           {t('add_parent_button')}
         </Button>
       </Group>
@@ -42,24 +47,36 @@ export default function ParentsPage() {
         <SimpleGrid cols={{ base: 1, md: 2 }}>
           {parents?.map((parent) => (
             <Card withBorder key={parent.id} className="w-full">
-              <Stack>
-                <Title
-                  order={4}
-                >{`${parent.firstName} ${parent.lastName}`}</Title>
-                <Group>
-                  <Text>
-                    {t(`type.${parent.type}`)} - {t(`sex.${parent.sex}`)}
-                  </Text>
-                </Group>
-                <Text>{parent.email}</Text>
-                <Text>{parent.phone}</Text>
-                <Button
-                  component={Link}
-                  href={`/club/family/parents/edit/${parent.id}`}
-                >
-                  {t('edit_button')}
-                </Button>
-              </Stack>
+              <Group wrap="nowrap" >
+                <div className=" size-[160px] overflow-hidden rounded-md sm:size-[180px] md:size-[210px]">
+                  <Image
+                    src={parent.avatar ?? ''}
+                    alt={parent.firstName ?? ''}
+                    width={160}
+                    height={160}
+                    className="size-[160px] object-cover rounded-md transition-all hover:scale-105 sm:size-[180px] md:size-[210px]"
+                  />
+                </div>
+                <Stack gap={6} h="100%" justify="space-between">
+                  <Text className="text-lg font-bold md:text-xl truncate">{`${parent.firstName} ${parent.lastName}`}</Text>
+                  <Stack gap={6}>
+                    <Group>
+                      <Text className="text-sm font-semibold sm:text-sm md:text-lg">
+                        {t(`type.${parent.type}`)} - {t(`sex.${parent.sex}`)}
+                      </Text>
+                    </Group>
+                    <Text className="text-sm sm:text-md md:text-lg">{parent.email}</Text>
+                    <Text className="text-sm sm:text-md md:text-lg">{formatPhoneNumber(parent.phone ?? '')}</Text>
+                  </Stack>
+                  <Button
+                    component={Link}
+                    rightSection={<IconEdit size={18} />}
+                    href={`/club/family/parents/edit/${parent.id}`}
+                  >
+                    {t('edit_button')}
+                  </Button>
+                </Stack>
+              </Group>
             </Card>
           ))}
         </SimpleGrid>
@@ -69,7 +86,7 @@ export default function ParentsPage() {
           <Stack>
             <Title order={4}>{t('no_parents.title')}</Title>
             <Text>{t('no_parents.description')}</Text>
-            <Button component={Link} href="/club/family/parents/new">
+            <Button rightSection={<IconPlus size={18} />} component={Link} href="/club/family/parents/new">
               {t('add_parent_button')}
             </Button>
           </Stack>
