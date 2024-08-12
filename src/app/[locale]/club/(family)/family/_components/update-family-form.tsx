@@ -3,13 +3,22 @@ import { z } from 'zod'
 import { useTranslations } from 'next-intl'
 import { api } from '@/trpc/react'
 import { useEffect } from 'react'
-import { Modal, Stack, TextInput, Input, Select, Button, SimpleGrid, Group, Divider } from '@mantine/core'
+import {
+  Modal,
+  Stack,
+  TextInput,
+  Input,
+  Select,
+  Button,
+  SimpleGrid,
+  Group,
+  Divider,
+} from '@mantine/core'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { notifications } from '@mantine/notifications'
 import { IconCheck, IconX } from '@tabler/icons-react'
-import states from "states-us"
+import states from 'states-us'
 import { PatternFormat } from 'react-number-format'
-
 
 // Definindo o esquema de validação
 const updateFamilySchema = (t: (key: string) => string) =>
@@ -84,9 +93,9 @@ export function UpdateFamilyForm({
       console.error('Erro ao atualizar família:', error)
       notifications.show({
         message: t('toast.error'),
-        icon: <IconX   />,
+        icon: <IconX />,
         color: 'red',
-        autoClose: false
+        autoClose: false,
       })
     }
   }

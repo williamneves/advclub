@@ -85,7 +85,7 @@ export const familiesRouter = createTRPCRouter({
         .update(FamiliesTable)
         .set(input)
         .where(eq(FamiliesTable.userId, ctx.userId))
-      
+
       revalidatePath('/', 'layout')
       return family
     }),

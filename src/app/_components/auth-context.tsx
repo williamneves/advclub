@@ -35,19 +35,24 @@ export function AuthProvider({
       children: (
         <Stack>
           <Alert color="red">{t('logout_modal.message')}</Alert>
-          <Text size="md" fw={500}>{t('logout_modal.confirmation_message')}</Text>
+          <Text size="md" fw={500}>
+            {t('logout_modal.confirmation_message')}
+          </Text>
         </Stack>
       ),
       labels: {
         confirm: t('logout_modal.confirm'),
         cancel: t('logout_modal.cancel'),
       },
-      
-      confirmProps: { color: 'red', rightSection: <IconLogout size={18} stroke={1.5} /> },
+
+      confirmProps: {
+        color: 'red',
+        rightSection: <IconLogout size={18} stroke={1.5} />,
+      },
       onConfirm: async () => {
         await supabase.auth.signOut()
         router.refresh()
-      }
+      },
     })
   }
   return (

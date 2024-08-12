@@ -27,10 +27,10 @@ export default function FormsPage() {
       <Card className="w-full bg-orange-300">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Construction className="h-8 w-8 mr-4" />
+            <Construction className="mr-4 h-8 w-8" />
             {t('under_construction.title')}
           </CardTitle>
-                  <Separator />
+          <Separator />
           <CardDescription>
             {t('under_construction.description')}
           </CardDescription>

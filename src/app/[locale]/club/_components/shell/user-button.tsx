@@ -36,7 +36,14 @@ export function UserButton() {
   }
 
   return (
-    <Menu width={160} position="left-start" shadow="lg" withArrow arrowPosition='center' arrowSize={10}>
+    <Menu
+      width={160}
+      position="left-start"
+      shadow="lg"
+      withArrow
+      arrowPosition="center"
+      arrowSize={10}
+    >
       <Menu.Target>
         {user ? (
           <Avatar
@@ -46,7 +53,9 @@ export function UserButton() {
               user.user_metadata.avatar
             }
             radius={'xl'}
-            className={cn("mr-2 size-9 cursor-pointer ring-2 ring-mtn-gray-5 ring-offset-2 transition-all hover:ring-offset-1")}
+            className={cn(
+              'mr-2 size-9 cursor-pointer ring-2 ring-mtn-gray-5 ring-offset-2 transition-all hover:ring-offset-1',
+            )}
           />
         ) : (
           <Skeleton
@@ -87,7 +96,9 @@ export function UserButton() {
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <Text size="sm" c={lang.code === 'en' ? 'red.9' : 'green.8'} >{lang.name}</Text>
+                <Text size="sm" c={lang.code === 'en' ? 'red.9' : 'green.8'}>
+                  {lang.name}
+                </Text>
                 {lang.code === locale && (
                   <ThemeIcon size={'xs'} variant="transparent">
                     <IconCheck
@@ -105,7 +116,13 @@ export function UserButton() {
         </Stack>
         <Menu.Divider />
         <Menu.Item>{t('profile')}</Menu.Item>
-        <Menu.Item onClick={logout} color={'orange'} rightSection={<IconLogout size={18} stroke={1.5} />}>{t('logout')}</Menu.Item>
+        <Menu.Item
+          onClick={logout}
+          color={'orange'}
+          rightSection={<IconLogout size={18} stroke={1.5} />}
+        >
+          {t('logout')}
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   )

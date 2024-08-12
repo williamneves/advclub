@@ -84,9 +84,7 @@ export const parentsRouter = createTRPCRouter({
         id: ParentsTable.id,
       })
       return parent
-    })
-  ,
-
+    }),
   updateParent: protectedProcedure
     .input(
       z.object({

@@ -18,15 +18,14 @@ export default function FamilyContext({
   useEffect(() => {
     if (!family.data && pathname !== '/club/family/new') {
       router.push('/club/family/new')
-    }
-    else {
+    } else {
       setLoading(false)
     }
   }, [family, pathname])
 
   if (loading) {
     return (
-      <Center className='flex-grow'>
+      <Center className="flex-grow">
         <Loader type="bars" />
       </Center>
     )

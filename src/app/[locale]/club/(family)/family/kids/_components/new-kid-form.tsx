@@ -16,11 +16,8 @@ import {
   Card,
   Title,
   Text,
-  Input,
   SimpleGrid,
   Divider,
-  Badge,
-  Box,
   FileButton,
   LoadingOverlay,
   ThemeIcon,
@@ -33,20 +30,13 @@ import Image from 'next/image'
 import {
   IconArrowLeft,
   IconCheck,
-  IconCircle,
-  IconCirclePlus,
-  IconGenderFemale,
-  IconGenderMale,
-  IconPhoto,
   IconPhotoUp,
-  IconPlus,
   IconX,
 } from '@tabler/icons-react'
 import { sexEnumSchema } from '@/server/db/schemas'
 import { useMemo, useState } from 'react'
 import { useUploadAvatar } from '@/lib/useUploadFiles'
 
-import { PatternFormat } from 'react-number-format'
 import { cn } from '@/lib/utils'
 
 const createKidSchema = (t: (key: string) => string) =>
@@ -58,8 +48,10 @@ const createKidSchema = (t: (key: string) => string) =>
       height: z.string().optional(),
       weight: z.string().optional(),
       sex: sexEnumSchema,
-      birthDate: z.coerce.string().transform((value) => new Date(value).toISOString()),
-      notes: z.string().optional()
+      birthDate: z.coerce
+        .string()
+        .transform((value) => new Date(value).toISOString()),
+      notes: z.string().optional(),
     })
     .refine((data) => data.sex !== '', {
       path: ['sex'],
@@ -88,7 +80,7 @@ export function NewKidForm({ familyId, familyUUID }: NewKidFormProps) {
       weight: '',
       sex: '',
       birthDate: '',
-      notes:  ''
+      notes: '',
     },
     validate: zodResolver(schema),
     enhanceGetInputProps: () => ({
@@ -117,7 +109,6 @@ export function NewKidForm({ familyId, familyUUID }: NewKidFormProps) {
 
       // Revalidate form
       const values = schema.parse(data)
-
 
       // Create kid and get the id
       const kid = await createKid.mutateAsync({
@@ -221,7 +212,7 @@ export function NewKidForm({ familyId, familyUUID }: NewKidFormProps) {
                       <IconX
                         stroke={2}
                         color="white"
-                        className="shadow-md absolute right-2 top-2 cursor-pointer rounded-full border border-solid border-white bg-red-500 p-1 shadow-mtn-md ring-2 ring-red-500 transition-all ease-in-out hover:scale-110"
+                        className="absolute right-2 top-2 cursor-pointer rounded-full border border-solid border-white bg-red-500 p-1 shadow-md shadow-mtn-md ring-2 ring-red-500 transition-all ease-in-out hover:scale-110"
                         onClick={() => setAvatarFile(null)}
                       />
                     </Card.Section>
@@ -323,7 +314,7 @@ export function NewKidForm({ familyId, familyUUID }: NewKidFormProps) {
             {...form.getInputProps('notes')}
           />
           <Divider />
-          <Group justify="flex-start" wrap='nowrap'>
+          <Group justify="flex-start" wrap="nowrap">
             <Button
               variant="light"
               leftSection={<IconArrowLeft size={22} />}
@@ -333,10 +324,7 @@ export function NewKidForm({ familyId, familyUUID }: NewKidFormProps) {
             >
               {t('button.cancel')}
             </Button>
-            <Button
-              type="submit"
-              loading={loading}
-            >
+            <Button type="submit" loading={loading}>
               {loading ? t('button.loading') : t('button.label')}
             </Button>
           </Group>

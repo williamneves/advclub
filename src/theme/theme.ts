@@ -1,6 +1,13 @@
 import { GeistSans } from 'geist/font/sans'
 
-import { Button, createTheme, DEFAULT_THEME, mergeMantineTheme, Notification, rem } from '@mantine/core'
+import {
+  Button,
+  createTheme,
+  DEFAULT_THEME,
+  mergeMantineTheme,
+  Notification,
+  rem,
+} from '@mantine/core'
 
 let defaultTheme = createTheme({
   fontFamily: GeistSans.style.fontFamily,
@@ -24,9 +31,9 @@ let defaultTheme = createTheme({
   components: {
     Notification: Notification.extend({
       classNames: {
-        root: "border-solid border border-mtn-default-border shadow-sm min-h-[60px]"
-      }
-    })
+        root: 'border-solid border border-mtn-default-border shadow-sm min-h-[60px]',
+      },
+    }),
   },
 })
 

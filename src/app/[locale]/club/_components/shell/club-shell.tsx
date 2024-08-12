@@ -43,9 +43,9 @@ export function MantineShell({
       <AppShell.Navbar p="md" pt={0} maw={300} zIndex={1000} id="side-nav">
         <NavBlock opened={opened} onClose={toggle} initialData={initialData} />
       </AppShell.Navbar>
-      <AppShell.Main bg={'gray.0'} className="flex flex-col relative">
-       {opened && <Overlay blur={2} />}
-        <div className="flex-grow flex flex-col w-full">{children}</div>
+      <AppShell.Main bg={'gray.0'} className="relative flex flex-col">
+        {opened && <Overlay blur={2} />}
+        <div className="flex w-full flex-grow flex-col">{children}</div>
       </AppShell.Main>
     </AppShell>
   )

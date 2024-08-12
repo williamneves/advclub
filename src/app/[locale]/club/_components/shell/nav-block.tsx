@@ -57,8 +57,8 @@ export function NavBlock({
           BT Adventurer&apos;s
         </Text>
         {opened && (
-          <ActionIcon variant='subtle' color='dark'  onClick={onClose}>
-            <IconX size={20} stroke={1.5}/>
+          <ActionIcon variant="subtle" color="dark" onClick={onClose}>
+            <IconX size={20} stroke={1.5} />
           </ActionIcon>
         )}
       </Flex>

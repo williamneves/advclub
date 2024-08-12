@@ -200,7 +200,6 @@ export function EditParentForm({ parent }: EditParentFormProps) {
       ? form.getValues().avatar
       : null
 
-  
   return (
     <Card withBorder w={'100%'}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -338,7 +337,9 @@ export function EditParentForm({ parent }: EditParentFormProps) {
                     src={driverLicenseUrl + '?cache=false'}
                     alt="driver licence"
                     className={cn('h-[161px] w-[210px] object-cover', {
-                      hidden: driverLicenseFile?.name.includes('pdf') && !driverLicenseUrl.includes('pdf'),
+                      hidden:
+                        driverLicenseFile?.name.includes('pdf') &&
+                        !driverLicenseUrl.includes('pdf'),
                     })}
                     width={210}
                     height={161}
@@ -348,7 +349,9 @@ export function EditParentForm({ parent }: EditParentFormProps) {
                     color="blue"
                     size={'xl'}
                     className={cn({
-                      hidden: !driverLicenseFile?.name.includes('pdf') || !driverLicenseUrl.includes('pdf'),
+                      hidden:
+                        !driverLicenseFile?.name.includes('pdf') ||
+                        !driverLicenseUrl.includes('pdf'),
                     })}
                   >
                     <IconPdf size={64} />

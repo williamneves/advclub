@@ -15,7 +15,6 @@ import { api } from '@/trpc/react'
 import Link from 'next/link'
 import { Center, Loader } from '@mantine/core'
 
-
 export default function KidsPage() {
   const t = useTranslations('kids_page')
   const router = useRouter()
@@ -31,7 +30,7 @@ export default function KidsPage() {
   }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t('title')}</h1>
         <Link href="/club/family/kids/new" passHref>

@@ -4,7 +4,16 @@ import { createClient } from '@/utils/supabase/client'
 import { useForm } from '@mantine/form'
 import { z } from 'zod'
 import { zodResolver } from 'mantine-form-zod-resolver'
-import { Button, Card, Divider, Group, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
+import {
+  Button,
+  Card,
+  Divider,
+  Group,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+} from '@mantine/core'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -29,7 +38,7 @@ export default function Login() {
     validate: zodResolver(schema),
     enhanceGetInputProps: () => ({
       disabled: loading,
-    })
+    }),
   })
 
   const handleSubmit = async (values: z.infer<typeof schema>) => {
@@ -80,8 +89,12 @@ export default function Login() {
           <Title order={3}>Welcome to Adv Club</Title>
           <Divider />
           <Group grow>
-            <Button color="red" onClick={handleGoogleLogin}>Login with Google</Button>
-            <Button color="blue" onClick={handleFacebookLogin}>Login with Facebook</Button>
+            <Button color="red" onClick={handleGoogleLogin}>
+              Login with Google
+            </Button>
+            <Button color="blue" onClick={handleFacebookLogin}>
+              Login with Facebook
+            </Button>
           </Group>
           <TextInput label="Email" {...form.getInputProps('email')} />
           <PasswordInput label="Password" {...form.getInputProps('password')} />

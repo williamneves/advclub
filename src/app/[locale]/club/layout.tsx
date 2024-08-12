@@ -1,4 +1,3 @@
-
 import { api } from '@/trpc/server'
 import { MantineShell } from './_components/shell/club-shell'
 

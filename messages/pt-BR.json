@@ -255,7 +255,7 @@
       "label": "CEP",
       "placeholder": "Digite o CEP",
       "error": "CEP é obrigatório"
-    }, 
+    },
     "permissions": {
       "firstParentAlert": {
         "title": "Primeiro Responsável",

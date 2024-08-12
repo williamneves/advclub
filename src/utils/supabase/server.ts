@@ -1,8 +1,7 @@
+import { cookies } from 'next/headers'
+import { createServerClient } from '@supabase/ssr'
 
-import { cookies } from "next/headers"
-import { createServerClient } from "@supabase/ssr"
-
-import { env } from "@/env"
+import { env } from '@/env'
 
 export function createClient() {
   const cookieStore = cookies()

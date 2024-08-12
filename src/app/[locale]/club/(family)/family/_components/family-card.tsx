@@ -9,22 +9,30 @@ import { api, RouterOutputs } from '@/trpc/react'
 import { useRouter } from 'next/navigation'
 import { capitalizeWords } from '@/utils/stringUtils'
 
-export function FamilyCard({initialData}: {initialData: RouterOutputs['club']['families']['getLoggedInFamily']}) {
-
+export function FamilyCard({
+  initialData,
+}: {
+  initialData: RouterOutputs['club']['families']['getLoggedInFamily']
+}) {
   const [updateModalOpen, setUpdateModalOpen] = useState(false)
   const t = useTranslations('family_card')
 
-  const [family] = api.club.families.getLoggedInFamily.useSuspenseQuery(undefined, {
-    initialData
-  })
+  const [family] = api.club.families.getLoggedInFamily.useSuspenseQuery(
+    undefined,
+    {
+      initialData,
+    },
+  )
 
   return (
     <Fragment>
       <Card withBorder>
         <Stack>
           <Stack gap={0}>
-            <Text className='text-md font-semibold'>{t('welcome')}</Text>
-            <Title order={3}>{t('welcome2', { familyName: family?.name ?? '' })}</Title>
+            <Text className="text-md font-semibold">{t('welcome')}</Text>
+            <Title order={3}>
+              {t('welcome2', { familyName: family?.name ?? '' })}
+            </Title>
           </Stack>
           <Stack gap={2}>
             <Text>
@@ -39,12 +47,18 @@ export function FamilyCard({initialData}: {initialData: RouterOutputs['club']['f
             </Text>
             {family?.streetAddress && (
               <Text>
-                <b>{t('address')}</b>: {capitalizeWords(family.streetAddress)}, {capitalizeWords(family.city ?? "")}, {family.state?.toUpperCase()}, {family.zipCode}
+                <b>{t('address')}</b>: {capitalizeWords(family.streetAddress)},{' '}
+                {capitalizeWords(family.city ?? '')},{' '}
+                {family.state?.toUpperCase()}, {family.zipCode}
               </Text>
             )}
           </Stack>
           <div>
-            <Button onClick={() => setUpdateModalOpen(true)} className="mt-4" rightSection={<IconEdit stroke={1.5} />}>
+            <Button
+              onClick={() => setUpdateModalOpen(true)}
+              className="mt-4"
+              rightSection={<IconEdit stroke={1.5} />}
+            >
               {t('update_button')}
             </Button>
           </div>

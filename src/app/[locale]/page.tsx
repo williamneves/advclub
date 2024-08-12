@@ -2,7 +2,17 @@
 
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import { Button, Card, Divider, Flex, Group, List, Stack, Text, Title } from '@mantine/core'
+import {
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Group,
+  List,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core'
 import LOGO from '@/assets/images/LOGO-BLUE-CROSS.png'
 import Image from 'next/image'
 
@@ -12,20 +22,28 @@ export default function Home() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-white p-4">
       <Card shadow="lg" withBorder p={'lg'} maw={460} miw={320}>
         <Stack gap={'xs'}>
-          <Flex className="items-center gap-2 w-full justify-center">
+          <Flex className="w-full items-center justify-center gap-2">
             <Image
               src={LOGO}
               priority
               alt="BT Adventurer Club"
-              className="size-11 lg:size-13"
+              className="lg:size-13 size-11"
             />
-            <Text component="span" fz={'lg'} fw={'bold'} className="no-underline">
+            <Text
+              component="span"
+              fz={'lg'}
+              fw={'bold'}
+              className="no-underline"
+            >
               BT Adventurer&apos;s
             </Text>
           </Flex>
           <Divider />
           <Stack className="text-center" gap={6}>
-            <Title order={2} className="mb-2 text-2xl font-semibold text-blue-700">
+            <Title
+              order={2}
+              className="mb-2 text-2xl font-semibold text-blue-700"
+            >
               {t('welcome')}
             </Title>
             <Text className="mb-4 text-gray-600">{t('description')}</Text>
@@ -34,7 +52,9 @@ export default function Home() {
               <List.Item>{t('registerFamily')}</List.Item>
               <List.Item>{t('moreComingSoon')}</List.Item>
             </List>
-            <Text className="text-sm italic text-gray-500">{t('stayTuned')}</Text>
+            <Text className="text-sm italic text-gray-500">
+              {t('stayTuned')}
+            </Text>
           </Stack>
           {/* <Group grow py={'xs'}>
             {isSignedIn ? (

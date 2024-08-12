@@ -339,8 +339,7 @@
       "other": "Other",
       "": "Not Informed"
     }
-  }
-  ,
+  },
   "family_page": {
     "title": "Family Registration",
     "description": "Complete the steps below to register your family in the Adventurers Club",
@@ -367,14 +366,14 @@
     "loginButton": "Login",
     "goToClubButton": "Access Family Area"
   },
-    "family_card": {
-      "welcome": "Welcome,",
-      "welcome2": "Family {familyName}!",
-      "email": "Email",
-      "phone": "Phone",
-      "update_button": "Update Information",
-      "address": "Address"
-    },
+  "family_card": {
+    "welcome": "Welcome,",
+    "welcome2": "Family {familyName}!",
+    "email": "Email",
+    "phone": "Phone",
+    "update_button": "Update Information",
+    "address": "Address"
+  },
   "kid_form": {
     "title": "New Kid",
     "edit_title": "Edit Kid",

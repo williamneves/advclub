@@ -20,7 +20,7 @@ export const Kidstable = createTable('kids', {
   weight: text('weight').default(''),
   sex: sexEnum('sex'),
   avatar: text('avatar'),
-  birthDate: date('birth_date', { mode: 'string'}).notNull(),
+  birthDate: date('birth_date', { mode: 'string' }).notNull(),
   notes: text('notes').default(''),
   ...timestamps,
 })
@@ -30,7 +30,7 @@ export const kidsRelations = relations(Kidstable, ({ one }) => ({
     fields: [Kidstable.familyId],
     references: [FamiliesTable.id],
     relationName: 'family_kids',
-  })
+  }),
 }))
 
 export type KidsSelect = typeof Kidstable.$inferSelect

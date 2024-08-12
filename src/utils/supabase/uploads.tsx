@@ -164,7 +164,7 @@ export async function deleteFileByUrl(url: string) {
   const { error } = await supabaseClient.storage
     .from(DEFAULT_BUCKET)
     .remove([path])
-  
+
   if (error) {
     console.error('Error deleting file:', error)
     throw error

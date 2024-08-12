@@ -11,14 +11,16 @@ export function Logo({ withBorder = true }: { withBorder?: boolean }) {
         'border-b': withBorder,
       })}
     >
-      <Link  href="/" className="flex items-center  gap-2 font-semibold">
+      <Link href="/" className="flex items-center gap-2 font-semibold">
         <Image
           src={LOGO}
           priority
           alt="BT Adventurer Club"
           className="size-9 lg:size-11"
         />
-        <Text component='span' fz={'lg'} fw={'bold'} className='no-underline'>BT Adventurer&apos;s</Text>
+        <Text component="span" fz={'lg'} fw={'bold'} className="no-underline">
+          BT Adventurer&apos;s
+        </Text>
       </Link>
     </div>
   )

@@ -206,13 +206,9 @@
         "advclub_kids_family_id_advclub_families_id_fk": {
           "name": "advclub_kids_family_id_advclub_families_id_fk",
           "tableFrom": "advclub_kids",
-          "columnsFrom": [
-            "family_id"
-          ],
+          "columnsFrom": ["family_id"],
           "tableTo": "advclub_families",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -464,13 +460,9 @@
         "advclub_parents_family_id_advclub_families_id_fk": {
           "name": "advclub_parents_family_id_advclub_families_id_fk",
           "tableFrom": "advclub_parents",
-          "columnsFrom": [
-            "family_id"
-          ],
+          "columnsFrom": ["family_id"],
           "tableTo": "advclub_families",
-          "columnsTo": [
-            "id"
-          ],
+          "columnsTo": ["id"],
           "onUpdate": "no action",
           "onDelete": "cascade"
         }
@@ -483,11 +475,7 @@
     "public.sex": {
       "name": "sex",
       "schema": "public",
-      "values": [
-        "male",
-        "female",
-        ""
-      ]
+      "values": ["male", "female", ""]
     }
   },
   "schemas": {},

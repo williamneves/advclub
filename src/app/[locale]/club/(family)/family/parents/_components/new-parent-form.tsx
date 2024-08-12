@@ -48,7 +48,10 @@ const createParentSchema = (t: (key: string) => string) =>
       lastName: z.string().min(1, t('lastName.error')),
       type: parentsGuardiansType,
       sex: sexEnumSchema,
-      phone: z.string().min(4, t('phone.error')).transform((value) => value.replace(/\D/g, '')),
+      phone: z
+        .string()
+        .min(4, t('phone.error'))
+        .transform((value) => value.replace(/\D/g, '')),
       email: z.string().email(t('email.error')),
       main: z.boolean().default(false),
       allowToPickUp: z.boolean().default(false),
@@ -76,7 +79,6 @@ export function NewParentForm({
   const [loading, setLoading] = useState(false)
   const t = useTranslations('parent_form')
   const schema = createParentSchema(t)
- 
 
   const form = useForm<NewParentFormData>({
     initialValues: {
@@ -111,20 +113,12 @@ export function NewParentForm({
     },
   })
 
-  const {
-     avatarFile,
-    setAvatarFile,
-    uploadAvatar
-   } = useUploadAvatar()
+  const { avatarFile, setAvatarFile, uploadAvatar } = useUploadAvatar()
 
-   const {
-     uploadDriverLicense,
-     driverLicenseFile,
-     setDriverLicenseFile,
-   } = useUploadDriverLicense()
+  const { uploadDriverLicense, driverLicenseFile, setDriverLicenseFile } =
+    useUploadDriverLicense()
 
   const handleSubmit = async (data: NewParentFormData) => {
-
     // If pickup is active, parent need to have avatar and driver licence
     if (data.allowToPickUp) {
       if (!avatarFile) {

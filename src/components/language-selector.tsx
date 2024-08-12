@@ -2,7 +2,7 @@
 
 import { useLocale } from 'next-intl'
 import { useRouter, usePathname } from '@/navigation'
-import { GiBrazilFlag, GiUsaFlag } from "react-icons/gi"
+import { GiBrazilFlag, GiUsaFlag } from 'react-icons/gi'
 import { Flex, Group, Menu, Text, ThemeIcon } from '@mantine/core'
 import Image from 'next/image'
 import BRAZIL from '@/assets/images/brazil_flag.png'

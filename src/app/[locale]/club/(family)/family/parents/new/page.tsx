@@ -11,10 +11,12 @@ export default async function NewParentPage() {
   }
 
   // return <NewParentForm familyId={family.id} familyUUID={family.uuid} isFirstParent={family.parents.length === 0} />
-  return <CreateParent
-    familyId={family.id}
-    familyUUID={family.uuid}
-    mode="new"
-    isFirstParent={family.parents.length === 0}
-  />
+  return (
+    <CreateParent
+      familyId={family.id}
+      familyUUID={family.uuid}
+      mode="new"
+      isFirstParent={family.parents.length === 0}
+    />
+  )
 }

@@ -182,7 +182,6 @@ export const CreateParent = ({
   }
 
   const handleUpdateParent = async (data: ParentFormData) => {
-
     if (!parentId) {
       throw new Error('Parent not found')
     }
@@ -322,7 +321,11 @@ export const CreateParent = ({
         }}
       />
       <div className="flex justify-end">
-        <Button rightSection={<IconDeviceFloppy size={20} />} type="submit" loading={loading}>
+        <Button
+          rightSection={<IconDeviceFloppy size={20} />}
+          type="submit"
+          loading={loading}
+        >
           {mode === 'new' ? t('button.label') : t('edit_button.label')}
         </Button>
       </div>

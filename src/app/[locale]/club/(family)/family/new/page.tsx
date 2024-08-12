@@ -107,10 +107,7 @@ export default function NewFamilyPage() {
             'familyName',
             getLastName(user.user_metadata?.name) ?? '',
           )
-          form.setFieldValue(
-            'familyEmail',
-            user.email ?? '',
-          )
+          form.setFieldValue('familyEmail', user.email ?? '')
           form.setFieldValue(
             'familyPhone',
             user.phone ?? user.user_metadata?.phone ?? '',

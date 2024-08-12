@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from '@mantine/form'
 import { useTranslations } from 'next-intl'
 import {
@@ -10,11 +10,9 @@ import {
   Text,
   SimpleGrid,
   TextInput,
-  Select,
   Divider,
   Group,
   Button,
-  Box,
   LoadingOverlay,
   Image,
   Alert,
@@ -26,14 +24,14 @@ import {
 import { IconPhotoUp, IconX } from '@tabler/icons-react'
 import { FileButton } from '@mantine/core'
 import { useUploadAvatar } from '@/lib/useUploadFiles'
-import { api, type RouterOutputs } from '@/trpc/react'
+import { api } from '@/trpc/react'
 import { z } from 'zod'
 import { sexEnumSchema } from '@/server/db/schemas'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { useRouter } from 'next/navigation'
 import { notifications } from '@mantine/notifications'
 import { cn } from '@/lib/utils'
-import { DateInput, DateInputProps } from '@mantine/dates'
+import { DateInput, type DateInputProps } from '@mantine/dates'
 import dayjs from 'dayjs'
 import { deleteFileByUrl } from '@/utils/supabase/uploads'
 
@@ -222,7 +220,7 @@ export function EditKidForm({ kidId }: EditKidFormProps) {
                       <IconX
                         stroke={2}
                         color="white"
-                        className="shadow-md absolute right-2 top-2 cursor-pointer rounded-full border border-solid border-white bg-red-500 p-1 shadow-mtn-md ring-2 ring-red-500 transition-all ease-in-out hover:scale-110"
+                        className="absolute right-2 top-2 cursor-pointer rounded-full border border-solid border-white bg-red-500 p-1 shadow-md shadow-mtn-md ring-2 ring-red-500 transition-all ease-in-out hover:scale-110"
                         onClick={handleRemoveAvatar}
                       />
                     </Card.Section>

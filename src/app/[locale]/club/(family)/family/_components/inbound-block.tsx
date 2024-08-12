@@ -16,13 +16,20 @@ import {
   Title,
 } from '@mantine/core'
 
-export function InboundBlock({initialData}: {initialData: RouterOutputs['club']['families']['getLoggedInFamily']}) {
+export function InboundBlock({
+  initialData,
+}: {
+  initialData: RouterOutputs['club']['families']['getLoggedInFamily']
+}) {
   const t = useTranslations('family_page')
   const router = useRouter()
 
-  const [family] = api.club.families.getLoggedInFamily.useSuspenseQuery(undefined, {
-    initialData,
-  })
+  const [family] = api.club.families.getLoggedInFamily.useSuspenseQuery(
+    undefined,
+    {
+      initialData,
+    },
+  )
   const parentsLength = family?.parents?.length
   const kidsLength = family?.kids?.length
   const familyHasParents = !!parentsLength
@@ -52,7 +59,9 @@ export function InboundBlock({initialData}: {initialData: RouterOutputs['club'][
   return (
     <Card withBorder>
       <Title order={2}>{t('title')}</Title>
-      <Text fz={'md'} c={'dimmed'}>{t('description')}</Text>
+      <Text fz={'md'} c={'dimmed'}>
+        {t('description')}
+      </Text>
       <div className="flex flex-col gap-y-4">
         <Divider />
 

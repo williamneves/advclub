@@ -1,4 +1,4 @@
-import { env } from '@/env';
+import { env } from '@/env'
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
 import { NextResponse } from 'next/server'
 
@@ -19,7 +19,16 @@ export async function POST(request: Request): Promise<NextResponse> {
         // Otherwise, you're allowing anonymous uploads.
 
         return {
-          allowedContentTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp', 'image/heic', 'image/heif', 'application/pdf'],
+          allowedContentTypes: [
+            'image/png',
+            'image/jpeg',
+            'image/jpg',
+            'image/gif',
+            'image/webp',
+            'image/heic',
+            'image/heif',
+            'application/pdf',
+          ],
           maxFileSize: 10 * 1024 * 1024, // 10MB
           tokenPayload: JSON.stringify({
             // optional, sent to your server on upload completion

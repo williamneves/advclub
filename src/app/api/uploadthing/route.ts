@@ -4,7 +4,6 @@ import { getAuth } from '@clerk/nextjs/server'
 
 const f = createUploadthing()
 
-
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
@@ -12,7 +11,7 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
-      const {userId} = getAuth(req)
+      const { userId } = getAuth(req)
 
       // If you throw, the user will not be able to upload
       if (!userId) throw new UploadThingError('Unauthorized')

@@ -25,9 +25,7 @@ interface ThemeProviderProps {
   modalsProviderProps?: Partial<ModalsProviderProps>
 }
 
-export const BaseThemeProvider = ({
-  children,
-}: ThemeProviderProps) => {
+export const BaseThemeProvider = ({ children }: ThemeProviderProps) => {
   return (
     <MantineProvider theme={defaultTheme}>
       <Notifications position="top-center" limit={6} mt={60} />
