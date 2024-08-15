@@ -345,7 +345,7 @@ export default function MedicalConsent() {
                     </Text>
                     <Text>
                       <b>Phone Number</b>{' '}
-                      {kidPhone === '' ? 'Not provided' : parentPhone}
+                      {parentPhone === '' ? 'Not provided' : parentPhone}
                     </Text>
                     <Text>
                       <b>Address:</b>{' '}
