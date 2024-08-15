@@ -148,10 +148,6 @@ export default function MedicalConsent() {
     (kid) => kid.id == form.getValues().form.kidId,
   )?.sex
 
-  const kidPhone = kids.data?.find(
-    (kid) => kid.id == form.getValues().form.kidId,
-  )?.phoneNumber
-
   const weight = kids.data?.find(
     (kid) => kid.id == form.getValues().form.kidId,
   )?.weight
@@ -332,10 +328,6 @@ export default function MedicalConsent() {
                     </Text>
                     <Text>
                       <b>Gender:</b> {kidSex}
-                    </Text>
-                    <Text>
-                      <b>Phone Number</b>{' '}
-                      {kidPhone === '' ? 'Not provided' : kidPhone}
                     </Text>
                   </Stack>
                   {/* Parent Info */}
