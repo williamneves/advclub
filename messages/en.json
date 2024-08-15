@@ -451,6 +451,17 @@
     "notes": {
       "label": "Notes",
       "placeholder": "Enter notes about the kid"
+    },
+    "profile_picture": {
+      "label": "Profile Picture",
+      "disclaimer": "Images / max. 5MB",
+      "buttonNoFile": "Select Photo",
+      "buttonWithFile": "Change Photo",
+      "error": "Something went wrong while trying to upload the Avatar",
+      "remove": "Remove profile picture"
+    },
+    "divider": {
+      "personal_info": "Personal Information"
     }
   },
   "kids_page": {
