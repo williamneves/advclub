@@ -1,6 +1,6 @@
 import { api } from '@/trpc/server'
-import { NewKidForm } from '../_components/new-kid-form'
 import { notFound } from 'next/navigation'
+import { CreateKids } from '../_components/create-kids'
 
 export default async function NewKidPage() {
   const family = await api.club.families.getLoggedInFamily()
@@ -9,5 +9,12 @@ export default async function NewKidPage() {
     notFound()
   }
 
-  return <NewKidForm familyId={family.id} familyUUID={family.uuid} />
+  return (
+    <CreateKids
+      isFirstKid={family.kids.length === 0}
+      familyId={family.id}
+      familyUUID={family.uuid}
+      mode="new"
+    />
+  )
 }
