@@ -47,6 +47,7 @@ const config = {
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'react/no-unescaped-entities': 'off',
   },
 }
 module.exports = config

@@ -91,7 +91,7 @@ export function NavBlock({
             />
             <NavLink
               component={Link}
-              href="/club/family/forms"
+              href="/club/forms"
               leftSection={<FileStack className="size-5" />}
               label={t('forms')}
               data-active={isActive(pathname, '/club/family/forms')}
