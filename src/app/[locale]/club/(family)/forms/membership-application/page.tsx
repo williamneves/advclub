@@ -53,9 +53,16 @@ const fieldsSchema = z.object({
     oldClubName: z.string().default('').nullish(),
     levelsCompleted: z.array(z.string()).default([]).nullish(),
   }),
-  familyHistory: z.enum(['yes', 'no']).default('no').nullish(),
+  masterGuides: z.object({
+    father: z.enum(['yes', 'no']).default('no').nullish(),
+    mother: z.enum(['yes', 'no']).default('no').nullish(),
+  }),
+  adventuresBefore: z.object({
+    father: z.enum(['yes', 'no']).default('no').nullish(),
+    mother: z.enum(['yes', 'no']).default('no').nullish(),
+  }),
   approvalOfParents: z.boolean().default(false),
-  consentAndSign: z.boolean().default(false),
+  consentAndSign: z.string().min(1, 'Initials are required').default(''),
 })
 
 const schema = z.object({
@@ -90,9 +97,16 @@ const defaultValues: FormType = {
         oldClubName: '',
         levelsCompleted: [],
       },
-      familyHistory: 'no',
+      masterGuides: {
+        father: 'no',
+        mother: 'no',
+      },
+      adventuresBefore: {
+        father: 'no',
+        mother: 'no',
+      },
       approvalOfParents: false,
-      consentAndSign: false,
+      consentAndSign: '',
     },
   },
 }
@@ -123,13 +137,19 @@ export default function MembershipApplication() {
     (kid) => kid.id == form.getValues().form.kidId,
   )
 
-  const kidName = selectedKid ? `${selectedKid.firstName} ${selectedKid.lastName}` : 'Waiting for selection'
-  const kidAge = selectedKid ? `${dayjs(selectedKid.birthDate).format('DD/MM/YYYY')} (${dayjs().diff(selectedKid.birthDate, 'year')} years old)` : 'Waiting for selection'
+  const kidName = selectedKid
+    ? `${selectedKid.firstName} ${selectedKid.lastName}`
+    : 'Waiting for selection'
+  const kidAge = selectedKid
+    ? `${dayjs(selectedKid.birthDate).format('DD/MM/YYYY')} (${dayjs().diff(selectedKid.birthDate, 'year')} years old)`
+    : 'Waiting for selection'
 
-  const selectedParent = parents.data?.find(
-    (parent) => parent.id == form.getValues().form.guardianId,
-  )
-  const parentName = selectedParent ? `${selectedParent.firstName} ${selectedParent.lastName}` : 'Waiting for selection'
+  // const selectedParent = parents.data?.find(
+  //   (parent) => parent.id == form.getValues().form.guardianId,
+  // )
+  // const parentName = selectedParent
+  //   ? `${selectedParent.firstName} ${selectedParent.lastName}`
+  //   : 'Waiting for selection'
 
   const handleSubmit = (values: FormType) => {
     console.log(values)
@@ -160,7 +180,7 @@ export default function MembershipApplication() {
             <Stack gap={4}>
               <Select
                 label="Kid"
-                placeholder="Select a reason"
+                placeholder="Select a kid"
                 readOnly={kids.isLoading}
                 rightSection={kids.isLoading ? <Loader size={16} /> : undefined}
                 data={kidsSelectData}
@@ -168,14 +188,19 @@ export default function MembershipApplication() {
               />
               <Select
                 label="Responsible Person"
-                placeholder="Select a reason"
+                placeholder="Select a responsible"
                 data={parentsSelectData}
                 {...form.getInputProps('form.guardianId')}
               />
             </Stack>
           </Stack>
           {/* Form Block */}
-          <Collapse in={!!form.getValues().form.kidId && !!form.getValues().form.guardianId}>
+          <Collapse
+            in={
+              !!form.getValues().form.kidId &&
+              !!form.getValues().form.guardianId
+            }
+          >
             <Stack>
               <Divider />
               <Alert title="Read all the boxes and check the ones that apply." />
@@ -268,7 +293,7 @@ export default function MembershipApplication() {
                 </Group>
               </Fieldset>
               {/* Personal Information */}
-              <Fieldset legend={<Badge>Applicant's Commitment</Badge>}>
+              <Fieldset legend={<Badge>Personal Information</Badge>}>
                 <Stack>
                   {/* CHildren Info */}
                   <Stack gap={4}>
@@ -344,9 +369,103 @@ export default function MembershipApplication() {
                 </Stack>
               </Fieldset>
               {/* Family History */}
+              <Fieldset legend={<Badge>Family History</Badge>}>
+                {/* Master Guides */}
+                <Stack>
+                  <Stack gap={4}>
+                    <Text fz={'sm'} className="font-medium">
+                      My parents/guardians are Master Guides
+                    </Text>
+                    <Radio.Group
+                      label="Father"
+                      {...form.getInputProps('form.fields.masterGuides.father')}
+                    >
+                      <Group>
+                        <Radio value="yes" label="Yes" />
+                        <Radio value="no" label="No" />
+                      </Group>
+                    </Radio.Group>
+                    <Radio.Group
+                      label="Mother"
+                      {...form.getInputProps('form.fields.masterGuides.mother')}
+                    >
+                      <Group>
+                        <Radio value="yes" label="Yes" />
+                        <Radio value="no" label="No" />
+                      </Group>
+                    </Radio.Group>
+                  </Stack>
+                  {/* Adventure's Before */}
+                  <Stack gap={4}>
+                    <Text fz={'sm'} className="font-medium">
+                      Has either parent worked with Adventurers before?
+                    </Text>
+                    <Radio.Group
+                      label="Father"
+                      {...form.getInputProps(
+                        'form.fields.adventuresBefore.father',
+                      )}
+                    >
+                      <Group>
+                        <Radio value="yes" label="Yes" />
+                        <Radio value="no" label="No" />
+                      </Group>
+                    </Radio.Group>
+                    <Radio.Group
+                      label="Mother"
+                      {...form.getInputProps(
+                        'form.fields.adventuresBefore.mother',
+                      )}
+                    >
+                      <Group>
+                        <Radio value="yes" label="Yes" />
+                        <Radio value="no" label="No" />
+                      </Group>
+                    </Radio.Group>
+                  </Stack>
+                </Stack>
+              </Fieldset>
               {/* Approval of Parents */}
+              <Fieldset
+                legend={<Badge>Approval of Parents or Guardians</Badge>}
+              >
+                <Group align="center" gap={'md'} wrap="nowrap">
+                  <Checkbox
+                    {...form.getInputProps('form.fields.approvalOfParents', {
+                      type: 'checkbox',
+                    })}
+                  />
+                  <Text>
+                    The applicant is in Pre-K through grade 4 at the time of
+                    registration. We have read the Pledge and Law and are
+                    willing and desirous that the applicant become an
+                    Adventurer. We will assist the applicant in observing the
+                    rules of the Adventurer organization. As parents, we
+                    understand that the Adventurer Club program is an active one
+                    for the applicant as well as the parent/guardian. It
+                    includes many opportunities for service, adventure, and fun.
+                    We will cooperate: <br /> 1. By learning how we can assist
+                    the applicant and his/her leaders. <br /> 2. By encouraging
+                    the applicant to take an active part in all Club activities.{' '}
+                    <br />
+                    3. By attending events to which parents are invited. <br />
+                    4. By assisting Club leaders and by serving as leaders if
+                    called upon.
+                  </Text>
+                </Group>
+              </Fieldset>
               {/* Consent and Sign */}
-        <Button type="submit">Submit</Button>
+              <Fieldset legend={<Badge>Consent and Sign</Badge>}>
+                <Text>
+                  We hereby certify that {kidName} was born on {kidAge}
+                </Text>
+                <TextInput
+                  label="Parent/Guardian Initials"
+                  placeholder="Initials"
+                  {...form.getInputProps('form.fields.consentAndSign')}
+                />
+              </Fieldset>
+              <Button type="submit">Submit</Button>
             </Stack>
           </Collapse>
         </Stack>
