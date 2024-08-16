@@ -7,11 +7,11 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    POSTGRES_URL: z.string().url(),
+    POSTGRES_URL: z.string(),
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development'),
-    SUPABASE_URL: z.string().url(),
+    SUPABASE_URL: z.string(),
     SUPABASE_SERVICE_ROLE_KEY: z.string(),
     SECRET_CLIENT_COOKIE_VAR: z.string(),
   },
@@ -23,8 +23,8 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
-    NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
+    NEXT_PUBLIC_SUPABASE_URL: z.string(),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
   },
 
   /**
