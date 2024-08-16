@@ -1,0 +1,1 @@
+ALTER TABLE "advclub_parents" ADD COLUMN "birth_date" date NOT NULL;

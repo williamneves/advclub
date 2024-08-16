@@ -1,0 +1,1 @@
+ALTER TABLE "advclub_families" ALTER COLUMN "phone_number" SET NOT NULL;

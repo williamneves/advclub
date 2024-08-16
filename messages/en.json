@@ -1,0 +1,500 @@
+{
+  "login": {
+    "auth_user_credentials": "Using email and password",
+    "forgot_password": "Forgot password",
+    "login": "Login",
+    "email": "Email",
+    "login_welcome": "Welcome Back",
+    "password": "Password",
+    "register": "Register",
+    "signup_bottom_login": "Don't have an account, Sign Up",
+    "errors": {
+      "email": "Email is required",
+      "password": "Password is required"
+    }
+  },
+  "not_found": {
+    "title": "Something is not right...",
+    "description": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support.",
+    "button": "Get back to home page"
+  },
+  "navigation": {
+    "family": "Family",
+    "parents": "Parents",
+    "kids": "Kids",
+    "forms": "Forms"
+  },
+  "common": {
+    "logout": "Logout",
+    "form_send_success": "Form sent successfully",
+    "language_chooser": "Choose Language",
+    "language_chooser_label": "Language",
+    "language_chooser_options": {
+      "pt-BR": "Português",
+      "en": "English"
+    },
+    "profile": "Profile",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "notifications_label": "Notifications",
+    "notifications_options": {
+      "all": "All",
+      "none": "None"
+    },
+    "logout_modal": {
+      "title": "Are you sure you want to logout?",
+      "message": "By confirming, your session will be closed and you will be redirected to the login page.",
+      "confirmation_message": "Are you sure you want to logout?",
+      "confirm": "YES!",
+      "cancel": "CANCEL"
+    },
+    "logout_button": "Logout",
+    "success": "Success",
+    "error": "Error",
+    "system_error": "Something went wrong, try again later, or contact support",
+    "warning": "Warning",
+    "info": "Info",
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "view": "View",
+    "phone": "Phone",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "register": "Register",
+    "login": "Login",
+    "welcome": "Welcome",
+    "sorry": "Sorry",
+    "no_auth": "Not authorized",
+    "not_found": "Not found",
+    "not_implemented": "Not implemented",
+    "not_available": "Not available",
+    "user": "User",
+    "users": "Users",
+    "family": "Family",
+    "families": "Families"
+  },
+  "new_family_form": {
+    "title": "New Family Registration",
+    "welcome_message": "Welcome to the Adventurers Club!",
+    "description": "To start your registration, please fill in the fields below with the family's information.",
+    "disclaimer": "You and your family are very important to our community. Instructing children on the path of Christ is our mission and responsibility.",
+    "family_info_label": "Family Information",
+    "user_has_family": "User already has a family registered, redirecting to the family page",
+    "name": {
+      "label": "Family Name",
+      "placeholder": "Ex: Smith (Usually the family's last name)",
+      "error": "Family name is required"
+    },
+    "phone": {
+      "label": "Family Phone",
+      "placeholder": "Ex: (123) 456-7890",
+      "error": "Family phone is required"
+    },
+    "email": {
+      "label": "Family Email",
+      "placeholder": "Ex: email@email.com",
+      "error": "Family email is required"
+    },
+    "address_label": "Address Information",
+    "streetAddress": {
+      "label": "Street Address",
+      "placeholder": "Ex: 1234 Main St",
+      "error": "Street address is required"
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Ex: Spring Valley",
+      "error": "City is required"
+    },
+    "state": {
+      "label": "State",
+      "placeholder": "Ex: FL",
+      "searchPlaceholder": "Search for the state",
+      "noResults": "No state found",
+      "error": "State is required"
+    },
+    "zipCode": {
+      "label": "Zip Code",
+      "placeholder": "Ex: 33045",
+      "error": "Zip code is invalid"
+    },
+    "button": {
+      "label": "Create Family",
+      "loading": "Creating Family..."
+    },
+    "toast": {
+      "success": "Family created successfully!",
+      "error": "Error creating family"
+    }
+  },
+  "update_family_form": {
+    "title": "Update Family",
+    "description": "Fill in the fields below to update the family",
+    "button": {
+      "label": "Update Family",
+      "loading": "Updating Family..."
+    },
+    "cancel": "Cancel",
+    "toast": {
+      "success": "Family updated successfully!",
+      "error": "Error updating family"
+    },
+    "name": {
+      "label": "Family Name",
+      "placeholder": "Enter the family name",
+      "error": "Family name is required"
+    },
+    "phone": {
+      "label": "Family Phone",
+      "placeholder": "Enter the family phone",
+      "error": "Family phone is required"
+    },
+    "email": {
+      "label": "Family Email",
+      "placeholder": "Enter the family email",
+      "error": "Family email is required"
+    },
+    "address_label": "Address Information",
+    "streetAddress": {
+      "label": "Street Address",
+      "placeholder": "Ex: 1234 Main St",
+      "error": "Street address is required"
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Ex: Spring Valley",
+      "error": "City is required"
+    },
+    "state": {
+      "label": "State",
+      "placeholder": "Ex: FL",
+      "searchPlaceholder": "Search for the state",
+      "noResults": "No state found",
+      "error": "State is required"
+    },
+    "zipCode": {
+      "label": "Zip Code",
+      "placeholder": "Ex: 33045",
+      "error": "Zip code is invalid"
+    }
+  },
+  "parent_form": {
+    "title": "New Guardian",
+    "edit_title": "Edit Guardian",
+    "description": "Fill in the fields below to add a new guardian to the family",
+    "edit_description": "Update the guardian's information below",
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "Enter first name",
+      "error": "First name is required"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Enter last name",
+      "error": "Last name is required"
+    },
+    "type": {
+      "label": "Guardian Type",
+      "options": {
+        "parent": "Parent",
+        "guardian": "Guardian",
+        "relative": "Relative"
+      },
+      "error": "Select guardian type"
+    },
+    "sex": {
+      "label": "Sex",
+      "options": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "error": "Select sex"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter phone number",
+      "error": "Phone is required"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter email",
+      "error": "Valid email is required"
+    },
+    "birthDate": {
+      "label": "Date of Birth",
+      "placeholder": "Ex: 12/31/2015",
+      "error": "Date of birth is required"
+    },
+    "divider": {
+      "type": "Guardian Type",
+      "address": "Address",
+      "permissions": "Permissions",
+      "personal_info": "Personal Information",
+      "documents": "Documents"
+    },
+    "family_address": {
+      "label": "Use Family Address",
+      "description": "Use the family's address as the guardian's address",
+      "error": "Address is required"
+    },
+    "streetAddress": {
+      "label": "Address",
+      "placeholder": "Enter address",
+      "error": "Address is required"
+    },
+    "city": {
+      "label": "City",
+      "placeholder": "Enter city",
+      "error": "City is required"
+    },
+    "state": {
+      "label": "State",
+      "placeholder": "Enter state",
+      "error": "Invalid State"
+    },
+    "zipCode": {
+      "label": "ZIP Code",
+      "placeholder": "Enter ZIP code",
+      "error": "ZIP code is required"
+    },
+    "permissions": {
+      "firstParentAlert": {
+        "title": "First Guardian",
+        "description": "This is the first guardian of the family, so all permissions are enabled by default"
+      },
+      "pickup": {
+        "label": "Allowed Pick-up",
+        "description": "Allows the guardian to pick up the child from the activity location (church/event) and take them",
+        "error": "You must upload the avatar and driver's license to allow Pick-up"
+      },
+      "sign_document": {
+        "label": "Allowed to Sign Documents",
+        "description": "Allows the guardian to sign documents for the child"
+      }
+    },
+    "files": {
+      "divider": "Files",
+      "driverLicence": {
+        "label": "Driver's License",
+        "disclaimer": "A Driver's License is REQUIRED for those allowed Pick-up/Drop-off",
+        "placeholder": "Upload Driver's License",
+        "error": "Something went wrong while trying to upload the Driver's License",
+        "remove": "Remove Driver's License"
+      }
+    },
+    "driverLicence": {
+      "label": "Driver's License",
+      "disclaimer": "Images/PDFs max. 5MB",
+      "buttonNoFile": "Upload Driver's License",
+      "buttonWithFile": "Change Driver's License",
+      "error": "Something went wrong while trying to upload the Driver's License",
+      "remove": "Remove Driver's License"
+    },
+    "profile_picture": {
+      "label": "Profile Picture",
+      "disclaimer": "Images / max. 5MB",
+      "buttonNoFile": "Select Photo",
+      "buttonWithFile": "Change Photo",
+      "error": "Something went wrong while trying to upload the Avatar",
+      "remove": "Remove profile picture"
+    },
+    "main": {
+      "label": "Primary Guardian",
+      "description": "Check if this is the primary guardian (Only one guardian can be the primary)"
+    },
+    "button": {
+      "label": "Add Guardian",
+      "loading": "Adding..."
+    },
+    "edit_button": {
+      "label": "Update Guardian",
+      "loading": "Updating..."
+    },
+    "toast": {
+      "success": "Guardian added successfully!",
+      "error": "Error adding guardian"
+    },
+    "edit_toast": {
+      "success": "Guardian updated successfully!",
+      "error": "Error updating guardian"
+    }
+  },
+  "parents_page": {
+    "title": "Guardians",
+    "loading": "Loading...",
+    "edit_button": "Edit",
+    "add_parent_button": "New",
+    "no_parents": {
+      "title": "No Guardians Registered",
+      "description": "Click the button below to add a guardian"
+    },
+    "type": {
+      "parent": "Parent",
+      "guardian": "Guardian",
+      "relative": "Relative"
+    },
+    "sex": {
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "": "Not Informed"
+    }
+  },
+  "family_page": {
+    "title": "Family Registration",
+    "description": "Complete the steps below to register your family in the Adventurers Club",
+    "loading": "Loading...",
+    "go_to": "Add",
+    "register_button": "Fill Registration Form",
+    "add_parents": "Add parents/guardians",
+    "add_children": "Add children",
+    "tasks": {
+      "add_parents": "Add parents/guardians",
+      "add_children": "Add children",
+      "fill_registration": "Fill registration form for each child",
+      "coming_soon_badge": "Coming Soon"
+    }
+  },
+  "Home": {
+    "welcome": "Welcome to the Adventurers Club!",
+    "description": "We're glad to have you here! This site is constantly evolving to better serve our community.",
+    "currentFeatures": "Currently, you can already:",
+    "registerFamily": "• Register your family",
+    "moreComingSoon": "• More features coming soon!",
+    "stayTuned": "Stay tuned for news and updates!",
+    "registerButton": "Register Family",
+    "loginButton": "Login",
+    "goToClubButton": "Access Family Area"
+  },
+  "family_card": {
+    "welcome": "Welcome,",
+    "welcome2": "Family {familyName}!",
+    "email": "Email",
+    "phone": "Phone",
+    "update_button": "Update Information",
+    "address": "Address"
+  },
+  "kid_form": {
+    "title": "New Kid",
+    "edit_title": "Edit Kid",
+    "description": "Fill in the fields below to add a new kid to the family",
+    "edit_description": "Update the kid's information below",
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "Enter first name",
+      "error": "First name is required"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Enter last name",
+      "error": "Last name is required"
+    },
+    "alias": {
+      "label": "Alias",
+      "placeholder": "How the child would like to be called"
+    },
+    "birthDate": {
+      "label": "Birth Date (US Format)",
+      "placeholder": "Ex: 12/31/2015"
+    },
+    "phoneNumber": {
+      "label": "Phone Number",
+      "placeholder": "Enter phone number",
+      "error": "Phone number is required"
+    },
+    "height": {
+      "label": "Height (US Format)",
+      "placeholder": "Ex: 5'10\""
+    },
+    "weight": {
+      "label": "Weight (US Format)",
+      "placeholder": "Ex: 150 lbs"
+    },
+    "sex": {
+      "label": "Sex",
+      "options": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "error": "Select sex"
+    },
+    "files": {
+      "divider": "Files",
+      "avatar": {
+        "label": "Avatar",
+        "error_required": "To facilitate kid identification, an avatar is required",
+        "disclaimer": "The avatar is optional, but recommended to facilitate kid identification",
+        "placeholder": "Upload avatar",
+        "error": "Something went wrong while uploading the avatar",
+        "remove": "Remove avatar"
+      }
+    },
+    "button": {
+      "label": "Add Kid",
+      "loading": "Adding...",
+      "cancel": "Go Back"
+    },
+    "edit_button": {
+      "label": "Update Kid",
+      "loading": "Updating...",
+      "cancel": "Cancel"
+    },
+    "toast": {
+      "success": "Kid added successfully!",
+      "error": "Error adding kid"
+    },
+    "edit_toast": {
+      "success": "Kid updated successfully!",
+      "error": "Error updating kid"
+    },
+    "notes": {
+      "label": "Notes",
+      "placeholder": "Enter notes about the kid"
+    },
+    "profile_picture": {
+      "label": "Profile Picture",
+      "disclaimer": "Images / max. 5MB",
+      "buttonNoFile": "Select Photo",
+      "buttonWithFile": "Change Photo",
+      "error": "Something went wrong while trying to upload the Avatar",
+      "remove": "Remove profile picture"
+    },
+    "divider": {
+      "personal_info": "Personal Information"
+    }
+  },
+  "kids_page": {
+    "title": "Children",
+    "add_kid_button": "Add Child",
+    "edit_button": "Edit",
+    "alias": "Nickname",
+    "no_kids": {
+      "title": "No Children Registered",
+      "description": "Click the button above to add a child"
+    },
+    "sex": {
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "": "Not Informed"
+    }
+  },
+  "forms_page": {
+    "title": "Registration",
+    "under_construction": {
+      "title": "Page Under Development",
+      "description": "The registration forms will be available soon",
+      "message": "The registration forms for children will be available soon. In the meantime, after registering your family and children, please contact one of the following people:",
+      "contact_info": "Contact information:",
+      "contact_template": "{name}: {phone}"
+    }
+  }
+}

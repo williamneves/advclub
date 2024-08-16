@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1722717665539,
+      "tag": "20240803204105_hot_screwball",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1722755325564,
+      "tag": "20240804070845_medical_wolfsbane",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1722795330732,
+      "tag": "20240804181530_omniscient_sister_grimm",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1722830726188,
+      "tag": "20240805040526_high_blue_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1723263945325,
+      "tag": "20240810042545_productive_red_skull",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1723827667165,
+      "tag": "20240816170107_opposite_captain_universe",
+      "breakpoints": true
+    }
+  ]
+}

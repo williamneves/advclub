@@ -1,0 +1,500 @@
+{
+  "login": {
+    "auth_user_credentials": "Usando email e senha",
+    "forgot_password": "Esqueceu a senha",
+    "login": "Entrar",
+    "email": "Email",
+    "login_welcome": "Seja bem vindo",
+    "password": "Senha",
+    "register": "Cadastrar",
+    "signup_bottom_login": "Não tem conta, Cadastre-se",
+    "errors": {
+      "email": "Email é necessário",
+      "password": "Senha é necessário"
+    }
+  },
+  "navigation": {
+    "family": "Família",
+    "parents": "Responsáveis",
+    "kids": "Crianças",
+    "forms": "Documentos"
+  },
+  "common": {
+    "form_send_success": "Formulário enviado com sucesso",
+    "logout": "Sair",
+    "language_chooser": "Escolher Idioma",
+    "language_chooser_label": "Idioma",
+    "language_chooser_options": {
+      "pt-BR": "Português",
+      "en": "Inglês"
+    },
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "notifications": "Notificações",
+    "notifications_label": "Notificações",
+    "notifications_options": {
+      "all": "Todas",
+      "none": "Nenhuma"
+    },
+    "logout_button": "Sair",
+    "logout_modal": {
+      "title": "Você tem certeza que deseja sair?",
+      "message": "Ao confirmar, sua sessão será encerrada e você será redirecionado para a página de login.",
+      "confirmation_message": "Você realmente deseja sair?",
+      "confirm": "SIM!",
+      "cancel": "CANCELAR"
+    },
+    "success": "Sucesso",
+    "error": "Erro",
+    "system_error": "Algo de errado aconteceu, tente novamente mais tarde, ou entre em contato com o suporte",
+    "warning": "Aviso",
+    "info": "Informação",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "loading": "Carregando...",
+    "edit": "Editar",
+    "delete": "Deletar",
+    "add": "Adicionar",
+    "view": "Visualizar",
+    "phone": "Telefone",
+    "email": "Email",
+    "password": "Senha",
+    "confirm_password": "Confirmar Senha",
+    "register": "Cadastrar",
+    "login": "Entrar",
+    "welcome": "Bem-vindo",
+    "sorry": "Desculpe",
+    "submit": "Enviar",
+    "no_auth": "Não autorizado",
+    "not_found": "Não encontrado",
+    "not_implemented": "Não implementado",
+    "not_available": "Não disponível",
+    "user": "Usuário",
+    "users": "Usuários",
+    "family": "Família",
+    "families": "Famílias"
+  },
+  "new_family_form": {
+    "title": "Cadastro de Nova Família",
+    "welcome_message": "Seja muito bem-vindo ao Clube dos Aventureiros da Igreja Brazilian Temple de Fort Lauderdale.",
+    "description": "Para dar início ao seu cadastro, por favor, preencha os campos abaixo com as informações da sua família.",
+    "disclaimer": "Você e sua família são muito importantes para nossa comunidade. Instruir as crianças nos caminhos de cristo é a nossa missão e responsabilidade.",
+    "family_info_label": "Informações da Família",
+    "user_has_family": "Usuário já tem uma família cadastrada, redirecionando para a página da família",
+    "name": {
+      "label": "Nome da Família",
+      "placeholder": "Ex: Silva (Geralmente o sobrenome da família)",
+      "error": "Nome da família é necessário"
+    },
+    "phone": {
+      "label": "Telefone da Família",
+      "placeholder": "Ex: (123) 456-7890",
+      "error": "Telefone da família é necessário"
+    },
+    "email": {
+      "label": "Email da Família",
+      "placeholder": "Ex: email@email.com",
+      "error": "Email da família é necessário"
+    },
+    "address_label": "Informações de Endereço",
+    "streetAddress": {
+      "label": "Endereço",
+      "placeholder": "Ex: 1234 Main St",
+      "error": "Endereço da família é necessário"
+    },
+    "city": {
+      "label": "Cidade",
+      "placeholder": "Ex: Spring Valley",
+      "error": "Endereço incompleto"
+    },
+    "state": {
+      "label": "Estado",
+      "placeholder": "Ex: FL",
+      "searchPlaceholder": "Pesquise pelo estado",
+      "noResults": "Nenhum estado encontrado",
+      "error": "Endereço incompleto"
+    },
+    "zipCode": {
+      "label": "Zip Code",
+      "placeholder": "Ex: 33045",
+      "error": "Endereço incompleto"
+    },
+    "button": {
+      "label": "Criar Família",
+      "loading": "Criando Família..."
+    },
+    "toast": {
+      "success": "Família criada com sucesso!",
+      "error": "Erro ao criar família"
+    }
+  },
+  "update_family_form": {
+    "title": "Atualizar Família",
+    "description": "Preencha os campos abaixo para atualizar a família",
+    "button": {
+      "label": "Atualizar Família",
+      "loading": "Atualizando Família..."
+    },
+    "cancel": "Cancelar",
+    "toast": {
+      "success": "Família atualizada com sucesso!",
+      "error": "Erro ao atualizar família"
+    },
+    "name": {
+      "label": "Nome da Família",
+      "placeholder": "Digite o nome da família",
+      "error": "Nome da família é necessário"
+    },
+    "phone": {
+      "label": "Telefone da Família",
+      "placeholder": "Digite o telefone da família",
+      "error": "Telefone da família é necessário"
+    },
+    "email": {
+      "label": "Email da Família",
+      "placeholder": "Digite o email da família",
+      "error": "Email da família é necessário"
+    },
+    "address_label": "Informações de Endereço",
+    "streetAddress": {
+      "label": "Endereço",
+      "placeholder": "Ex: 1234 Main St",
+      "error": "Endereço da família é necessário"
+    },
+    "city": {
+      "label": "Cidade",
+      "placeholder": "Ex: Spring Valley",
+      "error": "Endereço incompleto"
+    },
+    "state": {
+      "label": "Estado",
+      "placeholder": "Ex: FL",
+      "searchPlaceholder": "Pesquise pelo estado",
+      "noResults": "Nenhum estado encontrado",
+      "error": "Endereço incompleto"
+    },
+    "zipCode": {
+      "label": "Zip Code",
+      "placeholder": "Ex: 33045",
+      "error": "Endereço incompleto"
+    }
+  },
+  "parent_form": {
+    "title": "Novo Responsável",
+    "edit_title": "Editar Responsável",
+    "description": "Preencha os campos abaixo para adicionar um novo responsável à família",
+    "edit_description": "Atualize as informações do responsável abaixo",
+    "firstName": {
+      "label": "Nome",
+      "placeholder": "Digite o nome",
+      "error": "Nome é obrigatório"
+    },
+    "lastName": {
+      "label": "Sobrenome",
+      "placeholder": "Digite o sobrenome",
+      "error": "Sobrenome é obrigatório"
+    },
+    "type": {
+      "label": "Tipo de Responsável",
+      "options": {
+        "parent": "Pai/Mãe",
+        "guardian": "Guardião",
+        "relative": "Parente"
+      },
+      "error": "Selecione o tipo de responsável"
+    },
+    "sex": {
+      "label": "Sexo",
+      "options": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "other": "Outro"
+      },
+      "error": "Selecione o sexo"
+    },
+    "phone": {
+      "label": "Telefone",
+      "placeholder": "Digite o telefone",
+      "error": "Telefone é obrigatório"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Digite o email",
+      "error": "Email válido é obrigatório"
+    },
+    "birthDate": {
+      "label": "Data de Nascimento",
+      "placeholder": "Ex: 12/31/2015",
+      "error": "Data de nascimento é obrigatório"
+    },
+    "divider": {
+      "type": "Tipo de Responsável",
+      "address": "Endereço",
+      "permissions": "Permissões",
+      "personal_info": "Informações Pessoais",
+      "documents": "Documentos"
+    },
+    "family_address": {
+      "label": "Usar Endereço da Família",
+      "description": "Usar o endereço da família como endereço do responsável",
+      "error": "Endereço é obrigatório"
+    },
+    "streetAddress": {
+      "label": "Endereço",
+      "placeholder": "Digite o endereço",
+      "error": "Endereço é obrigatório"
+    },
+    "city": {
+      "label": "Cidade",
+      "placeholder": "Digite a cidade",
+      "error": "Cidade é obrigatório"
+    },
+    "state": {
+      "label": "Estado",
+      "placeholder": "Digite o estado",
+      "error": "Estado Inválido"
+    },
+    "zipCode": {
+      "label": "CEP",
+      "placeholder": "Digite o CEP",
+      "error": "CEP é obrigatório"
+    },
+    "permissions": {
+      "firstParentAlert": {
+        "title": "Primeiro Responsável",
+        "description": "Este é o primeiro responsável da família, portanto, todas as permissões estão habilitadas por padrão"
+      },
+      "pickup": {
+        "label": "Permitido Pick-up",
+        "description": "Permite ao responsável retirar a criança do local da atividade (igreja/evento) e levar consigo",
+        "error": "Você deve enviar o avatar e a drive licence para permitir o Pick-up"
+      },
+      "sign_document": {
+        "label": "Permitido Assinar Documentos",
+        "description": "Permite ao responsável assinar documentos da criança"
+      }
+    },
+    "files": {
+      "divider": "Arquivos",
+      "driverLicence": {
+        "label": "Driver Licence",
+        "disclaimer": "A Driver Licence é OBRIGATÓRIA para quem for permitido Pick-up/Drop-off",
+        "placeholder": "Upload da Driver Licence",
+        "error": "Algo deu errado ao tentar upload da Driver Licence",
+        "remove": "Remover Driver Licence"
+      }
+    },
+    "driverLicence": {
+      "label": "Driver Licence",
+      "disclaimer": "Images/PDFs máx. 5MB",
+      "buttonNoFile": "Upload da Driver Licence",
+      "buttonWithFile": "Alterar Driver Licence",
+      "error": "Algo deu errado ao tentar upload da Driver Licence",
+      "remove": "Remover Driver Licence"
+    },
+    "profile_picture": {
+      "label": "Foto de Perfil",
+      "disclaimer": "Imagens / máx. 5MB",
+      "buttonNoFile": "Selecionar Foto",
+      "buttonWithFile": "Alterar Foto",
+      "error": "Algo deu errado ao tentar upload do Avatar",
+      "remove": "Remover foto de perfil"
+    },
+    "main": {
+      "label": "Responsável Principal",
+      "description": "Marque se este é o responsável principal (Somente um responsável pode ser o principal)"
+    },
+    "button": {
+      "label": "Adicionar Responsável",
+      "loading": "Adicionando..."
+    },
+    "edit_button": {
+      "label": "Atualizar Responsável",
+      "loading": "Atualizando..."
+    },
+    "toast": {
+      "success": "Responsável adicionado com sucesso!",
+      "error": "Erro ao adicionar responsável"
+    },
+    "edit_toast": {
+      "success": "Responsável atualizado com sucesso!",
+      "error": "Erro ao atualizar responsável"
+    }
+  },
+  "parents_page": {
+    "title": "Responsáveis",
+    "loading": "Carregando...",
+    "edit_button": "Editar",
+    "add_parent_button": "Novo",
+    "no_parents": {
+      "title": "Nenhum Responsável Cadastrado",
+      "description": "Clique no botão abaixo para adicionar um responsável"
+    },
+    "type": {
+      "parent": "Pai/Mãe",
+      "guardian": "Guardião",
+      "relative": "Parente"
+    },
+    "sex": {
+      "male": "Masculino",
+      "female": "Feminino",
+      "other": "Outro",
+      "": "Não informado"
+    }
+  },
+  "Home": {
+    "welcome": "Bem-vindo ao Clube de Aventureiros!",
+    "description": "Estamos felizes em ter você aqui! Este site está em constante evolução para melhor servir nossa comunidade.",
+    "currentFeatures": "Atualmente, você já pode:",
+    "registerFamily": "Registrar sua família",
+    "moreComingSoon": "Mais recursos em breve!",
+    "stayTuned": "Fique atento para novidades e atualizações!",
+    "registerButton": "Registrar Família",
+    "loginButton": "Entrar",
+    "goToClubButton": "Acessar Área da Família"
+  },
+  "family_page": {
+    "title": "Cadastro da Família",
+    "description": "Complete as etapas abaixo para inscrever sua família no Clube de Aventureiros",
+    "loading": "Carregando...",
+    "go_to": "Adicionar",
+    "register_button": "Preencher Formulário de Inscrição",
+    "add_parents": "Adicionar pais/responsáveis",
+    "add_children": "Adicionar crianças",
+    "tasks": {
+      "add_parents": "Adicionar pais/responsáveis",
+      "add_children": "Adicionar crianças",
+      "fill_registration": "Preencher formulário de inscrição para cada criança",
+      "coming_soon_badge": "Em Breve"
+    }
+  },
+  "family_card": {
+    "welcome": "Bem-vindos,",
+    "welcome2": "Família {familyName}!",
+    "email": "Email",
+    "phone": "Telefone",
+    "update_button": "Atualizar Dados",
+    "address": "Endereço"
+  },
+  "not_found": {
+    "title": "Algo não está certo...",
+    "description": "A página que você está tentando abrir não existe. Você pode ter digitado o endereço incorretamente, ou a página foi movida para outra URL. Se você acha que isso é um erro, entre em contato com o suporte.",
+    "button": "Voltar para a página inicial"
+  },
+  "kid_form": {
+    "title": "Formulário de Cadastro de Criança / Aventureiro",
+    "edit_title": "Formulário de Edição de Criança / Aventureiro",
+    "description": "Preencha os campos abaixo para adicionar uma nova criança à família",
+    "edit_description": "Atualize as informações da criança abaixo",
+    "firstName": {
+      "label": "Nome",
+      "placeholder": "Digite o nome",
+      "error": "Nome é obrigatório"
+    },
+    "lastName": {
+      "label": "Sobrenome",
+      "placeholder": "Digite o sobrenome",
+      "error": "Sobrenome é obrigatório"
+    },
+    "alias": {
+      "label": "Apelido",
+      "placeholder": "Como a criança gostaria de ser chamada"
+    },
+    "birthDate": {
+      "label": "Data de Nascimento (US Format)",
+      "placeholder": "Ex: 12/31/2015"
+    },
+    "phoneNumber": {
+      "label": "Telefone",
+      "placeholder": "Digite o telefone",
+      "error": "Telefone é obrigatório"
+    },
+    "height": {
+      "label": "Altura (US Format)",
+      "placeholder": "Ex: 5'10\""
+    },
+    "weight": {
+      "label": "Peso (US Format)",
+      "placeholder": "Ex: 150 lbs"
+    },
+    "sex": {
+      "label": "Sexo",
+      "options": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "other": "Outro"
+      },
+      "error": "Selecione o sexo"
+    },
+    "files": {
+      "divider": "Arquivos",
+      "avatar": {
+        "error_required": "Para facilitar a identificação da criança, é necessário enviar um avatar",
+        "label": "Selecionar Avatar",
+        "accept": "Imagens (.jpg, .png) max 5MB",
+        "disclaimer": "O avatar é opcional, mas é recomendado para facilitar a identificação da criança",
+        "placeholder": "Upload avatar",
+        "error": "Algo deu errado ao tentar upload do Avatar",
+        "remove": "Remover avatar"
+      }
+    },
+    "button": {
+      "label": "Adicionar Criança",
+      "loading": "Adicionando...",
+      "cancel": "Voltar"
+    },
+    "edit_button": {
+      "label": "Atualizar Criança",
+      "loading": "Atualizando...",
+      "cancel": "Cancelar"
+    },
+    "toast": {
+      "success": "Criança adicionada com sucesso!",
+      "error": "Erro ao adicionar criança"
+    },
+    "edit_toast": {
+      "success": "Criança atualizada com sucesso!",
+      "error": "Erro ao atualizar criança"
+    },
+    "notes": {
+      "label": "Notas",
+      "placeholder": "Digite notas sobre a criança"
+    },
+    "profile_picture": {
+      "label": "Foto de Perfil",
+      "disclaimer": "Imagens / máx. 5MB",
+      "buttonNoFile": "Selecionar Foto",
+      "buttonWithFile": "Alterar Foto",
+      "error": "Algo deu errado ao tentar upload do Avatar",
+      "remove": "Remover foto de perfil"
+    },
+    "divider": {
+      "personal_info": "Informações Pessoais"
+    }
+  },
+  "kids_page": {
+    "title": "Crianças",
+    "add_kid_button": "Adicionar Criança",
+    "edit_button": "Editar",
+    "alias": "Apelido",
+    "no_kids": {
+      "title": "Nenhuma Criança Cadastrada",
+      "description": "Clique no botão acima para adicionar uma criança"
+    },
+    "sex": {
+      "male": "Masculino",
+      "female": "Feminino",
+      "other": "Outro"
+    }
+  },
+  "forms_page": {
+    "title": "Formulários",
+    "under_construction": {
+      "title": "Página em Desenvolvimento",
+      "description": "Os formulários de inscrição estarão disponíveis em breve",
+      "message": "Os formulários para inscrição das crianças estarão disponíveis em breve. Enquanto isso, após cadastrar a família e as crianças, por favor entre em contato com uma das seguintes pessoas:",
+      "contact_info": "Informações de contato:",
+      "contact_template": "{name}: {phone}"
+    }
+  }
+}
