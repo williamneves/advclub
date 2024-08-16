@@ -278,7 +278,7 @@ export const CreateParent = ({
         lastName: parent.data.lastName,
         type: parent.data.type,
         sex: parent.data.sex,
-        birthDate: parent.data.birthDate ?? '',
+        birthDate: parent.data.birthDate ?? null,
         phone: parent.data.phone,
         email: parent.data.email,
         main: !!parent.data.main,

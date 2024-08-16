@@ -224,7 +224,6 @@ export const ParentFormInputFields = ({
             label={t('birthDate.label')}
             placeholder={t('birthDate.placeholder')}
             {...form.getInputProps('birthDate')}
-            value={new Date(form.getInputProps('birthDate').value)}
           />
           <Input.Wrapper label={t('phone.label')} error={form.errors.phone}>
             <Input
