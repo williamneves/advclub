@@ -3,7 +3,7 @@ import { boolean, serial, text, uuid } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
-import { Kidstable } from './kids'
+import { KidsTable } from './kids'
 import { ParentsTable } from './parents'
 
 export const FamiliesTable = createTable('families', {
@@ -23,7 +23,7 @@ export const FamiliesTable = createTable('families', {
 })
 
 export const familyRelations = relations(FamiliesTable, ({ many }) => ({
-  kids: many(Kidstable, { relationName: 'family_kids' }),
+  kids: many(KidsTable, { relationName: 'family_kids' }),
   parents: many(ParentsTable, { relationName: 'family_parents' }),
 }))
 

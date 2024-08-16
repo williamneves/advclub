@@ -20,6 +20,7 @@
     "forms": "Documentos"
   },
   "common": {
+    "form_send_success": "Formulário enviado com sucesso",
     "logout": "Sair",
     "language_chooser": "Escolher Idioma",
     "language_chooser_label": "Idioma",
@@ -45,6 +46,7 @@
     },
     "success": "Sucesso",
     "error": "Erro",
+    "system_error": "Algo de errado aconteceu, tente novamente mais tarde, ou entre em contato com o suporte",
     "warning": "Aviso",
     "info": "Informação",
     "cancel": "Cancelar",
@@ -62,6 +64,7 @@
     "login": "Entrar",
     "welcome": "Bem-vindo",
     "sorry": "Desculpe",
+    "submit": "Enviar",
     "no_auth": "Não autorizado",
     "not_found": "Não encontrado",
     "not_implemented": "Não implementado",
@@ -372,6 +375,11 @@
     "phone": "Telefone",
     "update_button": "Atualizar Dados",
     "address": "Endereço"
+  },
+  "not_found": {
+    "title": "Algo não está certo...",
+    "description": "A página que você está tentando abrir não existe. Você pode ter digitado o endereço incorretamente, ou a página foi movida para outra URL. Se você acha que isso é um erro, entre em contato com o suporte.",
+    "button": "Voltar para a página inicial"
   },
   "kid_form": {
     "title": "Formulário de Cadastro de Criança / Aventureiro",

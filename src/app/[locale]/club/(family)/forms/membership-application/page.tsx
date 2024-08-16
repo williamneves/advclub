@@ -24,21 +24,7 @@ import { z } from 'zod'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { api } from '@/trpc/react'
 import dayjs from 'dayjs'
-
-const formsDefaultSchema = z.object({
-  title: z.string(),
-  description: z.string().nullable().default(''),
-  status: z
-    .enum(['draft', 'submitted', 'approved', 'rejected'])
-    .default('draft'),
-  guardianId: z.coerce.number().nullable(),
-  kidId: z.coerce.number().nullable(),
-  checkedByMemberId: z.coerce.number().nullable(),
-  fields: z.record(z.string(), z.unknown()),
-  submittedAt: z.date().nullable(),
-  approvedAt: z.date().nullable(),
-  rejectedAt: z.date().nullable(),
-})
+import { formsDefaultSchema } from '../_components/types'
 
 const fieldsSchema = z.object({
   reason: z.string(),
@@ -76,11 +62,12 @@ type FormType = z.infer<typeof schema>
 const defaultValues: FormType = {
   form: {
     title: 'Membership Application',
+    slug: 'membership-application',
     description: 'Membership Application',
     status: 'draft',
     guardianId: null,
     kidId: null,
-    checkedByMemberId: null,
+    reviewedBy: null,
     submittedAt: null,
     approvedAt: null,
     rejectedAt: null,

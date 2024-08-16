@@ -6,7 +6,7 @@ import { timestamps } from './_defaults'
 import { FamiliesTable } from './families'
 import { sexEnum } from './enums'
 
-export const Kidstable = createTable('kids', {
+export const KidsTable = createTable('kids', {
   id: serial('id').primaryKey(),
   familyId: serial('family_id').references(() => FamiliesTable.id, {
     onDelete: 'cascade',
@@ -25,20 +25,20 @@ export const Kidstable = createTable('kids', {
   ...timestamps,
 })
 
-export const kidsRelations = relations(Kidstable, ({ one }) => ({
+export const kidsRelations = relations(KidsTable, ({ one }) => ({
   family: one(FamiliesTable, {
-    fields: [Kidstable.familyId],
+    fields: [KidsTable.familyId],
     references: [FamiliesTable.id],
     relationName: 'family_kids',
   }),
 }))
 
-export type KidsSelect = typeof Kidstable.$inferSelect
-export type KidsInsert = typeof Kidstable.$inferInsert
+export type KidsSelect = typeof KidsTable.$inferSelect
+export type KidsInsert = typeof KidsTable.$inferInsert
 export type KidsUpdate = Partial<KidsInsert>
 
-const kidsSelectSchema = createSelectSchema(Kidstable)
-const kidsInsertSchema = createInsertSchema(Kidstable)
+const kidsSelectSchema = createSelectSchema(KidsTable)
+const kidsInsertSchema = createInsertSchema(KidsTable)
 
 export const kidsSchema = {
   select: kidsSelectSchema,

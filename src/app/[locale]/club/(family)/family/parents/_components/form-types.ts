@@ -31,10 +31,6 @@ export const getParentFormSchema = (t: (key: string) => string) =>
       path: ['sex'],
       message: t('sex.error'),
     })
-    .refine((data) => data.streetAddress !== '' && !data.state, {
-      path: ['state'],
-      message: t('state.error'),
-    })
 
 export type ParentFormData = z.infer<ReturnType<typeof getParentFormSchema>>
 

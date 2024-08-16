@@ -23,21 +23,7 @@ import { z } from 'zod'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { api } from '@/trpc/react'
 import { PatternFormat } from 'react-number-format'
-
-const formsDefaultSchema = z.object({
-  title: z.string(),
-  description: z.string().nullable().default(''),
-  status: z
-    .enum(['draft', 'submitted', 'approved', 'rejected'])
-    .default('draft'),
-  guardianId: z.coerce.number().nullable(),
-  kidId: z.coerce.number().nullable(),
-  checkedByMemberId: z.coerce.number().nullable(),
-  fields: z.record(z.string(), z.unknown()),
-  submittedAt: z.date().nullable(),
-  approvedAt: z.date().nullable(),
-  rejectedAt: z.date().nullable(),
-})
+import { formsDefaultSchema } from '../_components/types'
 
 const fieldsSchema = z.object({
   grade: z.string().default('').nullish(),
@@ -60,11 +46,12 @@ type FormType = z.infer<typeof schema>
 const defaultValues: FormType = {
   form: {
     title: 'Media Consent',
+    slug: 'media-consent',
     description: 'Media Consent',
     status: 'draft',
     guardianId: null,
     kidId: null,
-    checkedByMemberId: null,
+    reviewedBy: null,
     submittedAt: null,
     approvedAt: null,
     rejectedAt: null,

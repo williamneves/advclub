@@ -7,11 +7,11 @@ import {
   publicProcedure,
 } from '@/server/api/trpc'
 
-import { Kidstable, kidsSchema } from '@/server/db/schemas/kids'
+import { KidsTable, kidsSchema } from '@/server/db/schemas/kids'
 
 export const kidsRouter = createTRPCRouter({
   getAllKids: publicProcedure.query(async ({ ctx }) => {
-    const kids = await ctx.db.query.Kidstable.findMany({
+    const kids = await ctx.db.query.KidsTable.findMany({
       with: {
         family: true,
       },
@@ -23,7 +23,7 @@ export const kidsRouter = createTRPCRouter({
   getKidById: protectedProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
-      const kid = await ctx.db.query.Kidstable.findFirst({
+      const kid = await ctx.db.query.KidsTable.findFirst({
         where: (kids, { eq }) => eq(kids.id, input.id),
         with: {
           family: true,
@@ -40,7 +40,7 @@ export const kidsRouter = createTRPCRouter({
       return []
     }
 
-    const kids = await ctx.db.query.Kidstable.findMany({
+    const kids = await ctx.db.query.KidsTable.findMany({
       where: (kids, { eq }) => eq(kids.familyId, family.id),
       orderBy: (kids, { asc }) => asc(kids.firstName),
     })
@@ -50,7 +50,7 @@ export const kidsRouter = createTRPCRouter({
   getKidsByFamilyId: protectedProcedure
     .input(z.object({ familyId: z.number() }))
     .query(async ({ ctx, input }) => {
-      const kids = await ctx.db.query.Kidstable.findMany({
+      const kids = await ctx.db.query.KidsTable.findMany({
         where: (kids, { eq }) => eq(kids.familyId, input.familyId),
         orderBy: (kids, { asc }) => asc(kids.firstName),
       })
@@ -60,8 +60,8 @@ export const kidsRouter = createTRPCRouter({
   createKid: protectedProcedure
     .input(kidsSchema.insert)
     .mutation(async ({ ctx, input }) => {
-      const kid = await ctx.db.insert(Kidstable).values(input).returning({
-        id: Kidstable.id,
+      const kid = await ctx.db.insert(KidsTable).values(input).returning({
+        id: KidsTable.id,
       })
       return kid
     }),
@@ -75,9 +75,9 @@ export const kidsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const kid = await ctx.db
-        .update(Kidstable)
+        .update(KidsTable)
         .set(input.data)
-        .where(eq(Kidstable.id, input.id))
+        .where(eq(KidsTable.id, input.id))
       return kid
     }),
 
@@ -85,9 +85,9 @@ export const kidsRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       const kid = await ctx.db
-        .update(Kidstable)
+        .update(KidsTable)
         .set({ inactive: true })
-        .where(eq(Kidstable.id, input.id))
+        .where(eq(KidsTable.id, input.id))
       return kid
     }),
 
@@ -95,8 +95,8 @@ export const kidsRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       const kid = await ctx.db
-        .delete(Kidstable)
-        .where(eq(Kidstable.id, input.id))
+        .delete(KidsTable)
+        .where(eq(KidsTable.id, input.id))
       return kid
     }),
 })

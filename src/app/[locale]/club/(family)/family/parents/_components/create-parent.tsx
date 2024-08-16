@@ -130,6 +130,10 @@ export const CreateParent = ({
       const parent = await createParent.mutateAsync({
         ...values,
         familyId,
+        streetAddress: !values.useFamilyAddress ? values.streetAddress : '',
+        city: !values.useFamilyAddress ? values.city : '',
+        state: !values.useFamilyAddress ? values.state : '',
+        zipCode: !values.useFamilyAddress ? values.zipCode : '',
       })
       const parentId = parent[0]?.id
 
@@ -229,15 +233,10 @@ export const CreateParent = ({
           ...values,
           avatar: avatarUrl ?? values.avatar ?? '',
           driverLicense: driverLicenceUrl ?? values.driverLicense ?? '',
-        },
-      })
-
-      // Update parent with the files
-      await updateParent.mutateAsync({
-        id: parentId,
-        data: {
-          avatar: avatarUrl ?? '',
-          driverLicense: driverLicenceUrl ?? '',
+          streetAddress: !values.useFamilyAddress ? values.streetAddress : '',
+          city: !values.useFamilyAddress ? values.city : '',
+          state: !values.useFamilyAddress ? values.state : '',
+          zipCode: !values.useFamilyAddress ? values.zipCode : '',
         },
       })
 

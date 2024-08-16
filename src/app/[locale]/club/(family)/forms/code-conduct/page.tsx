@@ -12,48 +12,49 @@ import {
   Badge,
   Alert,
   Button,
+  Loader,
+  Select,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { z } from 'zod'
 import { zodResolver } from 'mantine-form-zod-resolver'
+import { formsDefaultSchema } from '../_components/types'
+import { api } from '@/trpc/react'
+import { codeConductFormFieldSchema } from './code-conduct.type'
+import { cn } from '@/lib/utils'
+import { notifications } from '@mantine/notifications'
+import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 
-const formsDefaultSchema = z.object({
-  title: z.string(),
-  description: z.string().nullable().default(''),
-  status: z
-    .enum(['draft', 'submitted', 'approved', 'rejected'])
-    .default('draft'),
-  guardianId: z.coerce.number().nullable(),
-  kidId: z.coerce.number().nullable(),
-  checkedByMemberId: z.coerce.number().nullable(),
-  fields: z.record(z.string(), z.unknown()),
-  submittedAt: z.date().nullable(),
-  approvedAt: z.date().nullable(),
-  rejectedAt: z.date().nullable(),
-})
-
-const fieldsSchema = z.object({
-  kidSign: z.string().default('').nullish(),
-  parentSign: z.string().default('').nullish(),
-  codeAgreement: z.boolean().default(false),
-})
-
-const schema = z.object({
-  form: formsDefaultSchema.extend({
-    fields: fieldsSchema,
-  }),
-})
+const schema = z
+  .object({
+    form: formsDefaultSchema.extend({
+      fields: codeConductFormFieldSchema,
+      kidId: z.coerce.number(),
+      guardianId: z.coerce.number(),
+    }),
+  })
+  .refine((data) => data.form.kidId, {
+    path: ['form.kidId'],
+    message: 'Por favor selecione uma criança',
+  })
+  .refine((data) => data.form.guardianId, {
+    path: ['form.guardianId'],
+    message: 'Por favor selecione um responsável',
+  })
 
 type FormType = z.infer<typeof schema>
 
 const defaultValues: FormType = {
   form: {
-    title: 'Code Conduct',
-    description: 'Code Conduct',
+    title: 'Code of Conduct and Participation Agreement',
+    slug: 'code-conduct',
+    description:
+      'Terms and Conditions of Code of Conduct and Participation Agreement',
     status: 'draft',
-    guardianId: null,
-    kidId: null,
-    checkedByMemberId: null,
+    guardianId: 0,
+    kidId: 0,
+    reviewedBy: null,
     submittedAt: null,
     approvedAt: null,
     rejectedAt: null,
@@ -66,17 +67,81 @@ const defaultValues: FormType = {
 }
 
 export default function CodeConduct() {
+  const [loading, setLoading] = useState(false)
+  const t = useTranslations('common')
+
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(schema),
+    enhanceGetInputProps: () => ({
+      disabled: loading,
+    }),
   })
 
-  const handleSubmit = (values: FormType) => {
-    console.log(values)
+  const parents = api.club.parents.getParentsByLoggedInFamily.useQuery()
+  const kids = api.club.kids.getKidsByLoggedInFamily.useQuery()
+
+  const kidsSelectData =
+    kids.data?.map((kid) => ({
+      value: kid.id.toString(),
+      label: `${kid.firstName} ${kid.lastName}`,
+    })) ?? []
+  const parentsSelectData =
+    parents.data?.map((parent) => ({
+      value: parent.id.toString(),
+      label: `${parent.firstName} ${parent.lastName}`,
+    })) ?? []
+
+  const utils = api.useUtils()
+  const createForm = api.club.forms.createForm.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByFamilyLoggedIn.invalidate()
+    },
+  })
+
+  const checkBoxError = !!form.errors?.['form.fields.codeAgreement']
+  const consentError =
+    !!form.errors?.['form.fields.kidSign'] ||
+    !!form.errors?.['form.fields.parentSign']
+
+  const handleSubmit = async (values: FormType) => {
     console.log(schema.parse(values))
+    try {
+      setLoading(true)
+      const form = schema.parse(values)
+      await createForm.mutateAsync({
+        title: form.form.title,
+        slug: form.form.slug,
+        guardianId: form.form.guardianId,
+        kidId: form.form.kidId,
+        description: form.form.description,
+        status: 'submitted',
+        fields: form.form.fields,
+      })
+
+      notifications.show({
+        title: t('success'),
+        message: t('form_send_success'),
+        color: 'green',
+      })
+    } catch (error) {
+      console.log(error)
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleError = (errors: typeof form.errors) => {
+    Object.keys(errors).forEach((key) => {
+      notifications.show({
+        title: t('error'),
+        message: errors[key],
+        color: 'red',
+      })
+    })
     console.log(errors)
   }
 
@@ -98,14 +163,21 @@ export default function CodeConduct() {
             {/* Consent */}
 
             <Fieldset
-              legend={<Badge>Consent</Badge>}
+              legend={
+                <Badge color={checkBoxError ? 'red' : undefined}>Consent</Badge>
+              }
               className="flex flex-col gap-4"
+              classNames={{
+                root: cn(checkBoxError && 'border-red-500 bg-red-50'),
+              }}
             >
               <Group align="center" gap={'md'} wrap="nowrap">
                 <Checkbox
+                  size="lg"
                   {...form.getInputProps('form.fields.codeAgreement', {
                     type: 'checkbox',
                   })}
+                  error={''}
                 />
                 <Stack gap={20}>
                   <Text>
@@ -192,8 +264,41 @@ export default function CodeConduct() {
             </Fieldset>
 
             {/* Consent and Sign */}
-            <Fieldset legend={<Badge>Consent and Sign</Badge>}>
+            <Fieldset
+              legend={
+                <Badge color={consentError ? 'red' : undefined}>
+                  Consent and Sign
+                </Badge>
+              }
+              classNames={{
+                root: cn(consentError && 'border-red-500 bg-red-50'),
+              }}
+            >
               <Stack gap={20}>
+                <Stack gap={4}>
+                  <Text fz={'sm'} fw={'bold'}>
+                    Select the kid and the responsible person to be able to fill
+                    the application.
+                  </Text>
+                  <Stack gap={4}>
+                    <Select
+                      label="Kid"
+                      placeholder="Select a kid"
+                      readOnly={kids.isLoading}
+                      rightSection={
+                        kids.isLoading ? <Loader size={16} /> : undefined
+                      }
+                      data={kidsSelectData}
+                      {...form.getInputProps('form.kidId')}
+                    />
+                    <Select
+                      label="Responsible Person"
+                      placeholder="Select a responsible"
+                      data={parentsSelectData}
+                      {...form.getInputProps('form.guardianId')}
+                    />
+                  </Stack>
+                </Stack>
                 <Stack gap={0}>
                   <Text>
                     Signature of Adventurer/Child initials is required for all
@@ -218,7 +323,9 @@ export default function CodeConduct() {
                 </Stack>
               </Stack>
             </Fieldset>
-            <Button type="submit">Submit</Button>
+            <Button loading={loading} type="submit">
+              {t('submit')}
+            </Button>
           </Stack>
         </Stack>
       </Card>

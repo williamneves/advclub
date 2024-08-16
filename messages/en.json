@@ -13,6 +13,11 @@
       "password": "Password is required"
     }
   },
+    "not_found": {
+    "title": "Something is not right...",
+    "description": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support.",
+    "button": "Get back to home page"
+  },
   "navigation": {
     "family": "Family",
     "parents": "Parents",
@@ -21,7 +26,7 @@
   },
   "common": {
     "logout": "Logout",
-
+    "form_send_success": "Form sent successfully",
     "language_chooser": "Choose Language",
     "language_chooser_label": "Language",
     "language_chooser_options": {
@@ -46,10 +51,12 @@
     "logout_button": "Logout",
     "success": "Success",
     "error": "Error",
+    "system_error": "Something went wrong, try again later, or contact support",
     "warning": "Warning",
     "info": "Info",
     "cancel": "Cancel",
     "save": "Save",
+    "submit": "Submit",
     "loading": "Loading...",
     "edit": "Edit",
     "delete": "Delete",
