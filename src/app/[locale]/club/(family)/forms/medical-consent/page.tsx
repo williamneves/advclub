@@ -29,38 +29,28 @@ import { PatternFormat } from 'react-number-format'
 import { DateInput } from '@mantine/dates'
 import { IconCalendar } from '@tabler/icons-react'
 import { formsDefaultSchema } from '../_components/types'
+import { medicalFormFieldSchema } from './medical-consent.type'
+import { useTranslations } from 'next-intl'
+import { useState } from 'react'
+import { notifications } from '@mantine/notifications'
+import { cn } from '@/lib/utils'
 
-const fieldsSchema = z.object({
-  medicalConsent: z.boolean().default(false),
-  medical: z.object({
-    medicalInsurance: z.string().default('').nullish(),
-    policyNumber: z.string().default('').nullish(),
-    physicianName: z.string().default('').nullish(),
-    physicianPhone: z.string().default('').nullish(),
-    tetanusShot: z.coerce
-      .string()
-      .transform((value) => new Date(value).toISOString()),
-    foodAllergies: z.string().default('').nullish(),
-    medicationAllergies: z.string().default('').nullish(),
-    medicationsNow: z.string().default('').nullish(),
-    medicalHistory: z.string().default('').nullish(),
-  }),
-  otherContact: z.object({
-    name: z.string().default('').nullish(),
-    phone: z.string().default('').nullish(),
-    relationship: z.string().default('').nullish(),
-    treatmentConsent: z
-      .enum(['emergency', 'first', 'both', 'none'])
-      .default('none'),
-  }),
-  consentAndSign: z.string().default('').nullish(),
-})
-
-const schema = z.object({
-  form: formsDefaultSchema.extend({
-    fields: fieldsSchema,
-  }),
-})
+const schema = z
+  .object({
+    form: formsDefaultSchema.extend({
+      fields: medicalFormFieldSchema,
+      kidId: z.coerce.number(),
+      guardianId: z.coerce.number(),
+    }),
+  })
+  .refine((data) => data.form.kidId, {
+    path: ['form.kidId'],
+    message: 'Por favor selecione uma criança',
+  })
+  .refine((data) => data.form.guardianId, {
+    path: ['form.guardianId'],
+    message: 'Por favor selecione um responsável',
+  })
 
 type FormType = z.infer<typeof schema>
 
@@ -70,8 +60,8 @@ const defaultValues: FormType = {
     slug: 'medical-consent',
     description: 'Medical Consent',
     status: 'draft',
-    guardianId: null,
-    kidId: null,
+    guardianId: 0,
+    kidId: 0,
     reviewedBy: null,
     submittedAt: null,
     approvedAt: null,
@@ -101,9 +91,15 @@ const defaultValues: FormType = {
 }
 
 export default function MedicalConsent() {
+  const [loading, setLoading] = useState(false)
+  const t = useTranslations('common')
+
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(schema),
+    enhanceGetInputProps: () => ({
+      disabled: loading,
+    }),
   })
 
   const parents = api.club.parents.getParentsByLoggedInFamily.useQuery()
@@ -172,12 +168,54 @@ export default function MedicalConsent() {
 
   const otherName = form.getValues().form.fields.otherContact.name
 
-  const handleSubmit = (values: FormType) => {
-    console.log(values)
+  const utils = api.useUtils()
+  const createForm = api.club.forms.createForm.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByFamilyLoggedIn.invalidate()
+    },
+  })
+
+  const medicalConsent = !!form.errors?.['form.fields.medicalConsent']
+  const consentAndSign = !!form.errors?.['form.fields.consentAndSign']
+
+  const handleSubmit = async (values: FormType) => {
     console.log(schema.parse(values))
+    try {
+      setLoading(true)
+      const form = schema.parse(values)
+      await createForm.mutateAsync({
+        title: form.form.title,
+        slug: form.form.slug,
+        guardianId: form.form.guardianId,
+        kidId: form.form.kidId,
+        description: form.form.description,
+        status: 'submitted',
+        fields: form.form.fields,
+      })
+
+      notifications.show({
+        title: t('success'),
+        message: t('form_send_success'),
+        color: 'green',
+      })
+    } catch (error) {
+      console.log(error)
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleError = (errors: typeof form.errors) => {
+    Object.keys(errors).forEach((key) => {
+      notifications.show({
+        title: t('error'),
+        message: errors[key],
+        color: 'red',
+      })
+    })
     console.log(errors)
   }
 
@@ -216,6 +254,7 @@ export default function MedicalConsent() {
               />
             </Stack>
           </Stack>
+
           {/* Form Block */}
           <Collapse
             in={
@@ -229,14 +268,23 @@ export default function MedicalConsent() {
               {/* Consent */}
 
               <Fieldset
-                legend={<Badge>Consent</Badge>}
+                legend={
+                  <Badge color={medicalConsent ? 'red' : undefined}>
+                    Consent
+                  </Badge>
+                }
                 className="flex flex-col gap-4"
+                classNames={{
+                  root: cn(medicalConsent && 'border-red-500 bg-red-50'),
+                }}
               >
                 <Group align="center" gap={'md'} wrap="nowrap">
                   <Checkbox
+                    size="lg"
                     {...form.getInputProps('form.fields.medicalConsent', {
                       type: 'checkbox',
                     })}
+                    error={''}
                   />
                   <Stack gap={4}>
                     <Text>
@@ -492,7 +540,16 @@ export default function MedicalConsent() {
               />
 
               {/* Consent and Sign */}
-              <Fieldset legend={<Badge>Consent and Sign</Badge>}>
+              <Fieldset
+                legend={
+                  <Badge color={consentAndSign ? 'red' : undefined}>
+                    Consent and Sign
+                  </Badge>
+                }
+                classNames={{
+                  root: cn(consentAndSign && 'border-red-500 bg-red-50'),
+                }}
+              >
                 <Text>
                   Signature of Parent/Guardian initials is required for all
                   children
