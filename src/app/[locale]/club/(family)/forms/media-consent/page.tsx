@@ -24,22 +24,28 @@ import { zodResolver } from 'mantine-form-zod-resolver'
 import { api } from '@/trpc/react'
 import { PatternFormat } from 'react-number-format'
 import { formsDefaultSchema } from '../_components/types'
+import { mediaConsentFormFieldSchema } from './media-consent.type'
+import { useState } from 'react'
+import { notifications } from '@mantine/notifications'
+import { useTranslations } from 'next-intl'
+import { cn } from '@/lib/utils'
 
-const fieldsSchema = z.object({
-  grade: z.string().default('').nullish(),
-  firstPhoneType: z.enum(['home', 'cell']).default('cell').nullish(),
-  secondPhoneType: z.enum(['home', 'cell']).default('cell').nullish(),
-  secondContactNumber: z.string().default('').nullish(),
-  email: z.string().email().default('').nullish(),
-  consentAndSign: z.string().default('').nullish(),
-  check: z.enum(['yes', 'no']).nullish(),
-})
-
-const schema = z.object({
-  form: formsDefaultSchema.extend({
-    fields: fieldsSchema,
-  }),
-})
+const schema = z
+  .object({
+    form: formsDefaultSchema.extend({
+      fields: mediaConsentFormFieldSchema,
+      kidId: z.coerce.number(),
+      guardianId: z.coerce.number(),
+    }),
+  })
+  .refine((data) => data.form.kidId, {
+    path: ['form.kidId'],
+    message: 'Por favor selecione uma criança',
+  })
+  .refine((data) => data.form.guardianId, {
+    path: ['form.guardianId'],
+    message: 'Por favor selecione um responsável',
+  })
 
 type FormType = z.infer<typeof schema>
 
@@ -47,10 +53,10 @@ const defaultValues: FormType = {
   form: {
     title: 'Media Consent',
     slug: 'media-consent',
-    description: 'Media Consent',
+    description: 'Terms and Conditions of Media Consent',
     status: 'draft',
-    guardianId: null,
-    kidId: null,
+    guardianId: 0,
+    kidId: 0,
     reviewedBy: null,
     submittedAt: null,
     approvedAt: null,
@@ -68,9 +74,15 @@ const defaultValues: FormType = {
 }
 
 export default function MediaConsent() {
+  const [loading, setLoading] = useState(false)
+  const t = useTranslations('common')
+
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(schema),
+    enhanceGetInputProps: () => ({
+      disabled: loading,
+    }),
   })
 
   const parents = api.club.parents.getParentsByLoggedInFamily.useQuery()
@@ -110,12 +122,65 @@ export default function MediaConsent() {
     (parent) => parent.id == form.getValues().form.guardianId,
   )?.streetAddress
 
-  const handleSubmit = (values: FormType) => {
-    console.log(values)
+  const utils = api.useUtils()
+  const createForm = api.club.forms.createForm.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByFamilyLoggedIn.invalidate()
+    },
+  })
+
+  const checkBoxError = !!form.errors?.['form.fields.check']
+  const formError =
+    !!form.errors?.['form.fields.grade'] ||
+    !!form.errors?.['form.fields.firstPhoneType'] ||
+    !!form.errors?.['form.fields.secondPhoneType'] ||
+    !!form.errors?.['form.fields.secondContactNumber'] ||
+    !!form.errors?.['form.fields.email']
+  const consentAndSignError = !!form.errors?.['form.fields.consentAndSign']
+
+  // const handleSubmit = (values: FormType) => {
+  //   console.log(values)
+  //   console.log(schema.parse(values))
+  // }
+
+  const handleSubmit = async (values: FormType) => {
     console.log(schema.parse(values))
+    try {
+      setLoading(true)
+      const form = schema.parse(values)
+      await createForm.mutateAsync({
+        title: form.form.title,
+        slug: form.form.slug,
+        guardianId: form.form.guardianId,
+        kidId: form.form.kidId,
+        description: form.form.description,
+        status: 'submitted',
+        fields: form.form.fields,
+      })
+
+      notifications.show({
+        title: t('success'),
+        message: t('form_send_success'),
+        color: 'green',
+      })
+    } catch (error) {
+      console.log(error)
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleError = (errors: typeof form.errors) => {
+    Object.keys(errors).forEach((key) => {
+      notifications.show({
+        title: t('error'),
+        message: errors[key],
+        color: 'red',
+      })
+    })
     console.log(errors)
   }
 
@@ -160,9 +225,8 @@ export default function MediaConsent() {
           {/* Form Block */}
           <Collapse
             in={
-              // !!form.getValues().form.kidId &&
-              // !!form.getValues().form.guardianId
-              true
+              !!form.getValues().form.kidId &&
+              !!form.getValues().form.guardianId
             }
           >
             <Stack>
@@ -191,7 +255,14 @@ export default function MediaConsent() {
               </Fieldset>
 
               {/* Form */}
-              <Fieldset legend={<Badge>Form</Badge>}>
+              <Fieldset
+                legend={
+                  <Badge color={formError ? 'red' : undefined}>Form</Badge>
+                }
+                classNames={{
+                  root: cn(formError && 'border-red-500 bg-red-50'),
+                }}
+              >
                 <Stack>
                   <Stack gap={10}>
                     <Text>
@@ -257,8 +328,13 @@ export default function MediaConsent() {
               </Fieldset>
 
               <Fieldset
-                legend={<Badge>Check</Badge>}
+                legend={
+                  <Badge color={checkBoxError ? 'red' : undefined}>Check</Badge>
+                }
                 className="flex flex-col gap-4"
+                classNames={{
+                  root: cn(checkBoxError && 'border-red-500 bg-red-50'),
+                }}
               >
                 <Stack>
                   <Radio.Group
@@ -283,7 +359,16 @@ export default function MediaConsent() {
               </Fieldset>
 
               {/* Consent and Sign */}
-              <Fieldset legend={<Badge>Consent and Sign</Badge>}>
+              <Fieldset
+                legend={
+                  <Badge color={consentAndSignError ? 'red' : undefined}>
+                    Consent and Sign
+                  </Badge>
+                }
+                classNames={{
+                  root: cn(consentAndSignError && 'border-red-500 bg-red-50'),
+                }}
+              >
                 <Stack gap={20}>
                   <Text>
                     Further, I/we understand by agreeing to allow the minor to
