@@ -10,10 +10,8 @@
 import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
-import { auth } from '@clerk/nextjs/server'
 
 import { db } from '@/server/db'
-import type { NextRequest } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 
 /**

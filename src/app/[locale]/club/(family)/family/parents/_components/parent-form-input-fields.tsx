@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation'
-import { getParentFormSchema, ParentFormData } from './form-types'
+import { getParentFormSchema, type ParentFormData } from './form-types'
 import { type UseFormReturnType } from '@mantine/form'
 import { useTranslations } from 'next-intl'
 import {

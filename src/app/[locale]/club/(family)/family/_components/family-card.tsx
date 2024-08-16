@@ -5,7 +5,7 @@ import { UpdateFamilyForm } from './update-family-form'
 import { useTranslations } from 'next-intl'
 import { Card, Stack, Text, Title, Button } from '@mantine/core'
 import { IconEdit } from '@tabler/icons-react'
-import { api, RouterOutputs } from '@/trpc/react'
+import { api, type RouterOutputs } from '@/trpc/react'
 import { useRouter } from 'next/navigation'
 import { capitalizeWords } from '@/utils/stringUtils'
 

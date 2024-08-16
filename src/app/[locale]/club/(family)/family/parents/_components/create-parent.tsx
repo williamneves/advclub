@@ -2,7 +2,7 @@
 
 import { useForm, zodResolver } from '@mantine/form'
 import { ParentFormInputFields } from './parent-form-input-fields'
-import { getParentFormSchema, ParentFormData } from './form-types'
+import { getParentFormSchema, type ParentFormData } from './form-types'
 import { useUploadAvatar, useUploadDriverLicense } from '@/lib/useUploadFiles'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'

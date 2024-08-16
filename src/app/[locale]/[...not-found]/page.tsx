@@ -9,18 +9,15 @@ import {
 import IMAGE_404 from '@/assets/images/IMAGE_404.svg'
 import { useTranslations } from 'next-intl'
 
-
 export default function NotFoundImage() {
   const t = useTranslations('not_found')
 
   return (
-    
     <Container className={'py-28'}>
       <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
         <Image
           src={IMAGE_404.src}
           className={'min-w-full'}
-
           alt="Not Found"
           hiddenFrom="sm"
         />
@@ -33,12 +30,7 @@ export default function NotFoundImage() {
           <Text c="dimmed" size="lg">
             {t('description')}
           </Text>
-          <Button
-            variant="outline"
-            size="md"
-            mt="xl"
-            className={'max-w-full'}
-          >
+          <Button variant="outline" size="md" mt="xl" className={'max-w-full'}>
             {t('button')}
           </Button>
         </div>

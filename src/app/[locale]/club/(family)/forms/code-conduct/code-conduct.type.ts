@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 export const codeConductFormFieldSchema = z
   .object({
@@ -18,5 +18,3 @@ export const codeConductFormFieldSchema = z
     path: ['parentSign'],
     message: 'You must sign the form',
   })
-
-

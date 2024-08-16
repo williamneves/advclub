@@ -1,5 +1,12 @@
 import { relations } from 'drizzle-orm'
-import { index, integer, jsonb, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import {
+  index,
+  integer,
+  jsonb,
+  serial,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
@@ -8,7 +15,12 @@ import { ParentsTable } from './parents'
 import { MembersTable } from './members'
 import { z } from 'zod'
 
-export const formsStatusArray = ['draft', 'submitted', 'approved', 'rejected'] as const
+export const formsStatusArray = [
+  'draft',
+  'submitted',
+  'approved',
+  'rejected',
+] as const
 export const formsStatusEnum = z.enum(formsStatusArray)
 export type FormsStatus = z.infer<typeof formsStatusEnum>
 

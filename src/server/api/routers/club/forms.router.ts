@@ -97,25 +97,38 @@ export const formsRouter = createTRPCRouter({
   createForm: protectedProcedure
     .input(formsSchema.insert)
     .mutation(({ ctx, input }) => {
-      return ctx.db.insert(FormsTable).values(input).returning({
-        ...getTableColumns(FormsTable),
-      })
+      return ctx.db
+        .insert(FormsTable)
+        .values(input)
+        .returning({
+          ...getTableColumns(FormsTable),
+        })
     }),
   updateFormByID: protectedProcedure
-    .input(formsSchema.update.extend({
-      id: z.number(),
-    }))
+    .input(
+      formsSchema.update.extend({
+        id: z.number(),
+      }),
+    )
     .mutation(({ ctx, input }) => {
-      return ctx.db.update(FormsTable).set(input).where(eq(FormsTable.id, input.id))
+      return ctx.db
+        .update(FormsTable)
+        .set(input)
+        .where(eq(FormsTable.id, input.id))
     }),
   reviewFormByID: protectedProcedure
-    .input(formsSchema.update.extend({
-      id: z.number(),
-      reviewedBy: z.number(),
-      reviewedAt: z.date(),
-      status: z.enum(['approved', 'rejected']),
-    }))
+    .input(
+      formsSchema.update.extend({
+        id: z.number(),
+        reviewedBy: z.number(),
+        reviewedAt: z.date(),
+        status: z.enum(['approved', 'rejected']),
+      }),
+    )
     .mutation(({ ctx, input }) => {
-      return ctx.db.update(FormsTable).set(input).where(eq(FormsTable.id, input.id))
+      return ctx.db
+        .update(FormsTable)
+        .set(input)
+        .where(eq(FormsTable.id, input.id))
     }),
 })

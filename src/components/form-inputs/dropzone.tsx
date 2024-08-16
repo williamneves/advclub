@@ -3,7 +3,7 @@ import { Group, Text, rem } from '@mantine/core'
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react'
 import {
   Dropzone,
-  DropzoneProps,
+  type DropzoneProps,
   IMAGE_MIME_TYPE,
   PDF_MIME_TYPE,
 } from '@mantine/dropzone'

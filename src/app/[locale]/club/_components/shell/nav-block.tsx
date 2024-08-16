@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
 import { LayoutDashboard, Contact, Baby, FileStack } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { api, RouterOutputs } from '@/trpc/react'
+import { api, type RouterOutputs } from '@/trpc/react'
 import { ActionIcon, Flex, NavLink, Stack, Text } from '@mantine/core'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'

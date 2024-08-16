@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { api, RouterOutputs } from '@/trpc/react'
+import { api, type RouterOutputs } from '@/trpc/react'
 import { cn } from '@/lib/utils'
 import {
   Badge,

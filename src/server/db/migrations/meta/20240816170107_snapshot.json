@@ -223,12 +223,8 @@
           "name": "advclub_forms_guardian_id_advclub_parents_id_fk",
           "tableFrom": "advclub_forms",
           "tableTo": "advclub_parents",
-          "columnsFrom": [
-            "guardian_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["guardian_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -236,12 +232,8 @@
           "name": "advclub_forms_kid_id_advclub_kids_id_fk",
           "tableFrom": "advclub_forms",
           "tableTo": "advclub_kids",
-          "columnsFrom": [
-            "kid_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["kid_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -249,12 +241,8 @@
           "name": "advclub_forms_reviewed_by_member_id_advclub_members_id_fk",
           "tableFrom": "advclub_forms",
           "tableTo": "advclub_members",
-          "columnsFrom": [
-            "reviewed_by_member_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["reviewed_by_member_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -373,12 +361,8 @@
           "name": "advclub_kids_family_id_advclub_families_id_fk",
           "tableFrom": "advclub_kids",
           "tableTo": "advclub_families",
-          "columnsFrom": [
-            "family_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["family_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -637,12 +621,8 @@
           "name": "advclub_parents_family_id_advclub_families_id_fk",
           "tableFrom": "advclub_parents",
           "tableTo": "advclub_families",
-          "columnsFrom": [
-            "family_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["family_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -655,11 +635,7 @@
     "public.sex": {
       "name": "sex",
       "schema": "public",
-      "values": [
-        "male",
-        "female",
-        ""
-      ]
+      "values": ["male", "female", ""]
     }
   },
   "schemas": {},
