@@ -340,6 +340,7 @@ export default function MediaConsent() {
                   <Radio.Group
                     label="Check one of the following:"
                     {...form.getInputProps('form.fields.check')}
+                    error={''}
                   >
                     <Group>
                       <Radio

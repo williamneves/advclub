@@ -25,37 +25,28 @@ import { zodResolver } from 'mantine-form-zod-resolver'
 import { api } from '@/trpc/react'
 import dayjs from 'dayjs'
 import { formsDefaultSchema } from '../_components/types'
+import { membershipApplicationFormFieldSchema } from './membership-application.type'
+import { useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { notifications } from '@mantine/notifications'
+import { cn } from '@/lib/utils'
 
-const fieldsSchema = z.object({
-  reason: z.string(),
-  transferFrom: z.string().default('').nullish(),
-  lawPledge: z.boolean().default(false),
-  commitment: z.boolean().default(false),
-  personalInformation: z.object({
-    grade: z.string().default('').nullish(),
-    baptized: z.enum(['yes', 'no']).default('no').nullish(),
-    churchName: z.string().default('').nullish(),
-    haveBeenAdventureBefore: z.enum(['yes', 'no']).default('no').nullish(),
-    oldClubName: z.string().default('').nullish(),
-    levelsCompleted: z.array(z.string()).default([]).nullish(),
-  }),
-  masterGuides: z.object({
-    father: z.enum(['yes', 'no']).default('no').nullish(),
-    mother: z.enum(['yes', 'no']).default('no').nullish(),
-  }),
-  adventuresBefore: z.object({
-    father: z.enum(['yes', 'no']).default('no').nullish(),
-    mother: z.enum(['yes', 'no']).default('no').nullish(),
-  }),
-  approvalOfParents: z.boolean().default(false),
-  consentAndSign: z.string().min(1, 'Initials are required').default(''),
-})
-
-const schema = z.object({
-  form: formsDefaultSchema.extend({
-    fields: fieldsSchema,
-  }),
-})
+const schema = z
+  .object({
+    form: formsDefaultSchema.extend({
+      fields: membershipApplicationFormFieldSchema,
+      kidId: z.coerce.number(),
+      guardianId: z.coerce.number(),
+    }),
+  })
+  .refine((data) => data.form.kidId, {
+    path: ['form.kidId'],
+    message: 'Por favor selecione uma criança',
+  })
+  .refine((data) => data.form.guardianId, {
+    path: ['form.guardianId'],
+    message: 'Por favor selecione um responsável',
+  })
 
 type FormType = z.infer<typeof schema>
 
@@ -65,8 +56,8 @@ const defaultValues: FormType = {
     slug: 'membership-application',
     description: 'Membership Application',
     status: 'draft',
-    guardianId: null,
-    kidId: null,
+    guardianId: 0,
+    kidId: 0,
     reviewedBy: null,
     submittedAt: null,
     approvedAt: null,
@@ -99,9 +90,15 @@ const defaultValues: FormType = {
 }
 
 export default function MembershipApplication() {
+  const [loading, setLoading] = useState(false)
+  const t = useTranslations('common')
+
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(schema),
+    enhanceGetInputProps: () => ({
+      disabled: loading,
+    }),
   })
 
   const clubName = 'Brisbane'
@@ -131,21 +128,59 @@ export default function MembershipApplication() {
     ? `${dayjs(selectedKid.birthDate).format('DD/MM/YYYY')} (${dayjs().diff(selectedKid.birthDate, 'year')} years old)`
     : 'Waiting for selection'
 
-  // const selectedParent = parents.data?.find(
-  //   (parent) => parent.id == form.getValues().form.guardianId,
-  // )
-  // const parentName = selectedParent
-  //   ? `${selectedParent.firstName} ${selectedParent.lastName}`
-  //   : 'Waiting for selection'
+  const utils = api.useUtils()
+  const createForm = api.club.forms.createForm.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByFamilyLoggedIn.invalidate()
+    },
+  })
 
-  const handleSubmit = (values: FormType) => {
-    console.log(values)
+  const law = !!form.errors?.['form.fields.lawPledge']
+  const commitment = !!form.errors?.['form.fields.commitment']
+  const approvalOfParents = !!form.errors?.['form.fields.approvalOfParents']
+  const consentAndSign = !!form.errors?.['form.fields.consentAndSign']
+
+  const handleSubmit = async (values: FormType) => {
     console.log(schema.parse(values))
+    try {
+      setLoading(true)
+      const form = schema.parse(values)
+      await createForm.mutateAsync({
+        title: form.form.title,
+        slug: form.form.slug,
+        guardianId: form.form.guardianId,
+        kidId: form.form.kidId,
+        description: form.form.description,
+        status: 'submitted',
+        fields: form.form.fields,
+      })
+
+      notifications.show({
+        title: t('success'),
+        message: t('form_send_success'),
+        color: 'green',
+      })
+    } catch (error) {
+      console.log(error)
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleError = (errors: typeof form.errors) => {
+    Object.keys(errors).forEach((key) => {
+      notifications.show({
+        title: t('error'),
+        message: errors[key],
+        color: 'red',
+      })
+    })
     console.log(errors)
   }
+
   return (
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
       <Card withBorder>
@@ -181,6 +216,7 @@ export default function MembershipApplication() {
               />
             </Stack>
           </Stack>
+
           {/* Form Block */}
           <Collapse
             in={
@@ -219,14 +255,21 @@ export default function MembershipApplication() {
               {/* Law */}
 
               <Fieldset
-                legend={<Badge>Law & Pledge</Badge>}
+                legend={
+                  <Badge color={law ? 'red' : undefined}>Law & Pledge</Badge>
+                }
                 className="flex flex-col gap-4"
+                classNames={{
+                  root: cn(law && 'border-red-500 bg-red-50'),
+                }}
               >
                 <Group align="center" gap={'md'} wrap="nowrap">
                   <Checkbox
+                    size="lg"
                     {...form.getInputProps('form.fields.lawPledge', {
                       type: 'checkbox',
                     })}
+                    error={''}
                   />
                   <Stack>
                     <Stack gap={4}>
@@ -257,13 +300,25 @@ export default function MembershipApplication() {
                   </Stack>
                 </Group>
               </Fieldset>
+
               {/* Commitment */}
-              <Fieldset legend={<Badge>Applicant's Commitment</Badge>}>
+              <Fieldset
+                legend={
+                  <Badge color={commitment ? 'red' : undefined}>
+                    Applicant's Commitment
+                  </Badge>
+                }
+                classNames={{
+                  root: cn(commitment && 'border-red-500 bg-red-50'),
+                }}
+              >
                 <Group wrap="nowrap" align="center" gap={'md'}>
                   <Checkbox
+                    size="lg"
                     {...form.getInputProps('form.fields.commitment', {
                       type: 'checkbox',
                     })}
+                    error={''}
                   />
                   <Stack gap={4}>
                     <Text>
@@ -279,6 +334,7 @@ export default function MembershipApplication() {
                   </Stack>
                 </Group>
               </Fieldset>
+
               {/* Personal Information */}
               <Fieldset legend={<Badge>Personal Information</Badge>}>
                 <Stack>
@@ -355,6 +411,7 @@ export default function MembershipApplication() {
                   </Checkbox.Group>
                 </Stack>
               </Fieldset>
+
               {/* Family History */}
               <Fieldset legend={<Badge>Family History</Badge>}>
                 {/* Master Guides */}
@@ -412,15 +469,25 @@ export default function MembershipApplication() {
                   </Stack>
                 </Stack>
               </Fieldset>
+
               {/* Approval of Parents */}
               <Fieldset
-                legend={<Badge>Approval of Parents or Guardians</Badge>}
+                legend={
+                  <Badge color={approvalOfParents ? 'red' : undefined}>
+                    Approval of Parents or Guardians
+                  </Badge>
+                }
+                classNames={{
+                  root: cn(approvalOfParents && 'border-red-500 bg-red-50'),
+                }}
               >
                 <Group align="center" gap={'md'} wrap="nowrap">
                   <Checkbox
+                    size="lg"
                     {...form.getInputProps('form.fields.approvalOfParents', {
                       type: 'checkbox',
                     })}
+                    error={''}
                   />
                   <Text>
                     The applicant is in Pre-K through grade 4 at the time of
@@ -442,7 +509,16 @@ export default function MembershipApplication() {
                 </Group>
               </Fieldset>
               {/* Consent and Sign */}
-              <Fieldset legend={<Badge>Consent and Sign</Badge>}>
+              <Fieldset
+                legend={
+                  <Badge color={consentAndSign ? 'red' : undefined}>
+                    Consent and Sign
+                  </Badge>
+                }
+                classNames={{
+                  root: cn(consentAndSign && 'border-red-500 bg-red-50'),
+                }}
+              >
                 <Text>
                   We hereby certify that {kidName} was born on {kidAge}
                 </Text>
