@@ -19,6 +19,7 @@
     "kids": "Crianças",
     "forms": "Documentos"
   },
+
   "common": {
     "form_send_success": "Formulário enviado com sucesso",
     "logout": "Sair",
@@ -488,7 +489,11 @@
     }
   },
   "forms_page": {
-    "title": "Formulários",
+    "forms_buttons": {
+      "click_to_new": "Adicionar novo formulário"
+    },
+    "title": "Formulários Gerais",
+    "description": "Selecione um formulário abaixo para preencher",
     "under_construction": {
       "title": "Página em Desenvolvimento",
       "description": "Os formulários de inscrição estarão disponíveis em breve",

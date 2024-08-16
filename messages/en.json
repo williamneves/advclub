@@ -489,6 +489,9 @@
   },
   "forms_page": {
     "title": "Registration",
+    "forms_buttons": {
+      "click_to_new": "Click to add a new form"
+    },
     "under_construction": {
       "title": "Page Under Development",
       "description": "The registration forms will be available soon",

@@ -7,7 +7,7 @@ export default {
   dialect: 'postgresql',
   out: './src/server/db/migrations',
   dbCredentials: {
-    url: env.POSTGRES_URL.replace('?workaround=supabase-pooler.vercel', ''),
+    url: env.POSTGRES_URL
   },
   migrations: {
     prefix: 'supabase',

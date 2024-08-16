@@ -54,8 +54,7 @@ export default function Login() {
       }
 
       if (data) {
-        console.log(data)
-        router.push('/club/')
+        router.push('/club/family')
       }
     } catch (error) {
       console.error(error)
@@ -76,6 +75,9 @@ export default function Login() {
   const handleFacebookLogin = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook',
+      options: {
+        redirectTo: 'http://localhost:3000/auth/callback',
+      },
     })
   }
 
