@@ -24,12 +24,13 @@ import { z } from 'zod'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import { api } from '@/trpc/react'
 import dayjs from 'dayjs'
-import { formsDefaultSchema } from '../_components/types'
+import { formsDefaultSchema } from '../../_components/types'
 import { membershipApplicationFormFieldSchema } from './membership-application.type'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { notifications } from '@mantine/notifications'
 import { cn } from '@/lib/utils'
+import { usePathname, useRouter } from 'next/navigation'
 
 const schema = z
   .object({
@@ -89,19 +90,44 @@ const defaultValues: FormType = {
   },
 }
 
-export default function MembershipApplication() {
+export function MembershipApplicationForm({
+  formId,
+  mode,
+}: {
+  formId?: number
+  mode: 'edit' | 'new' | 'view'
+}) {
   const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const disabled = loading || mode === 'view'
 
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(schema),
     enhanceGetInputProps: () => ({
-      disabled: loading,
+      disabled,
     }),
   })
 
   const clubName = 'Brisbane'
+
+  const canBeDeleted =
+    mode === 'edit' || form.getValues().form.status === 'submitted'
+
+  const submitButtonLabel =
+    form.getValues().form.status === 'draft' ? 'Submit' : 'Update'
+
+  const fetchedForm = api.club.forms.getFormByID.useQuery(
+    {
+      id: formId!,
+    },
+    {
+      enabled: !!formId,
+    },
+  )
 
   const parents = api.club.parents.getParentsByLoggedInFamily.useQuery()
   const kids = api.club.kids.getKidsByLoggedInFamily.useQuery()
@@ -133,7 +159,7 @@ export default function MembershipApplication() {
     onSuccess: async () => {
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
-      await utils.club.forms.getFormsByFamilyLoggedIn.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
     },
   })
 
@@ -142,19 +168,23 @@ export default function MembershipApplication() {
   const approvalOfParents = !!form.errors?.['form.fields.approvalOfParents']
   const consentAndSign = !!form.errors?.['form.fields.consentAndSign']
 
+  const handleGoToEdit = () => {
+    const path = pathname.replace('/view', '/edit')
+    router.push(path)
+  }
+
   const handleSubmit = async (values: FormType) => {
-    console.log(schema.parse(values))
     try {
       setLoading(true)
-      const form = schema.parse(values)
+      const parsedValues = schema.parse(values)
       await createForm.mutateAsync({
-        title: form.form.title,
-        slug: form.form.slug,
-        guardianId: form.form.guardianId,
-        kidId: form.form.kidId,
-        description: form.form.description,
+        title: parsedValues.form.title,
+        slug: parsedValues.form.slug,
+        guardianId: parsedValues.form.guardianId,
+        kidId: parsedValues.form.kidId,
+        description: parsedValues.form.description,
         status: 'submitted',
-        fields: form.form.fields,
+        fields: parsedValues.form.fields,
       })
 
       notifications.show({
@@ -162,6 +192,9 @@ export default function MembershipApplication() {
         message: t('form_send_success'),
         color: 'green',
       })
+
+      form.reset()
+      router.push(`/club/forms`)
     } catch (error) {
       console.log(error)
       throw t('system_error')
@@ -180,6 +213,28 @@ export default function MembershipApplication() {
     })
     console.log(errors)
   }
+
+  useEffect(() => {
+    if (mode !== 'new') {
+      if (fetchedForm.isSuccess && fetchedForm.data) {
+        form.initialize({
+          form: {
+            title: fetchedForm.data.title,
+            slug: fetchedForm.data.slug,
+            description: fetchedForm.data.description,
+            status: fetchedForm.data.status,
+            guardianId: fetchedForm.data.guardianId,
+            kidId: fetchedForm.data.kidId,
+            reviewedBy: fetchedForm.data.reviewedBy,
+            submittedAt: fetchedForm.data.submittedAt,
+            approvedAt: fetchedForm.data.approvedAt,
+            rejectedAt: fetchedForm.data.rejectedAt,
+            fields: fetchedForm.data.fields as FormType['form']['fields'],
+          },
+        })
+      }
+    }
+  }, [mode, formId, fetchedForm.data, fetchedForm.status])
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
@@ -364,8 +419,8 @@ export default function MembershipApplication() {
                     )}
                   >
                     <Group>
-                      <Radio value="yes" label="Yes" />
-                      <Radio value="no" label="No" />
+                      <Radio disabled={disabled} value="yes" label="Yes" />
+                      <Radio disabled={disabled} value="no" label="No" />
                     </Group>
                   </Radio.Group>
                   <TextInput
@@ -382,8 +437,8 @@ export default function MembershipApplication() {
                     )}
                   >
                     <Group>
-                      <Radio value="yes" label="Yes" />
-                      <Radio value="no" label="No" />
+                      <Radio disabled={disabled} value="yes" label="Yes" />
+                      <Radio disabled={disabled} value="no" label="No" />
                     </Group>
                   </Radio.Group>
                   <TextInput
@@ -401,12 +456,12 @@ export default function MembershipApplication() {
                     )}
                   >
                     <SimpleGrid cols={2} spacing={8} my={'sm'}>
-                      <Checkbox value="Little Lamb" label="Little Lamb" />
-                      <Checkbox value="Eager Beaver" label="Eager Beaver" />
-                      <Checkbox value="Busy Bee" label="Busy Bee" />
-                      <Checkbox value="Sunbeam" label="Sunbeam" />
-                      <Checkbox value="Builder" label="Builder" />
-                      <Checkbox value="Helping Hand" label="Helping Hand" />
+                      <Checkbox disabled={disabled} value="Little Lamb" label="Little Lamb" />
+                      <Checkbox disabled={disabled} value="Eager Beaver" label="Eager Beaver" />
+                      <Checkbox disabled={disabled} value="Busy Bee" label="Busy Bee" />
+                      <Checkbox disabled={disabled} value="Sunbeam" label="Sunbeam" />
+                      <Checkbox disabled={disabled} value="Builder" label="Builder" />
+                      <Checkbox disabled={disabled} value="Helping Hand" label="Helping Hand" />
                     </SimpleGrid>
                   </Checkbox.Group>
                 </Stack>
@@ -425,8 +480,8 @@ export default function MembershipApplication() {
                       {...form.getInputProps('form.fields.masterGuides.father')}
                     >
                       <Group>
-                        <Radio value="yes" label="Yes" />
-                        <Radio value="no" label="No" />
+                        <Radio disabled={disabled} value="yes" label="Yes" />
+                        <Radio disabled={disabled} value="no" label="No" />
                       </Group>
                     </Radio.Group>
                     <Radio.Group
@@ -434,8 +489,8 @@ export default function MembershipApplication() {
                       {...form.getInputProps('form.fields.masterGuides.mother')}
                     >
                       <Group>
-                        <Radio value="yes" label="Yes" />
-                        <Radio value="no" label="No" />
+                        <Radio disabled={disabled} value="yes" label="Yes" />
+                        <Radio disabled={disabled} value="no" label="No" />
                       </Group>
                     </Radio.Group>
                   </Stack>
@@ -451,8 +506,8 @@ export default function MembershipApplication() {
                       )}
                     >
                       <Group>
-                        <Radio value="yes" label="Yes" />
-                        <Radio value="no" label="No" />
+                        <Radio disabled={disabled} value="yes" label="Yes" />
+                        <Radio disabled={disabled} value="no" label="No" />
                       </Group>
                     </Radio.Group>
                     <Radio.Group
@@ -462,8 +517,8 @@ export default function MembershipApplication() {
                       )}
                     >
                       <Group>
-                        <Radio value="yes" label="Yes" />
-                        <Radio value="no" label="No" />
+                        <Radio disabled={disabled} value="yes" label="Yes" />
+                        <Radio disabled={disabled} value="no" label="No" />
                       </Group>
                     </Radio.Group>
                   </Stack>
@@ -528,7 +583,34 @@ export default function MembershipApplication() {
                   {...form.getInputProps('form.fields.consentAndSign')}
                 />
               </Fieldset>
-              <Button type="submit">Submit</Button>
+              <Group grow>
+                <Button
+                  type="button"
+                  size="compact-md"
+                  variant="light"
+                  onClick={() => router.back()}
+                >
+                  Back
+                </Button>
+                <Button
+                  type="button"
+                  size="compact-md"
+                  color="red"
+                  variant="light"
+                  disabled={!canBeDeleted}
+                >
+                  Delete
+                </Button>
+              </Group>
+              {mode !== 'view' && (
+                <Button type="submit">{submitButtonLabel}</Button>
+              )}
+              {mode === 'view' &&
+                form.getValues().form.status === 'submitted' && (
+                  <Button type="button" onClick={handleGoToEdit}>
+                    Edit
+                  </Button>
+                )}
             </Stack>
           </Collapse>
         </Stack>

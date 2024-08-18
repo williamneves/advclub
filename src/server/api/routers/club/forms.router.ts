@@ -28,6 +28,10 @@ export const formsRouter = createTRPCRouter({
     )
     .query(({ ctx, input }) => {
       return ctx.db.query.FormsTable.findFirst({
+        with: {
+          kid: true,
+          guardian: true,
+        },
         where: eq(FormsTable.id, input.id),
       })
     }),
@@ -39,6 +43,10 @@ export const formsRouter = createTRPCRouter({
     )
     .query(({ ctx, input }) => {
       return ctx.db.query.FormsTable.findMany({
+        with: {
+          kid: true,
+          guardian: true,
+        },
         where: eq(FormsTable.slug, input.slug),
       })
     }),
@@ -50,6 +58,10 @@ export const formsRouter = createTRPCRouter({
     )
     .query(({ ctx, input }) => {
       return ctx.db.query.FormsTable.findFirst({
+        with: {
+          kid: true,
+          guardian: true,
+        },
         where: eq(FormsTable.kidId, input.kidId),
       })
     }),
@@ -75,7 +87,7 @@ export const formsRouter = createTRPCRouter({
         .leftJoin(KidsTable, eq(FormsTable.kidId, KidsTable.id))
         .where(eq(ParentsTable.familyId, input.familyId))
     }),
-  getFormsByFamilyLoggedIn: protectedProcedure.query(({ ctx }) => {
+  getFormsByLoggedInFamily: protectedProcedure.query(({ ctx }) => {
     return ctx.db
       .select({
         ...getTableColumns(FormsTable),

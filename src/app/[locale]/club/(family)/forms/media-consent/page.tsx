@@ -29,6 +29,8 @@ import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
+import { capitalizeWords, formatPhoneNumber } from '@/utils/stringUtils'
+import { useRouter } from 'next/navigation'
 
 const schema = z
   .object({
@@ -76,6 +78,7 @@ const defaultValues: FormType = {
 export default function MediaConsent() {
   const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
+  const router = useRouter()
 
   const form = useForm({
     initialValues: defaultValues,
@@ -127,7 +130,7 @@ export default function MediaConsent() {
     onSuccess: async () => {
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
-      await utils.club.forms.getFormsByFamilyLoggedIn.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
     },
   })
 
@@ -149,15 +152,15 @@ export default function MediaConsent() {
     console.log(schema.parse(values))
     try {
       setLoading(true)
-      const form = schema.parse(values)
+      const parsedValues = schema.parse(values)
       await createForm.mutateAsync({
-        title: form.form.title,
-        slug: form.form.slug,
-        guardianId: form.form.guardianId,
-        kidId: form.form.kidId,
-        description: form.form.description,
+        title: parsedValues.form.title,
+        slug: parsedValues.form.slug,
+        guardianId: parsedValues.form.guardianId,
+        kidId: parsedValues.form.kidId,
+        description: parsedValues.form.description,
         status: 'submitted',
-        fields: form.form.fields,
+        fields: parsedValues.form.fields,
       })
 
       notifications.show({
@@ -165,6 +168,8 @@ export default function MediaConsent() {
         message: t('form_send_success'),
         color: 'green',
       })
+      form.reset()
+      router.push('/club/forms')
     } catch (error) {
       console.log(error)
       throw t('system_error')
@@ -238,20 +243,12 @@ export default function MediaConsent() {
                 legend={<Badge>Info</Badge>}
                 className="flex flex-col gap-4"
               >
-                <Group align="center" gap={'md'} wrap="nowrap">
-                  <Stack gap={4}>
-                    <Text>
-                      Name of Sponsoring Entity Florida Conference of SDA TLT
-                      Program
-                    </Text>
-                    <Text>
-                      Parental Permission Form for Minor’s Online Participation
-                      in all TLT activities as well as taking photos and videos
-                      at TLT activities that may be used on the TLT YouTube
-                      Channel and other conference media resources.
-                    </Text>
-                  </Stack>
-                </Group>
+                <Text>
+                  This is a Parental Permission Form for Minor’s Online
+                  Participation in all TLT activities as well as taking photos
+                  and videos at TLT activities that may be used on the TLT
+                  YouTube Channel and other conference media resources.
+                </Text>
               </Fieldset>
 
               {/* Form */}
@@ -277,9 +274,11 @@ export default function MediaConsent() {
                       {...form.getInputProps('form.fields.grade')}
                     />
                     <Stack gap={0}>
-                      <Text>
+                      <Text fz={'sm'}>
                         <b>Phone:</b>{' '}
-                        {parentPhone ? parentPhone : 'Not provided'}
+                        {parentPhone
+                          ? formatPhoneNumber(parentPhone)
+                          : 'Not provided'}
                       </Text>
                       <Radio.Group
                         label="Home or Cell"
@@ -319,9 +318,11 @@ export default function MediaConsent() {
                       placeholder="Email Address"
                       {...form.getInputProps('form.fields.email')}
                     />
-                    <Text>
+                    <Text fz={'sm'}>
                       <b>Address:</b>{' '}
-                      {parentAddress ? parentAddress : 'Not provided'}
+                      {parentAddress
+                        ? capitalizeWords(parentAddress)
+                        : 'Not provided'}
                     </Text>
                   </Stack>
                 </Stack>
@@ -394,9 +395,9 @@ export default function MediaConsent() {
                     responsibility. I agree to fully supervise all activities
                     the minor participates in and to screen and assume
                     responsibility for all messages my child sends and receives.{' '}
-                    <span className="font-bold italic underline">
-                      I have read and understand the foregoing.
-                    </span>
+                  </Text>
+                  <Text fw={'bold'} fs='italic'>
+                    I have read and understand the foregoing.
                   </Text>
                   <Stack gap={4}>
                     <Text>

@@ -34,6 +34,7 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 const schema = z
   .object({
@@ -93,6 +94,7 @@ const defaultValues: FormType = {
 export default function MedicalConsent() {
   const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
+  const router = useRouter()
 
   const form = useForm({
     initialValues: defaultValues,
@@ -173,7 +175,7 @@ export default function MedicalConsent() {
     onSuccess: async () => {
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
-      await utils.club.forms.getFormsByFamilyLoggedIn.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
     },
   })
 
@@ -181,18 +183,18 @@ export default function MedicalConsent() {
   const consentAndSign = !!form.errors?.['form.fields.consentAndSign']
 
   const handleSubmit = async (values: FormType) => {
-    console.log(schema.parse(values))
+
     try {
       setLoading(true)
-      const form = schema.parse(values)
+      const parsedValues = schema.parse(values)
       await createForm.mutateAsync({
-        title: form.form.title,
-        slug: form.form.slug,
-        guardianId: form.form.guardianId,
-        kidId: form.form.kidId,
-        description: form.form.description,
+        title: parsedValues.form.title,
+        slug: parsedValues.form.slug,
+        guardianId: parsedValues.form.guardianId,
+        kidId: parsedValues.form.kidId,
+        description: parsedValues.form.description,
         status: 'submitted',
-        fields: form.form.fields,
+        fields: parsedValues.form.fields,
       })
 
       notifications.show({
@@ -200,6 +202,10 @@ export default function MedicalConsent() {
         message: t('form_send_success'),
         color: 'green',
       })
+
+      form.reset()
+      router.push(`/club/forms`)
+      
     } catch (error) {
       console.log(error)
       throw t('system_error')
@@ -508,36 +514,41 @@ export default function MedicalConsent() {
                       )}
                     />
                   </Stack>
-                  <Text fz={'sm'}>
-                    I, <span className="font-bold">{parentName}</span>, give the
-                    following emergency medical treatment consent for the
-                    above-named child. Effective: From{' '}
-                    <span className="font-bold">{otherName}</span> to{' '}
-                    <span className="font-bold">{kidName}</span>
-                  </Text>
+                  <Divider />
+                  <Stack gap={7}>
+                    <Text fz={'sm'}>
+                      I, <b>{parentName}</b>, give the following emergency
+                      medical treatment consent for the child <b>{kidName}</b>.
+                    </Text>
+                    <Text fz={'sm'}>
+                      Effective from today{' '}
+                      (<span className="font-bold">
+                        {dayjs().format('DD/MM/YYYY')}
+                      </span>){' '}
+                      to{' '}
+                      <span className="font-bold">
+                        {dayjs().add(1, 'year').format('DD/MM/YYYY')}
+                      </span>.
+                    </Text>
+                  </Stack>
+                  <Divider />
+                  <Radio.Group
+                    label="One of the types of treatment must be marked"
+                    {...form.getInputProps(
+                      'form.fields.otherContact.treatmentConsent',
+                    )}
+                  >
+                    <Group>
+                      <SimpleGrid cols={2} spacing={6}>
+                        <Radio value="emergency" label="Emergency Surgery" />
+                        <Radio value="first" label="First Aid" />
+                        <Radio value="both" label="Both of the above" />
+                        <Radio value="none" label="None of the above" />
+                      </SimpleGrid>
+                    </Group>
+                  </Radio.Group>
                 </Stack>
-                <Radio.Group
-                  label="One of the types of treatment must be marked"
-                  {...form.getInputProps(
-                    'form.fields.otherContact.treatmentConsent',
-                  )}
-                >
-                  <Group>
-                    <SimpleGrid cols={2}>
-                      <Radio value="emergency" label="Emergency Surgery" />
-                      <Radio value="first" label="First Aid" />
-                      <Radio value="both" label="Both of the above" />
-                      <Radio value="none" label="None of the above" />
-                    </SimpleGrid>
-                  </Group>
-                </Radio.Group>
               </Fieldset>
-
-              {/* Medical alert */}
-              <Alert
-                title="ALL MEDICAL CONSENTS MUST BE NOTARIZED"
-                color="yellow"
-              />
 
               {/* Consent and Sign */}
               <Fieldset

@@ -23,10 +23,10 @@ export function MantineShell({
       layout="alt"
       header={{ height: 60 }}
       navbar={{ width: 300, breakpoint, collapsed: { mobile: !opened } }}
-      padding="md"
+      padding={{ base: 'xs', sm: 'sm', md: 'md' }}
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
+        <Group h="100%" px={{ base: 'xs', sm: 'sm', md: 'md' }}>
           <Group>
             <Burger
               opened={opened}

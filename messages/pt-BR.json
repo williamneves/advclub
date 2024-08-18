@@ -380,7 +380,7 @@
   "not_found": {
     "title": "Algo não está certo...",
     "description": "A página que você está tentando abrir não existe. Você pode ter digitado o endereço incorretamente, ou a página foi movida para outra URL. Se você acha que isso é um erro, entre em contato com o suporte.",
-    "button": "Voltar para a página inicial"
+    "button": "Voltar..."
   },
   "kid_form": {
     "title": "Formulário de Cadastro de Criança / Aventureiro",

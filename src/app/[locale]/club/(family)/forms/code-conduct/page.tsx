@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils'
 import { notifications } from '@mantine/notifications'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const schema = z
   .object({
@@ -69,6 +70,7 @@ const defaultValues: FormType = {
 export default function CodeConduct() {
   const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
+  const router = useRouter()
 
   const form = useForm({
     initialValues: defaultValues,
@@ -97,7 +99,7 @@ export default function CodeConduct() {
     onSuccess: async () => {
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
-      await utils.club.forms.getFormsByFamilyLoggedIn.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
     },
   })
 
@@ -110,15 +112,15 @@ export default function CodeConduct() {
     console.log(schema.parse(values))
     try {
       setLoading(true)
-      const form = schema.parse(values)
+      const parsedValues = schema.parse(values)
       await createForm.mutateAsync({
-        title: form.form.title,
-        slug: form.form.slug,
-        guardianId: form.form.guardianId,
-        kidId: form.form.kidId,
-        description: form.form.description,
+        title: parsedValues.form.title,
+        slug: parsedValues.form.slug,
+        guardianId: parsedValues.form.guardianId,
+        kidId: parsedValues.form.kidId,
+        description: parsedValues.form.description,
         status: 'submitted',
-        fields: form.form.fields,
+        fields: parsedValues.form.fields,
       })
 
       notifications.show({
@@ -126,6 +128,10 @@ export default function CodeConduct() {
         message: t('form_send_success'),
         color: 'green',
       })
+
+      form.reset()
+      router.push('/club/forms')
+
     } catch (error) {
       console.log(error)
       throw t('system_error')
