@@ -49,7 +49,7 @@ export type ParentsInsert = typeof ParentsTable.$inferInsert
 
 const adjust = {
   type: parentsGuardiansType,
-  birthDate: z.coerce.string().transform((val) => new Date(val).toISOString()),
+  birthDate: z.coerce.date().nullable(),
 }
 
 const parentsSelectSchema = createSelectSchema(ParentsTable, adjust)

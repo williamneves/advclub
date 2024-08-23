@@ -9,7 +9,7 @@ export const getParentFormSchema = (t: (key: string) => string) =>
       lastName: z.string().min(1, t('lastName.error')).nullish(),
       type: parentsGuardiansType,
       sex: z.enum(['male', 'female', '']).nullish(),
-      birthDate: z.coerce.string().nullable(),
+      birthDate: z.coerce.date().nullable(),
       // remove all non-digit characters
       phone: z
         .string()
