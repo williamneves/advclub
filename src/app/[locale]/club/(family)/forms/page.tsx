@@ -27,7 +27,7 @@ import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { IconClick, IconEye, IconListDetails } from '@tabler/icons-react'
 import { api, RouterOutputs } from '@/trpc/react'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 
 // Show a list of childrens, with each form inside with status and link to see/edit/delete
