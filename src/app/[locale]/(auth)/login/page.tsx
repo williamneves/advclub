@@ -11,11 +11,13 @@ import {
   Group,
   PasswordInput,
   Stack,
+  Text,
   TextInput,
   Title,
 } from '@mantine/core'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { IconBrandFacebook, IconBrandGoogle, IconLock, IconMail } from '@tabler/icons-react'
 
 const schema = z.object({
   email: z.string().email('Email is required').describe('Email').default(''),
@@ -86,20 +88,24 @@ export default function Login() {
       className="flex h-screen flex-col items-center justify-center bg-mtn-gray-0"
       onSubmit={form.onSubmit(handleSubmit)}
     >
-      <Card withBorder>
+      <Card withBorder miw={{ base: 300, sm: 400, md: 500 }} p={{ base: 'sm', sm: 'md' }}>
         <Stack>
-          <Title order={3}>Welcome to Adv Club</Title>
-          <Divider />
+          <Stack gap={6}>
+            <Title order={3}>Welcome Back</Title>
+            <Text fz="sm">Sign in to your account to continue</Text>
+          </Stack>
+          <Divider label={'Social'} />
           <Group grow>
             <Button color="red" onClick={handleGoogleLogin}>
-              Login with Google
+              <IconBrandGoogle />
             </Button>
             <Button color="blue" onClick={handleFacebookLogin}>
-              Login with Facebook
+              <IconBrandFacebook />
             </Button>
           </Group>
-          <TextInput label="Email" {...form.getInputProps('email')} />
-          <PasswordInput label="Password" {...form.getInputProps('password')} />
+          <Divider label={'Email'} />
+          <TextInput leftSection={<IconMail size={18} />} label="Email" {...form.getInputProps('email')} />
+          <PasswordInput leftSection={<IconLock size={18} />} label="Password" {...form.getInputProps('password')} />
           <Button type="submit">Login</Button>
         </Stack>
       </Card>
