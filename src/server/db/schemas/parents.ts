@@ -20,7 +20,7 @@ export const ParentsTable = createTable('parents', {
   type: text('type').$type<ParentsGuardiansType>().notNull(),
   firstName: text('first_name').default(''),
   lastName: text('last_name').default(''),
-  birthDate: date('birth_date'),
+  birthDate: date('birth_date', { mode: 'date' }),
   sex: sexEnum('sex').default(''),
   avatar: text('avatar').default(''),
   driverLicense: text('driver_license').default(''),

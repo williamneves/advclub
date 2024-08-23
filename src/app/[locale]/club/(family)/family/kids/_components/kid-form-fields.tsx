@@ -21,6 +21,7 @@ import {
   FileButton,
   Button,
   LoadingOverlay,
+  Textarea,
 } from '@mantine/core'
 // import loading from '@/app/[locale]/loading'
 import { PatternFormat } from 'react-number-format'
@@ -177,23 +178,11 @@ export const KidFormInputFields = ({
             placeholder={t('alias.placeholder')}
             {...form.getInputProps('alias')}
           />
-          {/* phoneNumber */}
-          <Input.Wrapper
-            label={t('phoneNumber.label')}
-            error={form.errors.phoneNumber}
-          >
-            <Input
-              leftSection={<IconPhone size={16} />}
-              placeholder={t('phoneNumber.placeholder')}
-              component={PatternFormat}
-              mask={'_'}
-              format={'(###) ###-####'}
-              {...form.getInputProps('phoneNumber')}
-            />
-          </Input.Wrapper>
         </SimpleGrid>
         {/* notes */}
-        <TextInput
+        <Textarea
+          autosize
+          minRows={3}
           label={t('notes.label')}
           placeholder={t('notes.placeholder')}
           {...form.getInputProps('notes')}

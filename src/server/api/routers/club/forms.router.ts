@@ -118,14 +118,15 @@ export const formsRouter = createTRPCRouter({
     }),
   updateFormByID: protectedProcedure
     .input(
-      formsSchema.update.extend({
+      z.object({
         id: z.number(),
-      }),
+        data: formsSchema.update,
+     })
     )
     .mutation(({ ctx, input }) => {
       return ctx.db
         .update(FormsTable)
-        .set(input)
+        .set(input.data)
         .where(eq(FormsTable.id, input.id))
     }),
   reviewFormByID: protectedProcedure
@@ -142,5 +143,14 @@ export const formsRouter = createTRPCRouter({
         .update(FormsTable)
         .set(input)
         .where(eq(FormsTable.id, input.id))
+    }),
+  deleteFormByID: protectedProcedure
+    .input(
+      z.object({
+        id: formsSchema.select.shape.id,
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.delete(FormsTable).where(eq(FormsTable.id, input.id))
     }),
 })

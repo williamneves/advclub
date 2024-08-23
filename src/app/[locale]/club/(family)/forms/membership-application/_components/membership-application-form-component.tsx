@@ -18,6 +18,7 @@ import {
   Radio,
   Button,
   Loader,
+  ActionIcon,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { z } from 'zod'
@@ -31,6 +32,15 @@ import { useTranslations } from 'next-intl'
 import { notifications } from '@mantine/notifications'
 import { cn } from '@/lib/utils'
 import { usePathname, useRouter } from 'next/navigation'
+import {
+  IconChevronLeft,
+  IconCircleCheck,
+  IconDeviceFloppy,
+  IconEdit,
+  IconThumbUpFilled,
+  IconTrash,
+} from '@tabler/icons-react'
+import { modals } from '@mantine/modals'
 
 const schema = z
   .object({
@@ -118,7 +128,7 @@ export function MembershipApplicationForm({
     mode === 'edit' || form.getValues().form.status === 'submitted'
 
   const submitButtonLabel =
-    form.getValues().form.status === 'draft' ? 'Submit' : 'Update'
+    form.getValues().form.status === 'draft' ? t('submit') : t('update')
 
   const fetchedForm = api.club.forms.getFormByID.useQuery(
     {
@@ -163,6 +173,30 @@ export function MembershipApplicationForm({
     },
   })
 
+  const updateForm = api.club.forms.updateFormByID.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
+      await utils.club.forms.getFormByID.invalidate(
+        {
+          id: formId!,
+        },
+        {
+          exact: false,
+        },
+      )
+    },
+  })
+
+  const deleteForm = api.club.forms.deleteFormByID.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
+    },
+  })
+
   const law = !!form.errors?.['form.fields.lawPledge']
   const commitment = !!form.errors?.['form.fields.commitment']
   const approvalOfParents = !!form.errors?.['form.fields.approvalOfParents']
@@ -173,7 +207,7 @@ export function MembershipApplicationForm({
     router.push(path)
   }
 
-  const handleSubmit = async (values: FormType) => {
+  const handleCreateForm = async (values: FormType) => {
     try {
       setLoading(true)
       const parsedValues = schema.parse(values)
@@ -203,6 +237,67 @@ export function MembershipApplicationForm({
     }
   }
 
+  const handleUpdateForm = async (values: FormType) => {
+    try {
+      setLoading(true)
+      const parsedValues = schema.parse(values)
+      await updateForm.mutateAsync({
+        id: formId!,
+        data: parsedValues.form,
+      })
+      form.setInitialValues(values)
+      form.reset()
+      notifications.show({
+        title: t('success'),
+        message: t('success_message'),
+        color: 'green',
+      })
+    } catch (error) {
+      console.log(error)
+      notifications.show({
+        title: t('error'),
+        message: t('system_error'),
+        color: 'red',
+      })
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteForm = async () => {
+    
+    modals.openConfirmModal({
+      title: t('delete_form'),
+      children: <Text>{t('delete_form_confirmation')}</Text>,
+      labels: { confirm: t('delete'), cancel: t('cancel') },
+      confirmProps: { color: 'red' },
+      onConfirm: async () => {
+        await deleteForm.mutateAsync({
+          id: formId!,
+        })
+
+        router.push(`/club/forms`)
+      },
+    })
+    
+  }
+
+  const handleSubmit = async (values: FormType) => {
+    if (
+      values.form.status === 'approved' ||
+      values.form.status === 'rejected' ||
+      mode === 'view'
+    ) {
+      // If if approved or rejected, do nothing
+      return
+    }
+    if (mode === 'new') {
+      return handleCreateForm(values)
+    }
+    return handleUpdateForm(values)
+  }
+
   const handleError = (errors: typeof form.errors) => {
     Object.keys(errors).forEach((key) => {
       notifications.show({
@@ -215,26 +310,31 @@ export function MembershipApplicationForm({
   }
 
   useEffect(() => {
-    if (mode !== 'new') {
-      if (fetchedForm.isSuccess && fetchedForm.data) {
-        form.initialize({
-          form: {
-            title: fetchedForm.data.title,
-            slug: fetchedForm.data.slug,
-            description: fetchedForm.data.description,
-            status: fetchedForm.data.status,
-            guardianId: fetchedForm.data.guardianId,
-            kidId: fetchedForm.data.kidId,
-            reviewedBy: fetchedForm.data.reviewedBy,
-            submittedAt: fetchedForm.data.submittedAt,
-            approvedAt: fetchedForm.data.approvedAt,
-            rejectedAt: fetchedForm.data.rejectedAt,
-            fields: fetchedForm.data.fields as FormType['form']['fields'],
-          },
-        })
-      }
+    if (form.initialized) return
+
+    if (mode === 'new') {
+      form.initialize(defaultValues)
+      return
     }
-  }, [mode, formId, fetchedForm.data, fetchedForm.status])
+
+    if (fetchedForm.isSuccess && fetchedForm.data) {
+      form.initialize({
+        form: {
+          title: fetchedForm.data.title,
+          slug: fetchedForm.data.slug,
+          description: fetchedForm.data.description,
+          status: fetchedForm.data.status,
+          guardianId: fetchedForm.data.guardianId,
+          kidId: fetchedForm.data.kidId,
+          reviewedBy: fetchedForm.data.reviewedBy,
+          submittedAt: fetchedForm.data.submittedAt,
+          approvedAt: fetchedForm.data.approvedAt,
+          rejectedAt: fetchedForm.data.rejectedAt,
+          fields: fetchedForm.data.fields as FormType['form']['fields'],
+        },
+      })
+    }
+  }, [mode, formId, fetchedForm.data, fetchedForm.status, form.initialized])
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
@@ -243,29 +343,28 @@ export function MembershipApplicationForm({
           <Stack gap={4}>
             <Title order={2}>Membership Application</Title>
             <Text fz={'sm'} c={'dimmed'}>
-              Please complete this form for each child you would like to join
-              the club.
+              {t('form_disclaimer')}
             </Text>
             <Divider />
           </Stack>
 
           <Stack gap={4}>
             <Text fz={'sm'} fw={'bold'}>
-              Select the kid and the responsible person to be able to fill the
-              application.
+           
+              {t('form_parent_selector.disclaimer')}
             </Text>
             <Stack gap={4}>
               <Select
-                label="Kid"
-                placeholder="Select a kid"
+                label={t('form_parent_selector.kid_label')}
+                placeholder={t('form_parent_selector.kid_placeholder')}
                 readOnly={kids.isLoading}
                 rightSection={kids.isLoading ? <Loader size={16} /> : undefined}
                 data={kidsSelectData}
                 {...form.getInputProps('form.kidId')}
               />
               <Select
-                label="Responsible Person"
-                placeholder="Select a responsible"
+                label={t('form_parent_selector.responsible_person_label')}
+                placeholder={t('form_parent_selector.responsible_person_placeholder')}
                 data={parentsSelectData}
                 {...form.getInputProps('form.guardianId')}
               />
@@ -281,7 +380,7 @@ export function MembershipApplicationForm({
           >
             <Stack>
               <Divider />
-              <Alert title="Read all the boxes and check the ones that apply." />
+              <Alert title={t('form_alert_title')} />
               {/* Reason to Apply */}
               <Stack gap={4}>
                 <Select
@@ -456,12 +555,36 @@ export function MembershipApplicationForm({
                     )}
                   >
                     <SimpleGrid cols={2} spacing={8} my={'sm'}>
-                      <Checkbox disabled={disabled} value="Little Lamb" label="Little Lamb" />
-                      <Checkbox disabled={disabled} value="Eager Beaver" label="Eager Beaver" />
-                      <Checkbox disabled={disabled} value="Busy Bee" label="Busy Bee" />
-                      <Checkbox disabled={disabled} value="Sunbeam" label="Sunbeam" />
-                      <Checkbox disabled={disabled} value="Builder" label="Builder" />
-                      <Checkbox disabled={disabled} value="Helping Hand" label="Helping Hand" />
+                      <Checkbox
+                        disabled={disabled}
+                        value="Little Lamb"
+                        label="Little Lamb"
+                      />
+                      <Checkbox
+                        disabled={disabled}
+                        value="Eager Beaver"
+                        label="Eager Beaver"
+                      />
+                      <Checkbox
+                        disabled={disabled}
+                        value="Busy Bee"
+                        label="Busy Bee"
+                      />
+                      <Checkbox
+                        disabled={disabled}
+                        value="Sunbeam"
+                        label="Sunbeam"
+                      />
+                      <Checkbox
+                        disabled={disabled}
+                        value="Builder"
+                        label="Builder"
+                      />
+                      <Checkbox
+                        disabled={disabled}
+                        value="Helping Hand"
+                        label="Helping Hand"
+                      />
                     </SimpleGrid>
                   </Checkbox.Group>
                 </Stack>
@@ -583,34 +706,48 @@ export function MembershipApplicationForm({
                   {...form.getInputProps('form.fields.consentAndSign')}
                 />
               </Fieldset>
-              <Group grow>
+              <Group justify="flex-end">
                 <Button
                   type="button"
-                  size="compact-md"
-                  variant="light"
+                  variant="outline"
+                  mr="auto"
                   onClick={() => router.back()}
                 >
-                  Back
+                  <IconChevronLeft />
                 </Button>
-                <Button
-                  type="button"
-                  size="compact-md"
-                  color="red"
-                  variant="light"
-                  disabled={!canBeDeleted}
-                >
-                  Delete
-                </Button>
-              </Group>
-              {mode !== 'view' && (
-                <Button type="submit">{submitButtonLabel}</Button>
-              )}
-              {mode === 'view' &&
-                form.getValues().form.status === 'submitted' && (
-                  <Button type="button" onClick={handleGoToEdit}>
-                    Edit
+                {mode !== 'new' && (
+                  <Button
+                    type="button"
+                    color="red"
+                    variant="light"
+                    disabled={!canBeDeleted}
+                    rightSection={<IconTrash stroke={1.5} size={20} />}
+                    onClick={handleDeleteForm}
+                  >
+                    {t('delete')}
                   </Button>
                 )}
+                {mode !== 'view' &&
+                  form.getValues().form.status !== 'approved' &&
+                  form.getValues().form.status !== 'rejected' && (
+                    <Button
+                      type="submit"
+                      rightSection={<IconDeviceFloppy stroke={1.5} size={20} />}
+                    >
+                      {submitButtonLabel}
+                    </Button>
+                  )}
+                {mode === 'view' &&
+                  form.getValues().form.status === 'submitted' && (
+                    <Button
+                      type="button"
+                      onClick={handleGoToEdit}
+                      rightSection={<IconEdit stroke={1.5} size={20} />}
+                    >
+                      {t('edit')}
+                    </Button>
+                  )}
+              </Group>
             </Stack>
           </Collapse>
         </Stack>

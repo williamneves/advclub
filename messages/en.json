@@ -48,8 +48,21 @@
       "confirm": "YES!",
       "cancel": "CANCEL"
     },
+    "delete_form": "Delete Form",
+    "delete_form_confirmation": "Are you sure you want to delete this form?",
+    "form_disclaimer": "Please complete this form for each child you would like to join the club.",
+    "form_parent_selector": {
+      "disclaimer": "Select the kid and the responsible person to be able to fill the application.",
+      "kid_label": "Kid",
+      "kid_placeholder": "Select a kid",
+      "responsible_person_label": "Responsible Person",
+      "responsible_person_placeholder": "Select a responsible"
+    },
+    "form_alert_title": "Please, mark all the blocks and type your initials to sign the form.",
+    "update": "Update",
     "logout_button": "Logout",
     "success": "Success",
+    "success_message": "Ação realizada com sucesso",
     "error": "Error",
     "system_error": "Something went wrong, try again later, or contact support",
     "warning": "Warning",

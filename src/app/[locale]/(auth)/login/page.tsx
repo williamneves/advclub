@@ -67,7 +67,7 @@ export default function Login() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000/auth/callback',
+        redirectTo: 'http://localhost:3000/auth/callback?next=/club/family',
       },
     })
   }
@@ -76,7 +76,7 @@ export default function Login() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook',
       options: {
-        redirectTo: 'http://localhost:3000/auth/callback',
+        redirectTo: 'http://localhost:3000/auth/callback?next=/club/family',
       },
     })
   }

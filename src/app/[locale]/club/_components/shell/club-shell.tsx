@@ -26,7 +26,7 @@ export function MantineShell({
       padding={{ base: 'xs', sm: 'sm', md: 'md' }}
     >
       <AppShell.Header>
-        <Group h="100%" px={{ base: 'xs', sm: 'sm', md: 'md' }}>
+        <Group h="100%" px="md">
           <Group>
             <Burger
               opened={opened}
