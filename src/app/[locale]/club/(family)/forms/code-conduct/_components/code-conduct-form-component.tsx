@@ -18,14 +18,21 @@ import {
 import { useForm } from '@mantine/form'
 import { z } from 'zod'
 import { zodResolver } from 'mantine-form-zod-resolver'
-import { formsDefaultSchema } from '../_components/types'
+import { formsDefaultSchema } from '../../_components/types'
 import { api } from '@/trpc/react'
-import { codeConductFormFieldSchema } from './code-conduct.type'
+import { codeConductFormFieldSchema } from '../_components/code-conduct.type'
 import { cn } from '@/lib/utils'
 import { notifications } from '@mantine/notifications'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { modals } from '@mantine/modals'
+import {
+  IconChevronLeft,
+  IconDeviceFloppy,
+  IconEdit,
+  IconTrash,
+} from '@tabler/icons-react'
 
 const schema = z
   .object({
@@ -67,18 +74,42 @@ const defaultValues: FormType = {
   },
 }
 
-export default function CodeConduct() {
+export function CodeConductForm({
+  formId,
+  mode,
+}: {
+  formId?: number
+  mode: 'edit' | 'new' | 'view'
+}) {
   const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
   const router = useRouter()
+  const pathname = usePathname()
+
+  const disabled = loading || mode === 'view'
 
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(schema),
     enhanceGetInputProps: () => ({
-      disabled: loading,
+      disabled: disabled,
     }),
   })
+
+  const canBeDeleted =
+    mode === 'edit' || form.getValues().form.status === 'submitted'
+
+  const submitButtonLabel =
+    form.getValues().form.status === 'draft' ? t('submit') : t('update')
+
+  const fetchedForm = api.club.forms.getFormByID.useQuery(
+    {
+      id: formId!,
+    },
+    {
+      enabled: !!formId,
+    },
+  )
 
   const parents = api.club.parents.getParentsByLoggedInFamily.useQuery()
   const kids = api.club.kids.getKidsByLoggedInFamily.useQuery()
@@ -103,12 +134,36 @@ export default function CodeConduct() {
     },
   })
 
+  const updateForm = api.club.forms.updateFormByID.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
+      await utils.club.forms.getFormByID.invalidate(
+        {
+          id: formId!,
+        },
+        {
+          exact: false,
+        },
+      )
+    },
+  })
+
+  const deleteForm = api.club.forms.deleteFormByID.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
+    },
+  })
+
   const checkBoxError = !!form.errors?.['form.fields.codeAgreement']
   const consentError =
     !!form.errors?.['form.fields.kidSign'] ||
     !!form.errors?.['form.fields.parentSign']
 
-  const handleSubmit = async (values: FormType) => {
+  const handleCreateForm = async (values: FormType) => {
     console.log(schema.parse(values))
     try {
       setLoading(true)
@@ -131,13 +186,71 @@ export default function CodeConduct() {
 
       form.reset()
       router.push('/club/forms')
-
     } catch (error) {
       console.log(error)
       throw t('system_error')
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleSubmit = async (values: FormType) => {
+    if (
+      values.form.status === 'approved' ||
+      values.form.status === 'rejected' ||
+      mode === 'view'
+    ) {
+      // If if approved or rejected, do nothing
+      return
+    }
+    if (mode === 'new') {
+      return handleCreateForm(values)
+    }
+    return handleUpdateForm(values)
+  }
+
+  const handleUpdateForm = async (values: FormType) => {
+    try {
+      setLoading(true)
+      const parsedValues = schema.parse(values)
+      await updateForm.mutateAsync({
+        id: formId!,
+        data: parsedValues.form,
+      })
+      form.setInitialValues(values)
+      form.reset()
+      notifications.show({
+        title: t('success'),
+        message: t('success_message'),
+        color: 'green',
+      })
+    } catch (error) {
+      console.log(error)
+      notifications.show({
+        title: t('error'),
+        message: t('system_error'),
+        color: 'red',
+      })
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteForm = async () => {
+    modals.openConfirmModal({
+      title: t('delete_form'),
+      children: <Text>{t('delete_form_confirmation')}</Text>,
+      labels: { confirm: t('delete'), cancel: t('cancel') },
+      confirmProps: { color: 'red' },
+      onConfirm: async () => {
+        await deleteForm.mutateAsync({
+          id: formId!,
+        })
+
+        router.push(`/club/forms`)
+      },
+    })
   }
 
   const handleError = (errors: typeof form.errors) => {
@@ -150,6 +263,38 @@ export default function CodeConduct() {
     })
     console.log(errors)
   }
+
+  const handleGoToEdit = () => {
+    const path = pathname.replace('/view', '/edit')
+    router.push(path)
+  }
+
+  useEffect(() => {
+    if (form.initialized) return
+
+    if (mode === 'new') {
+      form.initialize(defaultValues)
+      return
+    }
+
+    if (fetchedForm.isSuccess && fetchedForm.data) {
+      form.initialize({
+        form: {
+          title: fetchedForm.data.title,
+          slug: fetchedForm.data.slug,
+          description: fetchedForm.data.description,
+          status: fetchedForm.data.status,
+          guardianId: fetchedForm.data.guardianId,
+          kidId: fetchedForm.data.kidId,
+          reviewedBy: fetchedForm.data.reviewedBy,
+          submittedAt: fetchedForm.data.submittedAt,
+          approvedAt: fetchedForm.data.approvedAt,
+          rejectedAt: fetchedForm.data.rejectedAt,
+          fields: fetchedForm.data.fields as FormType['form']['fields'],
+        },
+      })
+    }
+  }, [mode, formId, fetchedForm.data, fetchedForm.status, form.initialized])
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
@@ -329,9 +474,48 @@ export default function CodeConduct() {
                 </Stack>
               </Stack>
             </Fieldset>
-            <Button loading={loading} type="submit">
-              {t('submit')}
-            </Button>
+            <Group justify="flex-end">
+              <Button
+                type="button"
+                variant="outline"
+                mr="auto"
+                onClick={() => router.back()}
+              >
+                <IconChevronLeft />
+              </Button>
+              {mode !== 'new' && (
+                <Button
+                  type="button"
+                  color="red"
+                  variant="light"
+                  disabled={!canBeDeleted}
+                  rightSection={<IconTrash stroke={1.5} size={20} />}
+                  onClick={handleDeleteForm}
+                >
+                  {t('delete')}
+                </Button>
+              )}
+              {mode !== 'view' &&
+                form.getValues().form.status !== 'approved' &&
+                form.getValues().form.status !== 'rejected' && (
+                  <Button
+                    type="submit"
+                    rightSection={<IconDeviceFloppy stroke={1.5} size={20} />}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                )}
+              {mode === 'view' &&
+                form.getValues().form.status === 'submitted' && (
+                  <Button
+                    type="button"
+                    onClick={handleGoToEdit}
+                    rightSection={<IconEdit stroke={1.5} size={20} />}
+                  >
+                    {t('edit')}
+                  </Button>
+                )}
+            </Group>
           </Stack>
         </Stack>
       </Card>
