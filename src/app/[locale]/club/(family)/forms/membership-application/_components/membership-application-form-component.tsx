@@ -252,6 +252,7 @@ export function MembershipApplicationForm({
         message: t('success_message'),
         color: 'green',
       })
+      router.push('/club/forms')
     } catch (error) {
       console.log(error)
       notifications.show({
@@ -266,7 +267,6 @@ export function MembershipApplicationForm({
   }
 
   const handleDeleteForm = async () => {
-    
     modals.openConfirmModal({
       title: t('delete_form'),
       children: <Text>{t('delete_form_confirmation')}</Text>,
@@ -280,7 +280,6 @@ export function MembershipApplicationForm({
         router.push(`/club/forms`)
       },
     })
-    
   }
 
   const handleSubmit = async (values: FormType) => {
@@ -350,7 +349,6 @@ export function MembershipApplicationForm({
 
           <Stack gap={4}>
             <Text fz={'sm'} fw={'bold'}>
-           
               {t('form_parent_selector.disclaimer')}
             </Text>
             <Stack gap={4}>
@@ -364,7 +362,9 @@ export function MembershipApplicationForm({
               />
               <Select
                 label={t('form_parent_selector.responsible_person_label')}
-                placeholder={t('form_parent_selector.responsible_person_placeholder')}
+                placeholder={t(
+                  'form_parent_selector.responsible_person_placeholder',
+                )}
                 data={parentsSelectData}
                 {...form.getInputProps('form.guardianId')}
               />

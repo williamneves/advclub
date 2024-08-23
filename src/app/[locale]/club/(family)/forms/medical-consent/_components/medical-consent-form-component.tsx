@@ -297,6 +297,7 @@ export function MedicalConsentForm({
         message: t('success_message'),
         color: 'green',
       })
+      router.push('/club/forms')
     } catch (error) {
       console.log(error)
       notifications.show({
