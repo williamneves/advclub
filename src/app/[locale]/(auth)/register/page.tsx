@@ -16,6 +16,7 @@ import {
 } from '@mantine/core'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { getBaseUrl } from '@/trpc/react'
 
 const schema = z.object({
   email: z.string().email('Email is required').describe('Email').default(''),
@@ -73,7 +74,7 @@ export default function Login() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000/auth/callback',
+        redirectTo: getBaseUrl() + '/auth/callback?next=/club/family',
       },
     })
   }
@@ -81,6 +82,9 @@ export default function Login() {
   const handleFacebookLogin = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook',
+      options: {
+        redirectTo: getBaseUrl() + '/auth/callback?next=/club/family',
+      },
     })
   }
 
