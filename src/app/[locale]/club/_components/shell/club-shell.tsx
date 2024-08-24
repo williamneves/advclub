@@ -40,7 +40,7 @@ export function MantineShell({
           </Group>
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar p="md" pt={0} maw={300} zIndex={1000} id="side-nav">
+      <AppShell.Navbar p="md" pt={0} maw={300} zIndex={200} id="side-nav">
         <NavBlock opened={opened} onClose={toggle} initialData={initialData} />
       </AppShell.Navbar>
       <AppShell.Main bg={'gray.0'} className="relative flex flex-col">

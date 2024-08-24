@@ -27,14 +27,21 @@ import { api } from '@/trpc/react'
 import dayjs from 'dayjs'
 import { PatternFormat } from 'react-number-format'
 import { DateInput } from '@mantine/dates'
-import { IconCalendar } from '@tabler/icons-react'
-import { formsDefaultSchema } from '../_components/types'
-import { medicalFormFieldSchema } from './[...mode]/_components/medical-consent.type'
+import {
+  IconCalendar,
+  IconChevronLeft,
+  IconDeviceFloppy,
+  IconEdit,
+  IconTrash,
+} from '@tabler/icons-react'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { notifications } from '@mantine/notifications'
 import { cn } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { formsDefaultSchema } from '../../_components/types'
+import { medicalFormFieldSchema } from './medical-consent.type'
+import { modals } from '@mantine/modals'
 
 const schema = z
   .object({
@@ -91,18 +98,42 @@ const defaultValues: FormType = {
   },
 }
 
-export default function MedicalConsent() {
+export function MedicalConsentForm({
+  formId,
+  mode,
+}: {
+  formId?: number
+  mode: 'edit' | 'new' | 'view'
+}) {
   const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
   const router = useRouter()
+  const pathname = usePathname()
+
+  const disabled = loading || mode === 'view'
 
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(schema),
     enhanceGetInputProps: () => ({
-      disabled: loading,
+      disabled: disabled,
     }),
   })
+
+  const canBeDeleted =
+    mode === 'edit' || form.getValues().form.status === 'submitted'
+
+  const submitButtonLabel =
+    form.getValues().form.status === 'draft' ? t('submit') : t('update')
+
+  const fetchedForm = api.club.forms.getFormByID.useQuery(
+    {
+      id: formId!,
+    },
+    {
+      enabled: !!formId,
+    },
+  )
 
   const parents = api.club.parents.getParentsByLoggedInFamily.useQuery()
   const kids = api.club.kids.getKidsByLoggedInFamily.useQuery()
@@ -179,11 +210,34 @@ export default function MedicalConsent() {
     },
   })
 
+  const updateForm = api.club.forms.updateFormByID.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
+      await utils.club.forms.getFormByID.invalidate(
+        {
+          id: formId!,
+        },
+        {
+          exact: false,
+        },
+      )
+    },
+  })
+
+  const deleteForm = api.club.forms.deleteFormByID.useMutation({
+    onSuccess: async () => {
+      await utils.club.forms.getForms.invalidate()
+      await utils.club.forms.getFormsBySlug.invalidate()
+      await utils.club.forms.getFormsByLoggedInFamily.invalidate()
+    },
+  })
+
   const medicalConsent = !!form.errors?.['form.fields.medicalConsent']
   const consentAndSign = !!form.errors?.['form.fields.consentAndSign']
 
-  const handleSubmit = async (values: FormType) => {
-
+  const handleCreateForm = async (values: FormType) => {
     try {
       setLoading(true)
       const parsedValues = schema.parse(values)
@@ -205,13 +259,72 @@ export default function MedicalConsent() {
 
       form.reset()
       router.push(`/club/forms`)
-      
     } catch (error) {
       console.log(error)
       throw t('system_error')
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleSubmit = async (values: FormType) => {
+    if (
+      values.form.status === 'approved' ||
+      values.form.status === 'rejected' ||
+      mode === 'view'
+    ) {
+      // If if approved or rejected, do nothing
+      return
+    }
+    if (mode === 'new') {
+      return handleCreateForm(values)
+    }
+    return handleUpdateForm(values)
+  }
+
+  const handleUpdateForm = async (values: FormType) => {
+    try {
+      setLoading(true)
+      const parsedValues = schema.parse(values)
+      await updateForm.mutateAsync({
+        id: formId!,
+        data: parsedValues.form,
+      })
+      form.setInitialValues(values)
+      form.reset()
+      notifications.show({
+        title: t('success'),
+        message: t('success_message'),
+        color: 'green',
+      })
+      router.push('/club/forms')
+    } catch (error) {
+      console.log(error)
+      notifications.show({
+        title: t('error'),
+        message: t('system_error'),
+        color: 'red',
+      })
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteForm = async () => {
+    modals.openConfirmModal({
+      title: t('delete_form'),
+      children: <Text>{t('delete_form_confirmation')}</Text>,
+      labels: { confirm: t('delete'), cancel: t('cancel') },
+      confirmProps: { color: 'red' },
+      onConfirm: async () => {
+        await deleteForm.mutateAsync({
+          id: formId!,
+        })
+
+        router.push(`/club/forms`)
+      },
+    })
   }
 
   const handleError = (errors: typeof form.errors) => {
@@ -224,6 +337,38 @@ export default function MedicalConsent() {
     })
     console.log(errors)
   }
+
+  const handleGoToEdit = () => {
+    const path = pathname.replace('/view', '/edit')
+    router.push(path)
+  }
+
+  useEffect(() => {
+    if (form.initialized) return
+
+    if (mode === 'new') {
+      form.initialize(defaultValues)
+      return
+    }
+
+    if (fetchedForm.isSuccess && fetchedForm.data) {
+      form.initialize({
+        form: {
+          title: fetchedForm.data.title,
+          slug: fetchedForm.data.slug,
+          description: fetchedForm.data.description,
+          status: fetchedForm.data.status,
+          guardianId: fetchedForm.data.guardianId,
+          kidId: fetchedForm.data.kidId,
+          reviewedBy: fetchedForm.data.reviewedBy,
+          submittedAt: fetchedForm.data.submittedAt,
+          approvedAt: fetchedForm.data.approvedAt,
+          rejectedAt: fetchedForm.data.rejectedAt,
+          fields: fetchedForm.data.fields as FormType['form']['fields'],
+        },
+      })
+    }
+  }, [mode, formId, fetchedForm.data, fetchedForm.status, form.initialized])
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
@@ -521,14 +666,15 @@ export default function MedicalConsent() {
                       medical treatment consent for the child <b>{kidName}</b>.
                     </Text>
                     <Text fz={'sm'}>
-                      Effective from today{' '}
-                      (<span className="font-bold">
+                      Effective from today (
+                      <span className="font-bold">
                         {dayjs().format('DD/MM/YYYY')}
-                      </span>){' '}
-                      to{' '}
+                      </span>
+                      ) to{' '}
                       <span className="font-bold">
                         {dayjs().add(1, 'year').format('DD/MM/YYYY')}
-                      </span>.
+                      </span>
+                      .
                     </Text>
                   </Stack>
                   <Divider />
@@ -571,7 +717,48 @@ export default function MedicalConsent() {
                   {...form.getInputProps('form.fields.consentAndSign')}
                 />
               </Fieldset>
-              <Button type="submit">Submit</Button>
+              <Group justify="flex-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  mr="auto"
+                  onClick={() => router.back()}
+                >
+                  <IconChevronLeft />
+                </Button>
+                {mode !== 'new' && (
+                  <Button
+                    type="button"
+                    color="red"
+                    variant="light"
+                    disabled={!canBeDeleted}
+                    rightSection={<IconTrash stroke={1.5} size={20} />}
+                    onClick={handleDeleteForm}
+                  >
+                    {t('delete')}
+                  </Button>
+                )}
+                {mode !== 'view' &&
+                  form.getValues().form.status !== 'approved' &&
+                  form.getValues().form.status !== 'rejected' && (
+                    <Button
+                      type="submit"
+                      rightSection={<IconDeviceFloppy stroke={1.5} size={20} />}
+                    >
+                      {submitButtonLabel}
+                    </Button>
+                  )}
+                {mode === 'view' &&
+                  form.getValues().form.status === 'submitted' && (
+                    <Button
+                      type="button"
+                      onClick={handleGoToEdit}
+                      rightSection={<IconEdit stroke={1.5} size={20} />}
+                    >
+                      {t('edit')}
+                    </Button>
+                  )}
+              </Group>
             </Stack>
           </Collapse>
         </Stack>
