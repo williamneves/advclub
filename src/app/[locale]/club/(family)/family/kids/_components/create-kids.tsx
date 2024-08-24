@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@mantine/core'
 import { getKidFormSchema, type KidFormData } from './form-types'
 import { KidFormInputFields } from './kid-form-fields'
+import { kidsSchema } from '@/server/db/schemas'
 
 export const CreateKids = ({
   isFirstKid,
@@ -49,7 +50,7 @@ export const CreateKids = ({
       firstName: '',
       lastName: '',
       sex: '',
-      birthDate: '12/01/2000',
+      birthDate: null,
       phoneNumber: '',
       avatar: '',
       alias: '',
@@ -57,6 +58,7 @@ export const CreateKids = ({
       weight: '',
       notes: '',
     },
+    mode: 'uncontrolled',
     validate: zodResolver(schema),
     enhanceGetInputProps: () => ({
       disabled: createKid.isPending || loading,
@@ -100,7 +102,7 @@ export const CreateKids = ({
       setLoading(true)
 
       // Revalidate form
-      const values = schema.parse(data)
+      const values = kidsSchema.insert.parse(data)
 
       // Create kid and get the id
       const kid = await createKid.mutateAsync({
@@ -158,7 +160,7 @@ export const CreateKids = ({
       setLoading(true)
 
       // Revalidate form
-      const values = schema.parse(data)
+      const values = kidsSchema.update.parse(data)
 
       // Update avatar and driver licence
       // Upload the files

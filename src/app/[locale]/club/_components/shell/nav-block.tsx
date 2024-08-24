@@ -46,15 +46,17 @@ export function NavBlock({
   return (
     <Stack>
       <Flex h={60} className="w-full items-center justify-between gap-2">
-        <Image
-          src={LOGO}
-          priority
-          alt="BT Adventurer Club"
-          className="size-10 lg:size-12"
-        />
-        <Text component="span" fz={'lg'} fw={'bold'} className="no-underline">
-          BT Adventurer&apos;s
-        </Text>
+        <Flex align="center" gap={4}>
+          <Image
+            src={LOGO}
+            priority
+            alt="Brazilian Pioneers Kids Club"
+            className="size-10 lg:size-12"
+          />
+          <Text component="span" fz={'lg'} fw={'bold'} className="no-underline">
+            BPKids.club
+          </Text>
+        </Flex>
         {opened && (
           <ActionIcon variant="subtle" color="dark" onClick={onClose}>
             <IconX size={20} stroke={1.5} />

@@ -34,7 +34,9 @@ export default async function RootLayout({
         <body suppressContentEditableWarning suppressHydrationWarning>
           <BaseThemeProvider>
             <TRPCReactProvider ssrOnlySecret={encryptedCookie}>
-              <AuthProvider user={user.data.user}>{children}</AuthProvider>
+              <AuthProvider prefetchedUser={user.data.user}>
+                {children}
+              </AuthProvider>
             </TRPCReactProvider>
           </BaseThemeProvider>
         </body>

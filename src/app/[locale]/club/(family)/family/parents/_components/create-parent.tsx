@@ -64,6 +64,7 @@ export const CreateParent = ({
       avatar: '',
       driverLicense: '',
     },
+    mode: 'uncontrolled',
     validate: zodResolver(schema),
     enhanceGetInputProps: () => ({
       disabled: createParent.isPending || loading,

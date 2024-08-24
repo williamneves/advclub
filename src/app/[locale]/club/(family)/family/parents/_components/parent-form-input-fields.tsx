@@ -164,15 +164,16 @@ export const ParentFormInputFields = ({
           {...form.getInputProps('main', { type: 'checkbox' })}
           description={t('main.description')}
           disabled={loading || isFirstParent}
+          key={form.key('main')}
         />
         <div className="flex flex-wrap gap-2">
           {parentsGuardiansType.options.map((type) => (
             <ParentTypeRadioComponent
-              key={type}
               checked={form.values.type === type}
               onChange={() => form.setFieldValue('type', type)}
               disabled={loading}
               type={type}
+              key={form.key(`type`)}
             />
           ))}
         </div>
@@ -190,13 +191,19 @@ export const ParentFormInputFields = ({
             label={t('firstName.label')}
             placeholder={t('firstName.placeholder')}
             {...form.getInputProps('firstName')}
+            key={form.key('firstName')}
           />
           <TextInput
             label={t('lastName.label')}
             placeholder={t('lastName.placeholder')}
             {...form.getInputProps('lastName')}
+            key={form.key('lastName')}
           />
-          <Radio.Group label={t('sex.label')} {...form.getInputProps('sex')}>
+          <Radio.Group
+            label={t('sex.label')}
+            {...form.getInputProps('sex')}
+            key={form.key('sex')}
+          >
             <Group grow gap={6}>
               {['male', 'female'].map((sex) => (
                 <Radio
@@ -224,6 +231,7 @@ export const ParentFormInputFields = ({
             label={t('birthDate.label')}
             placeholder={t('birthDate.placeholder')}
             {...form.getInputProps('birthDate')}
+            key={form.key('birthDate')}
           />
           <Input.Wrapper label={t('phone.label')} error={form.errors.phone}>
             <Input
@@ -233,6 +241,7 @@ export const ParentFormInputFields = ({
               mask={'_'}
               format={'(###) ###-####'}
               {...form.getInputProps('phone')}
+              key={form.key('phone')}
             />
           </Input.Wrapper>
 
@@ -241,6 +250,7 @@ export const ParentFormInputFields = ({
             label={t('email.label')}
             placeholder={t('email.placeholder')}
             {...form.getInputProps('email')}
+            key={form.key('email')}
           />
         </SimpleGrid>
         <Divider
@@ -255,6 +265,7 @@ export const ParentFormInputFields = ({
           label={t('family_address.label')}
           description={t('family_address.description')}
           {...form.getInputProps('useFamilyAddress', { type: 'checkbox' })}
+          key={form.key('useFamilyAddress')}
         />
         <Collapse in={!form.getValues().useFamilyAddress}>
           <Stack gap={6}>
@@ -263,6 +274,7 @@ export const ParentFormInputFields = ({
               label={t('streetAddress.label')}
               {...form.getInputProps('streetAddress')}
               disabled={form.getValues().useFamilyAddress || loading}
+              key={form.key('streetAddress')}
             />
             <SimpleGrid cols={{ base: 1, md: 2 }} verticalSpacing={6}>
               <TextInput
@@ -270,6 +282,7 @@ export const ParentFormInputFields = ({
                 label={t('city.label')}
                 {...form.getInputProps('city')}
                 disabled={form.getValues().useFamilyAddress || loading}
+                key={form.key('city')}
               />
               <Select
                 data={[
@@ -296,6 +309,7 @@ export const ParentFormInputFields = ({
                 label={t('state.label')}
                 {...form.getInputProps('state')}
                 disabled={form.getValues().useFamilyAddress || loading}
+                key={form.key('state')}
               />
               <Input.Wrapper label={t('zipCode.label')}>
                 <Input
@@ -305,6 +319,7 @@ export const ParentFormInputFields = ({
                   format={'#####'}
                   {...form.getInputProps('zipCode')}
                   disabled={form.getValues().useFamilyAddress || loading}
+                  key={form.key('zipCode')}
                 />
               </Input.Wrapper>
             </SimpleGrid>
@@ -328,6 +343,7 @@ export const ParentFormInputFields = ({
           description={t('permissions.pickup.description')}
           {...form.getInputProps('allowToPickUp', { type: 'checkbox' })}
           disabled={isFirstParent}
+          key={form.key('allowToPickUp')}
         />
         <Checkbox
           label={t('permissions.sign_document.label')}
@@ -336,6 +352,7 @@ export const ParentFormInputFields = ({
             type: 'checkbox',
           })}
           disabled={isFirstParent}
+          key={form.key('allowToAssignSignatures')}
         />
         <Divider
           label={

@@ -20,7 +20,7 @@ export const KidsTable = createTable('kids', {
   weight: text('weight').default(''),
   sex: sexEnum('sex'),
   avatar: text('avatar'),
-  birthDate: date('birth_date', { mode: 'string' }).notNull(),
+  birthDate: date('birth_date', { mode: 'date' }).notNull(),
   notes: text('notes').default(''),
   ...timestamps,
 })

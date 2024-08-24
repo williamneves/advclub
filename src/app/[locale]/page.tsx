@@ -44,7 +44,7 @@ export default function Home() {
               <Image
                 src={LOGO}
                 priority
-                alt="BT Adventurer Club"
+                alt="Brazilian Pioneers Kids Club"
                 className="lg:size-13 size-11"
               />
               <Text
@@ -53,7 +53,7 @@ export default function Home() {
                 fw={'bold'}
                 className="no-underline"
               >
-                BT Adventurer&apos;s
+                BPKids.club
               </Text>
             </Flex>
             <Divider />

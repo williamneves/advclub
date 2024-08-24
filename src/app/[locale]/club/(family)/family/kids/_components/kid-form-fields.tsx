@@ -36,7 +36,6 @@ export const KidFormInputFields = ({
   form,
   mode,
   loading,
-  isFirstKid,
   profilePicture,
 }: {
   form: UseFormReturnType<KidFormData>
@@ -132,15 +131,21 @@ export const KidFormInputFields = ({
             label={t('firstName.label')}
             placeholder={t('firstName.placeholder')}
             {...form.getInputProps('firstName')}
+            key={form.key('firstName')}
           />
           {/* Last Name */}
           <TextInput
             label={t('lastName.label')}
             placeholder={t('lastName.placeholder')}
             {...form.getInputProps('lastName')}
+            key={form.key('lastName')}
           />
           {/* Sex */}
-          <Radio.Group label={t('sex.label')} {...form.getInputProps('sex')}>
+          <Radio.Group
+            label={t('sex.label')}
+            {...form.getInputProps('sex')}
+            key={form.key('sex')}
+          >
             <Group grow gap={6}>
               {['male', 'female'].map((sex) => (
                 <Radio
@@ -170,13 +175,14 @@ export const KidFormInputFields = ({
             label={t('birthDate.label')}
             placeholder={t('birthDate.placeholder')}
             {...form.getInputProps('birthDate')}
-            value={new Date(form.getInputProps('birthDate').value)}
+            key={form.key('birthDate')}
           />
           {/* Alias */}
           <TextInput
             label={t('alias.label')}
             placeholder={t('alias.placeholder')}
             {...form.getInputProps('alias')}
+            key={form.key('alias')}
           />
         </SimpleGrid>
         {/* notes */}
@@ -186,6 +192,7 @@ export const KidFormInputFields = ({
           label={t('notes.label')}
           placeholder={t('notes.placeholder')}
           {...form.getInputProps('notes')}
+          key={form.key('notes')}
         />
       </Stack>
     </Card>

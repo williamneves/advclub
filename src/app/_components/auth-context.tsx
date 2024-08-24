@@ -5,7 +5,7 @@ import { modals } from '@mantine/modals'
 import { type User } from '@supabase/supabase-js'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { Alert, Stack, Text } from '@mantine/core'
 import { IconLogout } from '@tabler/icons-react'
 
@@ -21,14 +21,15 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({
   children,
-  user,
+  prefetchedUser,
 }: {
   children: React.ReactNode
-  user: AuthContextType['user']
+  prefetchedUser: AuthContextType['user']
 }) {
   const t = useTranslations('common')
   const supabase = createClient()
   const router = useRouter()
+  const [user, setUser] = useState<AuthContextType['user']>(prefetchedUser)
   const handleLogout = async () => {
     modals.openConfirmModal({
       title: t('logout_modal.title'),
@@ -55,6 +56,20 @@ export function AuthProvider({
       },
     })
   }
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_, session) => {
+      if (session) {
+        setUser(session.user)
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
   return (
     <AuthContext.Provider value={{ user, logout: handleLogout }}>
       {children}

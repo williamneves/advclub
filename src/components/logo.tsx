@@ -15,11 +15,11 @@ export function Logo({ withBorder = true }: { withBorder?: boolean }) {
         <Image
           src={LOGO}
           priority
-          alt="BT Adventurer Club"
+          alt="Brazilian Pioneers Kids Club"
           className="size-9 lg:size-11"
         />
         <Text component="span" fz={'lg'} fw={'bold'} className="no-underline">
-          BT Adventurer&apos;s
+          BPKids.club
         </Text>
       </Link>
     </div>
