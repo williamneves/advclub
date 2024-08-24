@@ -372,13 +372,19 @@
     "description": "Complete as etapas abaixo para inscrever sua família no Clube de Aventureiros",
     "loading": "Carregando...",
     "go_to": "Adicionar",
-    "register_button": "Preencher Formulário de Inscrição",
+    "register_button": "Preencher Formulários",
     "add_parents": "Adicionar pais/responsáveis",
     "add_children": "Adicionar crianças",
     "tasks": {
       "add_parents": "Adicionar pais/responsáveis",
       "add_children": "Adicionar crianças",
-      "fill_registration": "Preencher formulário de inscrição para cada criança",
+      "fill_registration": "Preencher formulários para cada criança",
+      "forms": {
+        "membership_application": "Inscrição Individual",
+        "medical_consent": "Formulário de Consentimento Médico",
+        "media_consent": "Permissão para uso de imagens e vídeos",
+        "code_conduct": "Consentimento do Código de Conduta"
+      },
       "coming_soon_badge": "Em Breve"
     }
   },

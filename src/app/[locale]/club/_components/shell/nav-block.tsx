@@ -11,7 +11,6 @@ import Image from 'next/image'
 import LOGO from '@/assets/images/LOGO-BLUE-CROSS.png'
 import { IconFiles, IconX } from '@tabler/icons-react'
 export function NavBlock({
-  isMobile,
   initialData,
   opened,
   onClose,
@@ -31,6 +30,11 @@ export function NavBlock({
     },
   )
   const familyCreated = !!family
+
+  const handleLinkClick = (event: React.MouseEvent) => {
+    // Call onClose when a link is clicked
+    onClose();
+  };
 
   useEffect(() => {
     // if click outside of the nav block, close it
@@ -71,6 +75,7 @@ export function NavBlock({
           label={t('family')}
           data-active={isActive(pathname, '/club/family')}
           className={cn('rounded-md data-[active]:font-semibold')}
+          onClick={handleLinkClick}
         />
         {familyCreated && (
           <>
@@ -81,6 +86,7 @@ export function NavBlock({
               label={t('parents')}
               data-active={isActive(pathname, '/club/family/parents')}
               className={cn('rounded-md data-[active]:font-semibold')}
+              onClick={handleLinkClick}
             />
             <NavLink
               component={Link}
@@ -89,6 +95,7 @@ export function NavBlock({
               label={t('kids')}
               data-active={isActive(pathname, '/club/family/kids')}
               className={cn('rounded-md data-[active]:font-semibold')}
+              onClick={handleLinkClick}
             />
             <NavLink
               component={Link}
@@ -97,6 +104,7 @@ export function NavBlock({
               label={t('forms')}
               data-active={isActive(pathname, '/club/family/forms')}
               className={cn('rounded-md data-[active]:font-semibold')}
+              onClick={handleLinkClick}
             />
           </>
         )}

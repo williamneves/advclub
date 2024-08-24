@@ -11,8 +11,8 @@ import { headers } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { AuthProvider } from '../_components/auth-context'
 export const metadata: Metadata = {
-  title: 'AdvClub',
-  description: 'AdvClub',
+  title: 'BPKids.Club',
+  description: 'Brazillian Pioneers Kids Club',
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 }
 

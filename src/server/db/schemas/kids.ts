@@ -5,6 +5,7 @@ import { createTable } from '../funcs/createTable'
 import { timestamps } from './_defaults'
 import { FamiliesTable } from './families'
 import { sexEnum } from './enums'
+import { FormsTable } from './forms'
 
 export const KidsTable = createTable('kids', {
   id: serial('id').primaryKey(),
@@ -25,12 +26,13 @@ export const KidsTable = createTable('kids', {
   ...timestamps,
 })
 
-export const kidsRelations = relations(KidsTable, ({ one }) => ({
+export const kidsRelations = relations(KidsTable, ({ one, many}) => ({
   family: one(FamiliesTable, {
     fields: [KidsTable.familyId],
     references: [FamiliesTable.id],
     relationName: 'family_kids',
   }),
+  forms: many(FormsTable),
 }))
 
 export type KidsSelect = typeof KidsTable.$inferSelect

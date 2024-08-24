@@ -169,11 +169,11 @@ export const ParentFormInputFields = ({
         <div className="flex flex-wrap gap-2">
           {parentsGuardiansType.options.map((type) => (
             <ParentTypeRadioComponent
-              checked={form.values.type === type}
+              checked={form.getValues().type === type}
               onChange={() => form.setFieldValue('type', type)}
               disabled={loading}
               type={type}
-              key={form.key(`type`)}
+              key={type}
             />
           ))}
         </div>
@@ -205,24 +205,32 @@ export const ParentFormInputFields = ({
             key={form.key('sex')}
           >
             <Group grow gap={6}>
-              {['male', 'female'].map((sex) => (
-                <Radio
-                  key={sex}
-                  value={sex}
-                  label={t(`sex.options.${sex}`)}
-                  disabled={loading}
-                  color={sex === 'male' ? 'blue' : 'pink'}
-                  className={cn(
-                    'flex h-[36px] items-center justify-start rounded-md border border-solid border-gray-300 px-4',
-                    {
-                      'bg-blue-100': sex === 'male',
-                      'bg-pink-100': sex === 'female',
-                      'border-blue-300': sex === 'male',
-                      'border-pink-300': sex === 'female',
-                    },
-                  )}
-                />
-              ))}
+              <Radio
+                value="male"
+                label={t(`sex.options.male`)}
+                disabled={loading}
+                color="blue"
+                className={cn(
+                  'flex h-[36px] items-center justify-start rounded-md border border-solid border-gray-300 px-4',
+                  {
+                    'bg-blue-100': true,
+                    'border-blue-300': true,
+                  },
+                )}
+              />
+              <Radio
+                value="female"
+                label={t(`sex.options.female`)}
+                disabled={loading}
+                color="pink"
+                className={cn(
+                  'flex h-[36px] items-center justify-start rounded-md border border-solid border-gray-300 px-4',
+                  {
+                    'bg-pink-100': true,
+                    'border-pink-300': true,
+                  },
+                )}
+              />
             </Group>
           </Radio.Group>
           <DateInput

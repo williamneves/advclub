@@ -30,7 +30,11 @@ export const familiesRouter = createTRPCRouter({
     const family = await ctx.db.query.FamiliesTable.findFirst({
       where: (families, { eq }) => eq(families.userId, ctx.userId),
       with: {
-        kids: true,
+        kids: {
+          with: {
+            forms: true,
+          }
+        },
         parents: true,
       },
     })

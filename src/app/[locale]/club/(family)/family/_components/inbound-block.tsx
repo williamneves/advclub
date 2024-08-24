@@ -52,7 +52,24 @@ export function InboundBlock({
       key: 'canRegister',
       label: t('tasks.fill_registration'),
       link: '/club/family/registration',
-      badge: t('tasks.coming_soon_badge'),
+      subTasks: [
+        {
+          key: 'membership_application',
+          label: t('tasks.forms.membership_application'),
+        },
+        {
+          key: 'medical_consent',
+          label: t('tasks.forms.medical_consent'),
+        },
+        {
+          key: 'media_consent',
+          label: t('tasks.forms.media_consent'),
+        },
+        {
+          key: 'code_conduct',
+          label: t('tasks.forms.code_conduct'),
+        },
+      ],
     },
   ]
 
@@ -84,7 +101,6 @@ export function InboundBlock({
               >
                 <Group align="center">
                   {task.label}
-                  {task.badge && <Badge color="orange">{task.badge}</Badge>}
                   {task.key === 'hasParents' && (
                     <Badge
                       color="blue"

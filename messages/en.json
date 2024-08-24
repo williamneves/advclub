@@ -365,14 +365,20 @@
     "description": "Complete the steps below to register your family in the Adventurers Club",
     "loading": "Loading...",
     "go_to": "Add",
-    "register_button": "Fill Registration Form",
+    "register_button": "Fill Forms",
     "add_parents": "Add parents/guardians",
     "add_children": "Add children",
     "tasks": {
       "add_parents": "Add parents/guardians",
       "add_children": "Add children",
-      "fill_registration": "Fill registration form for each child",
-      "coming_soon_badge": "Coming Soon"
+      "fill_registration": "Fill forms for each child",
+      "coming_soon_badge": "Coming Soon",
+      "forms": {
+        "membership_application": "Membership Application",
+        "medical_consent": "Medical Consent",
+        "media_consent": "Media Consent",
+        "code_conduct": "Code of Conduct"
+      }
     }
   },
   "Home": {
