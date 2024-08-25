@@ -1,12 +1,17 @@
+import { DatePickerInput, DatePicker } from '@mantine/dates'
 import { GeistSans } from 'geist/font/sans'
 
 import {
   Button,
   createTheme,
   DEFAULT_THEME,
+  Input,
+  TextInput,
   mergeMantineTheme,
   Notification,
   rem,
+  PasswordInput,
+  InputWrapper,
 } from '@mantine/core'
 
 let defaultTheme = createTheme({
@@ -15,10 +20,10 @@ let defaultTheme = createTheme({
   primaryColor: 'indigo',
   defaultRadius: 'md',
   spacing: {
-    xs: '0.65rem',
-    sm: '0.875rem',
-    md: '1.3rem',
-    lg: '1.7rem',
+    xs: '0.75rem',
+    sm: '0.925rem',
+    md: '1.35rem',
+    lg: '1.8rem',
     xl: '2.4rem',
   },
   fontSizes: {
@@ -34,6 +39,36 @@ let defaultTheme = createTheme({
         root: 'border-solid border border-mtn-default-border shadow-sm min-h-[60px]',
       },
     }),
+    // Input: Input.extend({
+    //   defaultProps: {
+    //     size: 'md',
+    //   },
+    // }),
+    // InputWrapper: InputWrapper.extend({
+    //   defaultProps: {
+    //     size: 'md',
+    //   },
+    // }),
+    // TextInput: TextInput.extend({
+    //   defaultProps: {
+    //     size: 'md',
+    //   },
+    // }),
+    // PasswordInput: PasswordInput.extend({
+    //   defaultProps: {
+    //     size: 'md',
+    //   },
+    // }),
+    // DatePicker: DatePicker.extend({
+    //   defaultProps: {
+    //     size: 'md',
+    //   },
+    // }),
+    // DatePickerInput: DatePickerInput.extend({
+    //   defaultProps: {
+    //     size: 'md',
+    //   },
+    // }),
   },
 })
 
