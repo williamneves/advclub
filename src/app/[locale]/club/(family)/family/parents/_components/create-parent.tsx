@@ -107,16 +107,16 @@ export const CreateParent = ({
   const handleCreateParent = async (data: ParentFormData) => {
     // return console.log(data)
     // If pickup is active, parent need to have avatar and driver licence
-    if (data.allowToPickUp) {
-      if (!avatarFile) {
-        form.setFieldError('allowToPickUp', t('permissions.pickup.error'))
-        return
-      }
-      if (!driverLicenseFile) {
-        form.setFieldError('allowToPickUp', t('permissions.pickup.error'))
-        return
-      }
-    }
+    // if (data.allowToPickUp) {
+    //   if (!avatarFile) {
+    //     form.setFieldError('allowToPickUp', t('permissions.pickup.error'))
+    //     return
+    //   }
+    //   if (!driverLicenseFile) {
+    //     form.setFieldError('allowToPickUp', t('permissions.pickup.error'))
+    //     return
+    //   }
+    // }
 
     try {
       setLoading(true)
@@ -190,16 +190,16 @@ export const CreateParent = ({
 
     // return console.log(data)
     // If pickup is active, parent need to have avatar and driver licence
-    if (data.allowToPickUp) {
-      if (!avatarFile && !data.avatar) {
-        form.setFieldError('allowToPickUp', t('permissions.pickup.error'))
-        return
-      }
-      if (!driverLicenseFile && !data.driverLicense) {
-        form.setFieldError('allowToPickUp', t('permissions.pickup.error'))
-        return
-      }
-    }
+    // if (data.allowToPickUp) {
+    //   if (!avatarFile && !data.avatar) {
+    //     form.setFieldError('allowToPickUp', t('permissions.pickup.error'))
+    //     return
+    //   }
+    //   if (!driverLicenseFile && !data.driverLicense) {
+    //     form.setFieldError('allowToPickUp', t('permissions.pickup.error'))
+    //     return
+    //   }
+    // }
 
     try {
       setLoading(true)
