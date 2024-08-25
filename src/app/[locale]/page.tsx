@@ -27,14 +27,16 @@ export default function Home() {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: {user} } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       setIsSignedIn(user !== null)
       setLoading(false)
     }
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getUser()
   }, [])
- 
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-white p-4">
@@ -86,11 +88,16 @@ export default function Home() {
                 </Button>
               ) : (
                 <div className="w-full space-y-2">
-                  <Button component={Link} loading={loading} href="/register" className="w-full">
+                  <Button
+                    component={Link}
+                    loading={loading}
+                    href="/register"
+                    className="w-full"
+                  >
                     {t('registerButton')}
                   </Button>
-                    <Button
-                      loading={loading}
+                  <Button
+                    loading={loading}
                     component={Link}
                     href="/login"
                     variant="outline"

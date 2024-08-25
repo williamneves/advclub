@@ -26,7 +26,7 @@ export const KidsTable = createTable('kids', {
   ...timestamps,
 })
 
-export const kidsRelations = relations(KidsTable, ({ one, many}) => ({
+export const kidsRelations = relations(KidsTable, ({ one, many }) => ({
   family: one(FamiliesTable, {
     fields: [KidsTable.familyId],
     references: [FamiliesTable.id],

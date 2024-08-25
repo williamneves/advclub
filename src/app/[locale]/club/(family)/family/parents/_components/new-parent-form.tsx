@@ -313,6 +313,7 @@ export function NewParentForm({
                 <Box className="relative h-[160px] w-[160px] overflow-hidden rounded-md ring-4 ring-gray-400 ring-offset-4 ring-offset-white">
                   <LoadingOverlay visible={loading} />
                   <Image
+                    priority
                     src={avatarUrl}
                     alt="avatar"
                     className="h-[160px] w-[160px] object-cover"
@@ -366,6 +367,7 @@ export function NewParentForm({
                   {driverLicenceUrl &&
                     driverLicenseFile?.type.includes('image') && (
                       <Image
+                        priority
                         src={driverLicenceUrl}
                         alt="avatar"
                         className="h-[161px] w-[210px] object-cover"

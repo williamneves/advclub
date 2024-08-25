@@ -31,6 +31,12 @@ export default async function RootLayout({
   return (
     <NextIntlClientProvider messages={messages}>
       <html lang={params.locale}>
+        <head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          />
+        </head>
         <body suppressContentEditableWarning suppressHydrationWarning>
           <BaseThemeProvider>
             <TRPCReactProvider ssrOnlySecret={encryptedCookie}>

@@ -5,13 +5,42 @@
     "login": "Entrar",
     "email": "Email",
     "login_welcome": "Seja bem vindo",
+    "login_welcome_description": "Escolha uma das opções abaixo para continuar",
+    "divider_social": "Login usando redes sociais",
+    "divider_email": "Ou usando email",
     "password": "Senha",
     "register": "Cadastrar",
     "signup_bottom_login": "Não tem conta, Cadastre-se",
     "errors": {
       "email": "Email é necessário",
-      "password": "Senha é necessário"
+      "password": "Senha deve ter no mínimo 6 caracteres"
     }
+  },
+  "register": {
+    "title": "Seja bem-vindo!",
+    "welcome_message": "Brazilian Pioneers Kids Club está feliz em te ver por aqui!",
+    "description": "Para ter acesso ao nosso portal, por favor faça seu login usando uma das redes sociais abaixo ou registre-se usando o email e senha.",
+    "email": "Email",
+    "password": "Senha",
+    "confirm_password": "Confirmar Senha",
+    "button": "Cadastrar",
+    "already_have_account": "Já tem uma conta, faça seu login",
+    "social_divider": "Registrar usando redes sociais ",
+    "email_divider": "Ou usando email",
+    "errors": {
+      "email": "Email é necessário",
+      "password": "Senha deve ter no mínimo 6 caracteres",
+      "confirm_password": "As senhas não correspondem"
+    }
+  },
+  "verify-email": {
+    "waiting_for_validation": "Aguardando Validação",
+    "waiting_for_validation_description": "Um email de confirmação foi enviado para o seu email, por favor verifique seu email para continuar",
+    "email_sent": "Email enviado",
+    "email_sent_description": "Verifique seu email para continuar",
+    "email_re-sent_description": "Email re-enviado, favor verificar",
+    "if_not_received": "Verifique nos spams, se você não recebeu o email, clique no botão abaixo para reenviar",
+    "resend_email": "Reenviar email"
   },
   "navigation": {
     "family": "Família",
@@ -19,7 +48,6 @@
     "kids": "Crianças",
     "forms": "Documentos"
   },
-
   "common": {
     "form_send_success": "Formulário enviado com sucesso",
     "logout": "Sair",
@@ -368,9 +396,11 @@
     "goToClubButton": "Acessar Área da Família"
   },
   "family_page": {
-    "title": "Cadastro da Família",
+    "title": "Checklist de Cadastro da Família",
     "description": "Complete as etapas abaixo para inscrever sua família no Clube de Aventureiros",
     "loading": "Carregando...",
+    "list": "Lista",
+    "actions": "Ações",
     "go_to": "Adicionar",
     "register_button": "Preencher Formulários",
     "add_parents": "Adicionar pais/responsáveis",
@@ -379,6 +409,9 @@
       "add_parents": "Adicionar pais/responsáveis",
       "add_children": "Adicionar crianças",
       "fill_registration": "Preencher formulários para cada criança",
+      "kids_forms": {
+        "label": "Forms para {firstName} {lastName}"
+      },
       "forms": {
         "membership_application": "Inscrição Individual",
         "medical_consent": "Formulário de Consentimento Médico",
@@ -421,7 +454,7 @@
       "placeholder": "Como a criança gostaria de ser chamada"
     },
     "birthDate": {
-      "label": "Data de Nascimento (US Format)",
+      "label": "Data de Nascimento",
       "placeholder": "Ex: 12/31/2015"
     },
     "phoneNumber": {
@@ -494,6 +527,7 @@
   },
   "kids_page": {
     "title": "Crianças",
+    "years": "Anos",
     "add_kid_button": "Adicionar Criança",
     "edit_button": "Editar",
     "alias": "Apelido",

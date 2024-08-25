@@ -20,6 +20,7 @@ import {
 import Image from 'next/image'
 import { formatPhoneNumber } from '@/utils/stringUtils'
 import { IconEdit, IconPlus } from '@tabler/icons-react'
+import dayjs from 'dayjs'
 
 export default function KidsPage() {
   const t = useTranslations('kids_page')
@@ -58,6 +59,7 @@ export default function KidsPage() {
                     alt={kid.firstName ?? ''}
                     width={160}
                     height={160}
+                    priority
                     className="size-[160px] rounded-md object-cover transition-all hover:scale-105 sm:size-[180px] md:size-[210px]"
                   />
                 </div>
@@ -67,6 +69,11 @@ export default function KidsPage() {
                     <Group>
                       <Text className="text-sm font-semibold sm:text-sm md:text-lg">
                         {t(`sex.${kid.sex}`)}
+                      </Text>
+                      <Text className="text-sm font-semibold sm:text-sm md:text-lg">
+                        {dayjs(kid.birthDate).format('MM/DD/YYYY')} (
+                        {dayjs().diff(dayjs(kid.birthDate), 'years')}{' '}
+                        {t('years')})
                       </Text>
                     </Group>
 

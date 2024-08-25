@@ -121,7 +121,7 @@ export const formsRouter = createTRPCRouter({
       z.object({
         id: z.number(),
         data: formsSchema.update,
-     })
+      }),
     )
     .mutation(({ ctx, input }) => {
       return ctx.db

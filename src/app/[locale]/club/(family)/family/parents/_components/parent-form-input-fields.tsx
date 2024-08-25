@@ -52,7 +52,7 @@ import states from 'states-us'
 import GUARDIAN_PLACEHOLDER from '@/assets/images/guardian.png'
 import RELATIVE_PLACEHOLDER from '@/assets/images/relative.png'
 import PARENT_PLACEHOLDER from '@/assets/images/parent.png'
-import { DateInput } from '@mantine/dates'
+import { DateInput, DatePickerInput, DatesProvider } from '@mantine/dates'
 
 export const ParentFormInputFields = ({
   form,
@@ -233,14 +233,16 @@ export const ParentFormInputFields = ({
               />
             </Group>
           </Radio.Group>
-          <DateInput
-            valueFormat="DD/MM/YYYY"
-            leftSection={<IconCalendar size={16} />}
-            label={t('birthDate.label')}
-            placeholder={t('birthDate.placeholder')}
-            {...form.getInputProps('birthDate')}
-            key={form.key('birthDate')}
-          />
+          <DatesProvider settings={{ locale: 'en', timezone: 'UTC', firstDayOfWeek: 0  }}>
+            <DatePickerInput
+              leftSection={<IconCalendar size={16} />}
+              defaultLevel="decade"
+              label={t('birthDate.label')}
+              placeholder={t('birthDate.placeholder')}
+              {...form.getInputProps('birthDate')}
+              key={form.key('birthDate')}
+            />
+          </DatesProvider>
           <Input.Wrapper label={t('phone.label')} error={form.errors.phone}>
             <Input
               leftSection={<IconPhone size={16} />}

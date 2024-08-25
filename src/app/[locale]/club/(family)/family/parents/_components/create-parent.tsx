@@ -5,14 +5,11 @@ import { ParentFormInputFields } from './parent-form-input-fields'
 import { getParentFormSchema, type ParentFormData } from './form-types'
 import { useUploadAvatar, useUploadDriverLicense } from '@/lib/useUploadFiles'
 import { useEffect, useState } from 'react'
-import { z } from 'zod'
-import loading from '@/app/[locale]/loading'
-import { parentsGuardiansType, sexEnumSchema } from '@/server/db/schemas'
+import { parentsSchema } from '@/server/db/schemas'
 import { useTranslations } from 'next-intl'
 import { api } from '@/trpc/react'
 import { notifications } from '@mantine/notifications'
 import { IconCheck, IconDeviceFloppy, IconX } from '@tabler/icons-react'
-import router from 'next/router'
 import { useRouter } from 'next/navigation'
 import { Button } from '@mantine/core'
 
@@ -125,7 +122,7 @@ export const CreateParent = ({
       setLoading(true)
 
       // Revalidate form
-      const values = schema.parse(data)
+      const values = parentsSchema.insert.parse(data)
 
       // Create parent and get the id
       const parent = await createParent.mutateAsync({
@@ -208,7 +205,7 @@ export const CreateParent = ({
       setLoading(true)
 
       // Revalidate form
-      const values = schema.parse(data)
+      const values = parentsSchema.update.parse(data)
 
       // Update avatar and driver licence
       // Upload the files
@@ -247,7 +244,7 @@ export const CreateParent = ({
         color: 'teal',
       })
       form.reset()
-      router.push(`/club/family`)
+      router.push(`/club/family/parents`)
     } catch (error) {
       console.error('Error creating parent:', error)
       notifications.show({

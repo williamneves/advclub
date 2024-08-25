@@ -128,6 +128,7 @@ export function CodeConductForm({
   const utils = api.useUtils()
   const createForm = api.club.forms.createForm.useMutation({
     onSuccess: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
       await utils.club.forms.getFormsByLoggedInFamily.invalidate()
@@ -136,6 +137,7 @@ export function CodeConductForm({
 
   const updateForm = api.club.forms.updateFormByID.useMutation({
     onSuccess: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
       await utils.club.forms.getFormsByLoggedInFamily.invalidate()

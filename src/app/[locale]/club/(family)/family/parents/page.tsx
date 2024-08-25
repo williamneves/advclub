@@ -58,6 +58,7 @@ export default function ParentsPage() {
                     alt={parent.firstName ?? ''}
                     width={160}
                     height={160}
+                    priority
                     className="size-[160px] rounded-md object-cover transition-all hover:scale-105 sm:size-[180px] md:size-[210px]"
                   />
                 </div>

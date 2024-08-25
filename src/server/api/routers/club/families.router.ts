@@ -33,7 +33,7 @@ export const familiesRouter = createTRPCRouter({
         kids: {
           with: {
             forms: true,
-          }
+          },
         },
         parents: true,
       },

@@ -34,7 +34,13 @@ export default function NotFoundImage() {
           <Text c="dimmed" size="lg">
             {t('description')}
           </Text>
-          <Button onClick={() => router.back()} variant="outline" size="md" mt="xl" className={'max-w-full'}>
+          <Button
+            onClick={() => router.back()}
+            variant="outline"
+            size="md"
+            mt="xl"
+            className={'max-w-full'}
+          >
             {t('button')}
           </Button>
         </div>

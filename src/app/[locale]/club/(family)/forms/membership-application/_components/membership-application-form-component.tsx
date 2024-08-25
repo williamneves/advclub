@@ -18,7 +18,6 @@ import {
   Radio,
   Button,
   Loader,
-  ActionIcon,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { z } from 'zod'
@@ -34,10 +33,8 @@ import { cn } from '@/lib/utils'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   IconChevronLeft,
-  IconCircleCheck,
   IconDeviceFloppy,
   IconEdit,
-  IconThumbUpFilled,
   IconTrash,
 } from '@tabler/icons-react'
 import { modals } from '@mantine/modals'
@@ -167,6 +164,7 @@ export function MembershipApplicationForm({
   const utils = api.useUtils()
   const createForm = api.club.forms.createForm.useMutation({
     onSuccess: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
       await utils.club.forms.getFormsByLoggedInFamily.invalidate()
@@ -175,6 +173,7 @@ export function MembershipApplicationForm({
 
   const updateForm = api.club.forms.updateFormByID.useMutation({
     onSuccess: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
       await utils.club.forms.getFormsByLoggedInFamily.invalidate()
@@ -191,6 +190,7 @@ export function MembershipApplicationForm({
 
   const deleteForm = api.club.forms.deleteFormByID.useMutation({
     onSuccess: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
       await utils.club.forms.getFormsByLoggedInFamily.invalidate()

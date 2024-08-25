@@ -1,6 +1,4 @@
 import { api, HydrateClient } from '@/trpc/server'
-import { redirect } from 'next/navigation'
-import { Suspense } from 'react'
 import FamilyContext from './family/family-context'
 
 export default async function Layout({

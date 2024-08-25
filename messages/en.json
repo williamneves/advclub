@@ -5,6 +5,9 @@
     "login": "Login",
     "email": "Email",
     "login_welcome": "Welcome Back",
+    "login_welcome_description": "Choose one of the options below to continue",
+    "divider_social": "Login using social media",
+    "divider_email": "Or using email",
     "password": "Password",
     "register": "Register",
     "signup_bottom_login": "Don't have an account, Sign Up",
@@ -12,6 +15,26 @@
       "email": "Email is required",
       "password": "Password is required"
     }
+  },
+  "register": {
+    "title": "Welcome!",
+    "welcome_message": "Brazilian Pioneers Kids Club is glad to have you here!",
+    "description": "To start your registration, please fill in the fields below with the family's information.",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "social_divider": "Register using social media",
+    "email_divider": "Or using email",
+    "button": "Register",
+    "already_have_account": "Already have an account, Login"
+  },
+  "verify-email": {
+    "waiting_for_validation": "Waiting for Validation",
+    "waiting_for_validation_description": "An email confirmation was sent to your email address, please verify your email to continue",
+    "email_sent": "Email sent",
+    "email_sent_description": "Check your email to continue",
+    "email_re-sent_description": "Email re-enviado, favor verificar",
+    "if_not_received": "Check in your spam, if you didn't receive the email, click the button below to resend"
   },
   "not_found": {
     "title": "Something is not right...",
@@ -361,9 +384,11 @@
     }
   },
   "family_page": {
-    "title": "Family Registration",
+    "title": "Family Registration Checklist",
     "description": "Complete the steps below to register your family in the Adventurers Club",
     "loading": "Loading...",
+    "list": "List",
+    "actions": "Actions",
     "go_to": "Add",
     "register_button": "Fill Forms",
     "add_parents": "Add parents/guardians",
@@ -373,6 +398,9 @@
       "add_children": "Add children",
       "fill_registration": "Fill forms for each child",
       "coming_soon_badge": "Coming Soon",
+      "kids_forms": {
+        "label": "Forms for {firstName} {lastName}"
+      },
       "forms": {
         "membership_application": "Membership Application",
         "medical_consent": "Medical Consent",
@@ -492,6 +520,7 @@
   },
   "kids_page": {
     "title": "Children",
+    "years": "Years",
     "add_kid_button": "Add Child",
     "edit_button": "Edit",
     "alias": "Nickname",

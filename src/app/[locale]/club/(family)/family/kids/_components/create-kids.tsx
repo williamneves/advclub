@@ -138,7 +138,7 @@ export const CreateKids = ({
         color: 'teal',
       })
       form.reset()
-      router.push(`/club/family`)
+      router.push(`/club/family/kids`)
     } catch (error) {
       console.error('Error creating parent:', error)
       notifications.show({

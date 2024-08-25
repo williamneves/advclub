@@ -14,10 +14,13 @@ export const FORM_TYPES_LABELS = {
   [FORM_TYPES.codeOfConduct]: 'Code of Conduct',
 } as const
 
-export type FormTypeLabel = (typeof FORM_TYPES_LABELS)[keyof typeof FORM_TYPES_LABELS]
+export type FormTypeLabel =
+  (typeof FORM_TYPES_LABELS)[keyof typeof FORM_TYPES_LABELS]
 
 export const FORM_TYPES_ARRAY = Object.values(FORM_TYPES)
 
-export const FORM_TYPES_ARRAY_WITH_LABELS = FORM_TYPES_ARRAY.map((formType) => ({
-  [formType]: FORM_TYPES_LABELS[formType],
-}))
+export const FORM_TYPES_ARRAY_WITH_LABELS = FORM_TYPES_ARRAY.map(
+  (formType) => ({
+    [formType]: FORM_TYPES_LABELS[formType],
+  }),
+)

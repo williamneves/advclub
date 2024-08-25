@@ -7,7 +7,7 @@ export default {
   dialect: 'postgresql',
   out: './src/server/db/migrations',
   dbCredentials: {
-    url: env.POSTGRES_URL
+    url: env.POSTGRES_URL,
   },
   migrations: {
     prefix: 'supabase',

@@ -7,7 +7,6 @@ import {
   CardSection,
   Title,
   Text,
-  Input,
   Radio,
   SimpleGrid,
   Stack,
@@ -24,13 +23,12 @@ import {
   Textarea,
 } from '@mantine/core'
 // import loading from '@/app/[locale]/loading'
-import { PatternFormat } from 'react-number-format'
 import { cn } from '@/lib/utils'
 import NextImage from 'next/image'
 import AVATAR_PLACEHOLDER from '@/assets/images/avatar-placeholder.jpg'
-import { IconCalendar, IconPhone } from '@tabler/icons-react'
+import { IconCalendar } from '@tabler/icons-react'
 
-import { DateInput } from '@mantine/dates'
+import { DatePickerInput, DatesProvider } from '@mantine/dates'
 
 export const KidFormInputFields = ({
   form,
@@ -169,14 +167,18 @@ export const KidFormInputFields = ({
           </Radio.Group>
 
           {/* birthDate */}
-          <DateInput
-            valueFormat="DD/MM/YYYY"
-            leftSection={<IconCalendar size={16} />}
-            label={t('birthDate.label')}
-            placeholder={t('birthDate.placeholder')}
-            {...form.getInputProps('birthDate')}
-            key={form.key('birthDate')}
-          />
+          <DatesProvider
+            settings={{ locale: 'en', timezone: 'UTC', firstDayOfWeek: 0 }}
+          >
+            <DatePickerInput
+              leftSection={<IconCalendar size={16} />}
+              defaultLevel="decade"
+              label={t('birthDate.label')}
+              placeholder={t('birthDate.placeholder')}
+              {...form.getInputProps('birthDate')}
+              key={form.key('birthDate')}
+            />
+          </DatesProvider>
           {/* Alias */}
           <TextInput
             label={t('alias.label')}

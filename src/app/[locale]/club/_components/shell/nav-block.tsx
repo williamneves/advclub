@@ -10,6 +10,7 @@ import { TbFriends } from 'react-icons/tb'
 import Image from 'next/image'
 import LOGO from '@/assets/images/LOGO-BLUE-CROSS.png'
 import { IconFiles, IconX } from '@tabler/icons-react'
+import { useMediaQuery } from '@mantine/hooks'
 export function NavBlock({
   initialData,
   opened,
@@ -31,21 +32,27 @@ export function NavBlock({
   )
   const familyCreated = !!family
 
+  const isMobile = useMediaQuery('(max-width: 991px)')
+
   const handleLinkClick = (event: React.MouseEvent) => {
     // Call onClose when a link is clicked
-    onClose();
-  };
+    if (!isMobile) return
+    onClose()
+  }
 
   useEffect(() => {
-    // if click outside of the nav block, close it
+    // if click outside at mobile, close it
     const handleClickOutside = (event: MouseEvent) => {
+      // return if is not mobile
+      if (!isMobile) return
+
       if (opened && !(event.target as HTMLElement)?.closest('#side-nav')) {
         onClose()
       }
     }
     document.addEventListener('click', handleClickOutside)
     return () => document.removeEventListener('click', handleClickOutside)
-  }, [opened, onClose])
+  }, [opened, onClose, isMobile])
 
   return (
     <Stack>

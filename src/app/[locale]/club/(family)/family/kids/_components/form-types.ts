@@ -7,8 +7,7 @@ export const getKidFormSchema = (t: (key: string) => string) =>
       firstName: z.string().min(1, t('firstName.error')).optional(),
       lastName: z.string().min(1, t('lastName.error')).optional(),
       sex: z.enum(['male', 'female', '']).nullish(),
-      birthDate: z.coerce
-        .date().nullable(),
+      birthDate: z.coerce.date().nullable(),
       phoneNumber: z
         .string()
         .transform((value) => value.replace(/\D/g, ''))

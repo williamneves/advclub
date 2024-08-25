@@ -174,7 +174,7 @@ function FormsByKid() {
                 </Stack>
               </Group>
             </Card.Section>
-            <Card.Section className='overflow-x-scroll'>
+            <Card.Section className="overflow-x-scroll">
               <FormsList forms={forms} />
             </Card.Section>
           </Card>
@@ -203,7 +203,9 @@ function FormsList({
       {withKidName && (
         <Table.Td>
           <Group wrap="nowrap">
-            {form.kid?.avatar && <Avatar radius={'md'} size={28} src={form.kid.avatar} />}
+            {form.kid?.avatar && (
+              <Avatar radius={'md'} size={28} src={form.kid.avatar} />
+            )}
             <Text className="line-clamp-1" fz={14}>
               {form.kid?.firstName} {form.kid?.lastName}
             </Text>
@@ -265,7 +267,7 @@ function FormsByType() {
                 {FORM_TYPES_LABELS[slug as keyof typeof FORM_TYPES_LABELS]}
               </Text>
             </Card.Section>
-            <Card.Section className='overflow-x-scroll'>
+            <Card.Section className="overflow-x-scroll">
               <FormsList forms={forms} withKidName={true} />
             </Card.Section>
           </Card>

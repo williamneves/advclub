@@ -5,6 +5,7 @@ import { useForm } from '@mantine/form'
 import { z } from 'zod'
 import { zodResolver } from 'mantine-form-zod-resolver'
 import {
+  Anchor,
   Button,
   Card,
   Divider,
@@ -17,22 +18,33 @@ import {
 } from '@mantine/core'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { IconBrandFacebook, IconBrandGoogle, IconLock, IconMail } from '@tabler/icons-react'
+import {
+  IconBrandFacebook,
+  IconBrandGoogle,
+  IconLock,
+  IconMail,
+} from '@tabler/icons-react'
 import { getBaseUrl } from '@/trpc/react'
-
-const schema = z.object({
-  email: z.string().email('Email is required').describe('Email').default(''),
-  password: z
-    .string()
-    .min(4, 'Password must be at least 4 characters')
-    .describe('Password')
-    .default(''),
-})
+import { useTranslations } from 'next-intl'
+import Link from 'next/link'
+import { Logo } from '@/components/logo'
 
 export default function Login() {
   const router = useRouter()
   const supabase = createClient()
+  const t = useTranslations('login')
+
   const [loading, setLoading] = useState(false)
+
+  const schema = z.object({
+    email: z.string().email(t('errors.email')).describe('Email').default(''),
+    password: z
+      .string()
+      .min(6, t('errors.password'))
+      .describe('Password')
+      .default(''),
+  })
+
   const form = useForm({
     initialValues: {
       email: '',
@@ -86,30 +98,56 @@ export default function Login() {
 
   return (
     <form
-      className="flex h-screen flex-col items-center justify-center bg-mtn-gray-0"
+      className="flex h-screen flex-col items-center justify-center gap-8 bg-mtn-gray-0 px-4"
       onSubmit={form.onSubmit(handleSubmit)}
     >
-      <Card withBorder miw={{ base: 300, sm: 400, md: 500 }} p={{ base: 'sm', sm: 'md' }}>
-        <Stack>
-          <Stack gap={6}>
-            <Title order={3}>Welcome Back</Title>
-            <Text fz="sm">Sign in to your account to continue</Text>
+      <Logo />
+      <Stack className="w-full max-w-[420px]" gap={10}>
+        <Card withBorder>
+          <Stack>
+            <Stack gap={6}>
+              <Title order={3}>{t('login_welcome')}!</Title>
+              <Text fz="sm">{t('login_welcome_description')}</Text>
+            </Stack>
+            <Divider label={t('divider_social').toUpperCase()} />
+            <Group grow>
+              <Button
+                variant="outline"
+                color="red"
+                bg={'red.0'}
+                onClick={handleGoogleLogin}
+              >
+                <IconBrandGoogle />
+              </Button>
+              <Button
+                variant="outline"
+                color="blue"
+                bg={'blue.0'}
+                onClick={handleFacebookLogin}
+              >
+                <IconBrandFacebook />
+              </Button>
+            </Group>
+            <Divider label={t('divider_email').toUpperCase()} />
+            <TextInput
+              leftSection={<IconMail size={18} />}
+              label={t('email')}
+              {...form.getInputProps('email')}
+            />
+            <PasswordInput
+              leftSection={<IconLock size={18} />}
+              label={t('password')}
+              {...form.getInputProps('password')}
+            />
+            <Button type="submit" loading={loading}>
+              {t('login')}
+            </Button>
           </Stack>
-          <Divider label={'Social'} />
-          <Group grow>
-            <Button color="red" onClick={handleGoogleLogin}>
-              <IconBrandGoogle />
-            </Button>
-            <Button color="blue" onClick={handleFacebookLogin}>
-              <IconBrandFacebook />
-            </Button>
-          </Group>
-          <Divider label={'Email'} />
-          <TextInput leftSection={<IconMail size={18} />} label="Email" {...form.getInputProps('email')} />
-          <PasswordInput leftSection={<IconLock size={18} />} label="Password" {...form.getInputProps('password')} />
-          <Button type="submit">Login</Button>
-        </Stack>
-      </Card>
+        </Card>
+        <Anchor component={Link} href="/register" fz="sm" ta={'right'}>
+          {t('signup_bottom_login')}
+        </Anchor>
+      </Stack>
     </form>
   )
 }

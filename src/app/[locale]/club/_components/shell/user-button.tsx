@@ -92,6 +92,7 @@ export function UserButton() {
                 >
                   <Image
                     src={lang.flag}
+                    priority
                     alt="flag"
                     className="h-full w-full object-cover"
                   />

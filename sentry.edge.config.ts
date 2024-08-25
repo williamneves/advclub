@@ -3,10 +3,10 @@
 // Note that this config is unrelated to the Vercel Edge Runtime and is also required when running locally.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from '@sentry/nextjs'
 
 Sentry.init({
-  dsn: "https://9ce9ae12e069edc37311cd6850c7f1f2@o4506675309117440.ingest.us.sentry.io/4507827238731776",
+  dsn: 'https://9ce9ae12e069edc37311cd6850c7f1f2@o4506675309117440.ingest.us.sentry.io/4507827238731776',
   // enabled: process.env.NODE_ENV === "production",
 
   // Adjust this value in production, or use tracesSampler for greater control
@@ -14,4 +14,4 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
-});
+})

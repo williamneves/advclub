@@ -159,6 +159,7 @@ export function MediaConsent({
   const utils = api.useUtils()
   const createForm = api.club.forms.createForm.useMutation({
     onSuccess: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
       await utils.club.forms.getFormsByLoggedInFamily.invalidate()
@@ -167,6 +168,7 @@ export function MediaConsent({
 
   const updateForm = api.club.forms.updateFormByID.useMutation({
     onSuccess: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
       await utils.club.forms.getFormsByLoggedInFamily.invalidate()
@@ -183,6 +185,7 @@ export function MediaConsent({
 
   const deleteForm = api.club.forms.deleteFormByID.useMutation({
     onSuccess: async () => {
+      await utils.club.families.getLoggedInFamily.invalidate()
       await utils.club.forms.getForms.invalidate()
       await utils.club.forms.getFormsBySlug.invalidate()
       await utils.club.forms.getFormsByLoggedInFamily.invalidate()
