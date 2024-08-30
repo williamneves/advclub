@@ -2,16 +2,20 @@ import { notFound, redirect } from 'next/navigation'
 import { CodeConductForm } from '../_components/code-conduct-form-component'
 import { api, HydrateClient } from '@/trpc/server'
 
-export default async function MembershipApplicationFormPage({
+export default async function CodeConductFormPage({
   params,
 }: {
-  params: { mode: ['new' | 'edit' | 'view', string?] }
+  params: { mode: ['new' | 'edit' | 'view' | 'review', string?] }
 }) {
   if (params.mode[0] === 'new') {
     return <CodeConductForm mode={params.mode[0]} formId={undefined} />
   }
 
-  if (params.mode[0] === 'view' || params.mode[0] === 'edit') {
+  if (
+    params.mode[0] === 'view' ||
+    params.mode[0] === 'edit' ||
+    params.mode[0] === 'review'
+  ) {
     if (!params.mode[1]) {
       redirect('/404')
     }
