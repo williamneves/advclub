@@ -539,7 +539,8 @@
       "male": "Masculino",
       "female": "Feminino",
       "other": "Outro"
-    }
+    },
+    "parents": "Responsáveis"
   },
   "forms_page": {
     "forms_buttons": {

@@ -533,7 +533,8 @@
       "female": "Female",
       "other": "Other",
       "": "Not Informed"
-    }
+    },
+    "parents": "Parents"
   },
   "forms_page": {
     "title": "Registration",
