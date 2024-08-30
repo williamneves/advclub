@@ -17,6 +17,7 @@ import {
   Button,
   Loader,
   Input,
+  Flex,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { z } from 'zod'
@@ -33,10 +34,12 @@ import { formsDefaultSchema } from '../../_components/types'
 import { mediaConsentFormFieldSchema } from './media-consent.type'
 import { modals } from '@mantine/modals'
 import {
+  IconChecks,
   IconChevronLeft,
   IconDeviceFloppy,
   IconEdit,
   IconTrash,
+  IconX,
 } from '@tabler/icons-react'
 
 const schema = z
@@ -87,14 +90,14 @@ export function MediaConsent({
   mode,
 }: {
   formId?: number
-  mode: 'edit' | 'new' | 'view'
+  mode: 'edit' | 'new' | 'view' | 'review'
 }) {
   const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
   const router = useRouter()
   const pathname = usePathname()
 
-  const disabled = loading || mode === 'view'
+  const disabled = loading || mode === 'view' || mode === 'review'
 
   const form = useForm({
     initialValues: defaultValues,
@@ -280,6 +283,62 @@ export function MediaConsent({
     }
   }
 
+  const handleApproveForm = async () => {
+    try {
+      setLoading(true)
+      await updateForm.mutateAsync({
+        id: formId!,
+        data: {
+          status: 'approved',
+        },
+      })
+      notifications.show({
+        title: t('success'),
+        message: t('success_message'),
+        color: 'green',
+      })
+      router.push(`/club/forms`)
+    } catch (error) {
+      console.log(error)
+      notifications.show({
+        title: t('error'),
+        message: t('system_error'),
+        color: 'red',
+      })
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleRejectForm = async () => {
+    try {
+      setLoading(true)
+      await updateForm.mutateAsync({
+        id: formId!,
+        data: {
+          status: 'rejected',
+        },
+      })
+      notifications.show({
+        title: t('success'),
+        message: t('success_message'),
+        color: 'green',
+      })
+      router.push(`/club/forms`)
+    } catch (error) {
+      console.log(error)
+      notifications.show({
+        title: t('error'),
+        message: t('system_error'),
+        color: 'red',
+      })
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleDeleteForm = async () => {
     modals.openConfirmModal({
       title: t('delete_form'),
@@ -435,8 +494,16 @@ export function MediaConsent({
                         {...form.getInputProps('form.fields.firstPhoneType')}
                       >
                         <Group>
-                          <Radio value="home" label="Home" />
-                          <Radio value="cell" label="Cell" />
+                          <Radio
+                            value="home"
+                            label="Home"
+                            disabled={disabled}
+                          />
+                          <Radio
+                            value="cell"
+                            label="Cell"
+                            disabled={disabled}
+                          />
                         </Group>
                       </Radio.Group>
                     </Stack>
@@ -458,8 +525,16 @@ export function MediaConsent({
                         {...form.getInputProps('form.fields.secondPhoneType')}
                       >
                         <Group>
-                          <Radio value="home" label="Home" />
-                          <Radio value="cell" label="Cell" />
+                          <Radio
+                            value="home"
+                            label="Home"
+                            disabled={disabled}
+                          />
+                          <Radio
+                            value="cell"
+                            label="Cell"
+                            disabled={disabled}
+                          />
                         </Group>
                       </Radio.Group>
                     </Stack>
@@ -498,12 +573,14 @@ export function MediaConsent({
                         value="yes"
                         label="I do give permission for the minor to participate and allow the use of their image and likeness to 
                         be used."
+                        disabled={disabled}
                       />
                       <Radio
                         value="no"
                         label="I do not give permission for the minor to participate. (If you choose for the minor NOT to 
                         participate in online at Florida Conference of SDA TLT Program, the minor will not be able to participate 
                         at all, including in person trainings.)"
+                        disabled={disabled}
                       />
                     </Group>
                   </Radio.Group>
@@ -571,7 +648,7 @@ export function MediaConsent({
                 >
                   <IconChevronLeft />
                 </Button>
-                {mode !== 'new' && (
+                {mode !== 'new' && mode !== 'review' && (
                   <Button
                     type="button"
                     color="red"
@@ -584,6 +661,7 @@ export function MediaConsent({
                   </Button>
                 )}
                 {mode !== 'view' &&
+                  mode !== 'review' &&
                   form.getValues().form.status !== 'approved' &&
                   form.getValues().form.status !== 'rejected' && (
                     <Button
@@ -603,6 +681,30 @@ export function MediaConsent({
                       {t('edit')}
                     </Button>
                   )}
+                {mode === 'review' && (
+                  <Flex gap={10}>
+                    <Button
+                      type="button"
+                      color="red"
+                      variant="light"
+                      rightSection={<IconX size={20} stroke={1.5} />}
+                      onClick={() => {
+                        handleRejectForm()
+                      }}
+                    >
+                      {t('form_reject')}
+                    </Button>
+                    <Button
+                      type="button"
+                      rightSection={<IconChecks size={20} stroke={1.5} />}
+                      onClick={() => {
+                        handleApproveForm()
+                      }}
+                    >
+                      {t('form_approve')}
+                    </Button>
+                  </Flex>
+                )}
               </Group>
             </Stack>
           </Collapse>
