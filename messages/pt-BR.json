@@ -544,6 +544,7 @@
     }
   },
   "forms_page": {
+    "application": "Inscrições",
     "forms_buttons": {
       "click_to_new": "Adicionar novo formulário"
     },

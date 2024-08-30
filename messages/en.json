@@ -538,6 +538,7 @@
     }
   },
   "forms_page": {
+    "application": "Applications",
     "title": "Registration",
     "forms_buttons": {
       "click_to_new": "Click to add a new form"

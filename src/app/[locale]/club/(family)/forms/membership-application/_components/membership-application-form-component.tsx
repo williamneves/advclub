@@ -283,7 +283,7 @@ export function MembershipApplicationForm({
         message: t('success_message'),
         color: 'green',
       })
-      router.push(`/club/forms`)
+      router.push(`/club/members/applications`)
     } catch (error) {
       console.log(error)
       notifications.show({
@@ -311,7 +311,7 @@ export function MembershipApplicationForm({
         message: t('success_message'),
         color: 'green',
       })
-      router.push(`/club/forms`)
+      router.push(`/club/members/applications`)
     } catch (error) {
       console.log(error)
       notifications.show({

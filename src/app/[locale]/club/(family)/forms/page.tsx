@@ -56,7 +56,7 @@ export default function Forms() {
               <IconListDetails size={22} />
             </ThemeIcon>
             <Title order={3} className="overflow-hidden truncate text-ellipsis">
-              Formuários da Família
+              Formulários da Família
             </Title>
           </Group>
           <Group>
