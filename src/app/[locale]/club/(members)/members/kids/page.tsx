@@ -17,7 +17,7 @@ import {
   Avatar,
 } from '@mantine/core'
 import dayjs from 'dayjs'
-import { IconPlus } from '@tabler/icons-react'
+import { IconEdit, IconPlus } from '@tabler/icons-react'
 
 export default function Kids() {
   const t = useTranslations('kids_page')
@@ -43,30 +43,83 @@ export default function Kids() {
             <Card withBorder key={key}>
               <Card.Section className="border-0 border-b border-solid border-mtn-default-border">
                 <Group wrap="nowrap">
-                  <Avatar radius={0} size={80} src={kid.avatar} />
-                  <Stack gap={0} className="w-full overflow-hidden" pr={'md'}>
-                    <Text
-                      fz={18}
-                      fw={500}
-                      className="overflow-hidden truncate text-ellipsis"
+                  <Avatar radius={0} size={250} src={kid.avatar} />
+                  <Stack gap={10} className="w-full overflow-hidden" pr={'md'}>
+                    <Stack gap={0} className="w-full overflow-hidden" pr={'md'}>
+                      <Text
+                        fz={18}
+                        fw={500}
+                        className="overflow-hidden truncate text-ellipsis"
+                      >
+                        {t('kid')}:
+                      </Text>
+                      <Text
+                        fz={16}
+                        fw={500}
+                        className="overflow-hidden truncate text-ellipsis"
+                      >
+                        {kid.firstName} {kid.lastName}
+                      </Text>
+                      <Text
+                        fz={14}
+                        fw={400}
+                        className="overflow-hidden truncate text-ellipsis"
+                      >
+                        {dayjs(kid.birthDate).format('DD/MM/YYYY')} (
+                        {dayjs().diff(kid.birthDate, 'years')} anos)
+                      </Text>
+                      <Text
+                        fz={18}
+                        fw={500}
+                        className="overflow-hidden truncate text-ellipsis"
+                      >
+                        {t('parents')}:
+                      </Text>
+                      <Text
+                        fz={16}
+                        fw={500}
+                        className="overflow-hidden truncate text-ellipsis"
+                      >
+                        {kid.family.parents
+                          .map(
+                            (parent) =>
+                              parent.firstName + ' ' + parent.lastName,
+                          )
+                          .join(', ')}
+                      </Text>
+                      <Text
+                        fz={14}
+                        fw={400}
+                        className="overflow-hidden truncate text-ellipsis"
+                      >
+                        {kid.family.parents
+                          .map((parent) =>
+                            parent.birthDate
+                              ? dayjs(parent.birthDate).format('DD/MM/YYYY') +
+                                ' (' +
+                                dayjs().diff(parent.birthDate, 'years') +
+                                ' anos)'
+                              : '',
+                          )
+                          .join(', ')}
+                      </Text>
+                      <Text
+                        fz={14}
+                        fw={400}
+                        className="overflow-hidden truncate text-ellipsis"
+                      >
+                        {kid.family.parents
+                          .map((parent) => parent.phone)
+                          .join(', ')}
+                      </Text>
+                    </Stack>
+                    <Button
+                      component={Link}
+                      rightSection={<IconEdit size={18} />}
+                      href={`/club/family/kids/edit/${kid.id}`}
                     >
-                      {kid.firstName} {kid.lastName}
-                    </Text>
-                    <Text
-                      fz={14}
-                      fw={400}
-                      className="overflow-hidden truncate text-ellipsis"
-                    >
-                      {dayjs(kid.birthDate).format('DD/MM/YYYY')} (
-                      {dayjs().diff(kid.birthDate, 'years')} anos)
-                    </Text>
-                    <Text
-                      fz={14}
-                      fw={400}
-                      className="overflow-hidden truncate text-ellipsis"
-                    >
-                      {t('')}
-                    </Text>
+                      {t('edit_button')}
+                    </Button>
                   </Stack>
                 </Group>
               </Card.Section>

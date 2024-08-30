@@ -520,6 +520,7 @@
   },
   "kids_page": {
     "title": "Children",
+    "kid": "Child",
     "years": "Years",
     "add_kid_button": "Add Child",
     "edit_button": "Edit",
