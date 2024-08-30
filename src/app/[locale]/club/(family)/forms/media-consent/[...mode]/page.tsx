@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import { MediaConsent } from '../_components/media-consent-form-component'
 import { api, HydrateClient } from '@/trpc/server'
 
-export default async function MembershipApplicationFormPage({
+export default async function MediaConsentFormPage({
   params,
 }: {
   params: { mode: ['new' | 'edit' | 'view' | 'review', string?] }
