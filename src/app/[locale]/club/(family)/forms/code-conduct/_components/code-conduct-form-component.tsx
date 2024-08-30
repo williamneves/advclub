@@ -585,7 +585,7 @@ export function CodeConductForm({
                     variant="light"
                     rightSection={<IconX size={20} stroke={1.5} />}
                     onClick={() => {
-                      handleRejectForm()
+                      void handleRejectForm()
                     }}
                   >
                     {t('form_reject')}
@@ -594,7 +594,7 @@ export function CodeConductForm({
                     type="button"
                     rightSection={<IconChecks size={20} stroke={1.5} />}
                     onClick={() => {
-                      handleApproveForm()
+                      void handleApproveForm()
                     }}
                   >
                     {t('form_approve')}

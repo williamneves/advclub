@@ -202,7 +202,7 @@ export function MedicalConsentForm({
     (parent) => parent.id == form.getValues().form.guardianId,
   )?.zipCode
 
-  const otherName = form.getValues().form.fields.otherContact.name
+  // const otherName = form.getValues().form.fields.otherContact.name
 
   const utils = api.useUtils()
   const createForm = api.club.forms.createForm.useMutation({
@@ -845,7 +845,7 @@ export function MedicalConsentForm({
                       variant="light"
                       rightSection={<IconX size={20} stroke={1.5} />}
                       onClick={() => {
-                        handleRejectForm()
+                        void handleRejectForm()
                       }}
                     >
                       {t('form_reject')}
@@ -854,7 +854,7 @@ export function MedicalConsentForm({
                       type="button"
                       rightSection={<IconChecks size={20} stroke={1.5} />}
                       onClick={() => {
-                        handleApproveForm()
+                        void handleApproveForm()
                       }}
                     >
                       {t('form_approve')}
