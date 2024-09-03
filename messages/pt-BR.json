@@ -529,6 +529,7 @@
   },
   "kids_page": {
     "title": "Crianças",
+    "kid": "Criança",
     "years": "Anos",
     "add_kid_button": "Adicionar Criança",
     "edit_button": "Editar",
@@ -541,7 +542,8 @@
       "male": "Masculino",
       "female": "Feminino",
       "other": "Outro"
-    }
+    },
+    "parents": "Responsáveis"
   },
   "forms_page": {
     "application": "Inscrições",

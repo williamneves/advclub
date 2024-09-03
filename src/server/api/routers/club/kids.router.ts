@@ -13,7 +13,11 @@ export const kidsRouter = createTRPCRouter({
   getAllKids: publicProcedure.query(async ({ ctx }) => {
     const kids = await ctx.db.query.KidsTable.findMany({
       with: {
-        family: true,
+        family: {
+          with: {
+            parents: true,
+          },
+        },
       },
       orderBy: (kids, { desc }) => desc(kids.createdAt),
     })
