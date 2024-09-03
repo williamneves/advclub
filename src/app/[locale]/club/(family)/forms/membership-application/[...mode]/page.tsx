@@ -1,11 +1,11 @@
-import { notFound, redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { MembershipApplicationForm } from '../_components/membership-application-form-component'
 import { api, HydrateClient } from '@/trpc/server'
 
 export default async function MembershipApplicationFormPage({
   params,
 }: {
-  params: { mode: ['new' | 'edit' | 'view', string?] }
+  params: { mode: ['new' | 'edit' | 'view' | 'review', string?] }
 }) {
   if (params.mode[0] === 'new') {
     return (
@@ -13,7 +13,11 @@ export default async function MembershipApplicationFormPage({
     )
   }
 
-  if (params.mode[0] === 'view' || params.mode[0] === 'edit') {
+  if (
+    params.mode[0] === 'view' ||
+    params.mode[0] === 'edit' ||
+    params.mode[0] === 'review'
+  ) {
     if (!params.mode[1]) {
       redirect('/404')
     }

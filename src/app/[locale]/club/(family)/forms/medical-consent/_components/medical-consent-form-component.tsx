@@ -19,6 +19,7 @@ import {
   Button,
   Loader,
   Input,
+  Flex,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { z } from 'zod'
@@ -29,10 +30,12 @@ import { PatternFormat } from 'react-number-format'
 import { DateInput } from '@mantine/dates'
 import {
   IconCalendar,
+  IconChecks,
   IconChevronLeft,
   IconDeviceFloppy,
   IconEdit,
   IconTrash,
+  IconX,
 } from '@tabler/icons-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
@@ -103,14 +106,14 @@ export function MedicalConsentForm({
   mode,
 }: {
   formId?: number
-  mode: 'edit' | 'new' | 'view'
+  mode: 'edit' | 'new' | 'view' | 'review'
 }) {
   const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
   const router = useRouter()
   const pathname = usePathname()
 
-  const disabled = loading || mode === 'view'
+  const disabled = loading || mode === 'view' || mode === 'review'
 
   const form = useForm({
     initialValues: defaultValues,
@@ -199,7 +202,7 @@ export function MedicalConsentForm({
     (parent) => parent.id == form.getValues().form.guardianId,
   )?.zipCode
 
-  const otherName = form.getValues().form.fields.otherContact.name
+  // const otherName = form.getValues().form.fields.otherContact.name
 
   const utils = api.useUtils()
   const createForm = api.club.forms.createForm.useMutation({
@@ -301,6 +304,62 @@ export function MedicalConsentForm({
         color: 'green',
       })
       router.push('/club/forms')
+    } catch (error) {
+      console.log(error)
+      notifications.show({
+        title: t('error'),
+        message: t('system_error'),
+        color: 'red',
+      })
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleApproveForm = async () => {
+    try {
+      setLoading(true)
+      await updateForm.mutateAsync({
+        id: formId!,
+        data: {
+          status: 'approved',
+        },
+      })
+      notifications.show({
+        title: t('success'),
+        message: t('success_message'),
+        color: 'green',
+      })
+      router.push(`/club/members/applications`)
+    } catch (error) {
+      console.log(error)
+      notifications.show({
+        title: t('error'),
+        message: t('system_error'),
+        color: 'red',
+      })
+      throw t('system_error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleRejectForm = async () => {
+    try {
+      setLoading(true)
+      await updateForm.mutateAsync({
+        id: formId!,
+        data: {
+          status: 'rejected',
+        },
+      })
+      notifications.show({
+        title: t('success'),
+        message: t('success_message'),
+        color: 'green',
+      })
+      router.push(`/club/members/applications`)
     } catch (error) {
       console.log(error)
       notifications.show({
@@ -689,10 +748,26 @@ export function MedicalConsentForm({
                   >
                     <Group>
                       <SimpleGrid cols={2} spacing={6}>
-                        <Radio value="emergency" label="Emergency Surgery" />
-                        <Radio value="first" label="First Aid" />
-                        <Radio value="both" label="Both of the above" />
-                        <Radio value="none" label="None of the above" />
+                        <Radio
+                          value="emergency"
+                          label="Emergency Surgery"
+                          disabled={disabled}
+                        />
+                        <Radio
+                          value="first"
+                          label="First Aid"
+                          disabled={disabled}
+                        />
+                        <Radio
+                          value="both"
+                          label="Both of the above"
+                          disabled={disabled}
+                        />
+                        <Radio
+                          value="none"
+                          label="None of the above"
+                          disabled={disabled}
+                        />
                       </SimpleGrid>
                     </Group>
                   </Radio.Group>
@@ -729,7 +804,7 @@ export function MedicalConsentForm({
                 >
                   <IconChevronLeft />
                 </Button>
-                {mode !== 'new' && (
+                {mode !== 'new' && mode !== 'review' && (
                   <Button
                     type="button"
                     color="red"
@@ -742,6 +817,7 @@ export function MedicalConsentForm({
                   </Button>
                 )}
                 {mode !== 'view' &&
+                  mode !== 'review' &&
                   form.getValues().form.status !== 'approved' &&
                   form.getValues().form.status !== 'rejected' && (
                     <Button
@@ -761,6 +837,30 @@ export function MedicalConsentForm({
                       {t('edit')}
                     </Button>
                   )}
+                {mode === 'review' && (
+                  <Flex gap={10}>
+                    <Button
+                      type="button"
+                      color="red"
+                      variant="light"
+                      rightSection={<IconX size={20} stroke={1.5} />}
+                      onClick={() => {
+                        void handleRejectForm()
+                      }}
+                    >
+                      {t('form_reject')}
+                    </Button>
+                    <Button
+                      type="button"
+                      rightSection={<IconChecks size={20} stroke={1.5} />}
+                      onClick={() => {
+                        void handleApproveForm()
+                      }}
+                    >
+                      {t('form_approve')}
+                    </Button>
+                  </Flex>
+                )}
               </Group>
             </Stack>
           </Collapse>

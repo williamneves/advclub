@@ -82,6 +82,8 @@
       "responsible_person_placeholder": "Select a responsible"
     },
     "form_alert_title": "Please, mark all the blocks and type your initials to sign the form.",
+    "form_approve": "Approve",
+    "form_reject": "Reject",
     "update": "Update",
     "logout_button": "Logout",
     "success": "Success",
@@ -536,6 +538,7 @@
     }
   },
   "forms_page": {
+    "application": "Applications",
     "title": "Registration",
     "forms_buttons": {
       "click_to_new": "Click to add a new form"

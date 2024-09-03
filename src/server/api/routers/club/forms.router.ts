@@ -20,6 +20,22 @@ export const formsRouter = createTRPCRouter({
   getForms: publicProcedure.query(({ ctx }) => {
     return ctx.db.query.FormsTable.findMany()
   }),
+  getAllForms: publicProcedure.query(({ ctx }) => {
+    return ctx.db
+      .select({
+        ...getTableColumns(FormsTable),
+        guardian: {
+          ...getTableColumns(ParentsTable),
+        },
+        kid: {
+          ...getTableColumns(KidsTable),
+        },
+      })
+      .from(FormsTable)
+      .leftJoin(ParentsTable, eq(FormsTable.guardianId, ParentsTable.id))
+      .leftJoin(KidsTable, eq(FormsTable.kidId, KidsTable.id))
+      .leftJoin(FamiliesTable, eq(FamiliesTable.id, ParentsTable.familyId))
+  }),
   getFormByID: publicProcedure
     .input(
       z.object({

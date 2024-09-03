@@ -84,6 +84,8 @@
       "responsible_person_placeholder": "Selecione um responsável"
     },
     "form_alert_title": "Por favor, marque todos os blocks e digite suas iniciais para assinar o formulário.",
+    "form_approve": "Aprovar",
+    "form_reject": "Rejeitar",
     "success": "Sucesso",
     "success_message": "Ação realizada com sucesso",
     "error": "Erro",
@@ -542,6 +544,7 @@
     }
   },
   "forms_page": {
+    "application": "Inscrições",
     "forms_buttons": {
       "click_to_new": "Adicionar novo formulário"
     },
