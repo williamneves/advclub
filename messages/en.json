@@ -552,5 +552,98 @@
       "contact_info": "Contact information:",
       "contact_template": "{name}: {phone}"
     }
+  },
+  "member_form": {
+    "user_label": "User",
+    "user_placeholder": "Select a user",
+    "title": "New Member",
+    "edit_title": "Edit Member",
+    "description": "Fill in the fields below to add a new member",
+    "edit_description": "Update the member's information below",
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "Enter first name",
+      "error": "First name is required"
+    },
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Enter last name",
+      "error": "Last name is required"
+    },
+    "type": {
+      "label": "Member Type",
+      "options": {
+        "admin": "Admin",
+        "leader": "Leader",
+        "root": "Root",
+        "assistant": "Assistant"
+      },
+      "error": "Select member type"
+    },
+    "sex": {
+      "label": "Sex",
+      "options": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "error": "Select sex"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter phone number",
+      "error": "Phone is required"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter email",
+      "error": "Valid email is required"
+    },
+    "divider": {
+      "user": "User Information",
+      "type": "Member Type",
+      "personal_info": "Personal Information"
+    },
+    "profile_picture": {
+      "label": "Profile Picture",
+      "disclaimer": "Images / max. 5MB",
+      "buttonNoFile": "Select Photo",
+      "buttonWithFile": "Change Photo",
+      "error": "Something went wrong while trying to upload the Avatar",
+      "remove": "Remove profile picture"
+    },
+    "button": {
+      "label": "Add Member",
+      "loading": "Adding..."
+    },
+    "edit_button": {
+      "label": "Update Member",
+      "loading": "Updating..."
+    },
+    "toast": {
+      "success": "Member added successfully!",
+      "error": "Error adding member"
+    },
+    "edit_toast": {
+      "success": "Member updated successfully!",
+      "error": "Error updating member"
+    }
+  },
+  "members_page":{
+  "title": "Members",
+  "member": "Member",
+  "years": "Years",
+  "add_member_button": "Add Member",
+  "edit_button": "Edit",
+  "no_members": {
+    "title": "No Members Registered",
+    "description": "Click the button above to add a member"
+  },
+  "sex": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "": "Not Informed"
+  }
   }
 }

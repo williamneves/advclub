@@ -5,7 +5,7 @@ import { timestamps } from './_defaults'
 import { sexEnum } from './enums'
 import { z } from 'zod'
 
-export const memberTypeEnum = z.enum(['parent', 'guardian', 'relative'])
+export const memberTypeEnum = z.enum(['admin', 'leader', 'assistant', 'root'])
 export type MemberType = z.infer<typeof memberTypeEnum>
 
 export const MembersTable = createTable('members', {
