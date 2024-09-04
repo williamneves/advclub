@@ -12,7 +12,7 @@ import superjson from 'superjson'
 import { ZodError } from 'zod'
 
 import { db } from '@/server/db'
-import { createClient } from '@/utils/supabase/server'
+import { createClient, createAdminClient } from '@/utils/supabase/server'
 
 /**
  * 1. CONTEXT
@@ -33,6 +33,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 
   return {
     db,
+    supabase,
     userId,
     user,
     ...opts,
@@ -127,11 +128,15 @@ export const protectedProcedure = t.procedure
     if (!ctx.userId || !ctx.user) {
       throw new TRPCError({ code: 'UNAUTHORIZED' })
     }
+
+    const supabaseAdmin = createAdminClient()
+
     return next({
       ctx: {
         // infers the `session` as non-nullable
         userId: ctx.userId,
         user: ctx.user,
+        supabaseAdmin,
       },
     })
   })

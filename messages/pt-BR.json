@@ -559,5 +559,98 @@
       "contact_info": "Informações de contato:",
       "contact_template": "{name}: {phone}"
     }
+  },
+  "member_form": {
+    "user_label": "Usuário",
+    "user_placeholder": "Selecione um usuário",
+    "title": "Novo Membro",
+    "edit_title": "Editar Membro",
+    "description": "Preencha os campos abaixo para adicionar um novo membro",
+    "edit_description": "Atualize as informações do membro abaixo",
+    "firstName": {
+      "label": "Nome",
+      "placeholder": "Digite o nome",
+      "error": "Nome é obrigatório"
+    },
+    "lastName": {
+      "label": "Sobrenome",
+      "placeholder": "Digite o sobrenome",
+      "error": "Sobrenome é obrigatório"
+    },
+    "type": {
+      "label": "Tipo do Membro",
+      "options": {
+        "admin": "Admin",
+        "leader": "Lider",
+        "root": "Root",
+        "assistant": "Assistente"
+      },
+      "error": "Selecione o tipo de membro"
+    },
+    "sex": {
+      "label": "Sexo",
+      "options": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "other": "Outro"
+      },
+      "error": "Selecione o sexo"
+    },
+    "phone": {
+      "label": "Telefone",
+      "placeholder": "Digite o telefone",
+      "error": "Telefone é obrigatório"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Digite o email",
+      "error": "Email válido é obrigatório"
+    },
+    "divider": {
+      "user": "Informações do Usuário",
+      "type": "Tipo do Membro",
+      "personal_info": "Informações Pessoais"
+    },
+    "profile_picture": {
+      "label": "Foto de Perfil",
+      "disclaimer": "Imagens / máx. 5MB",
+      "buttonNoFile": "Selecionar Foto",
+      "buttonWithFile": "Alterar Foto",
+      "error": "Algo deu errado ao tentar upload do Avatar",
+      "remove": "Remover foto de perfil"
+    },
+    "button": {
+      "label": "Criar Membro",
+      "loading": "Criando..."
+    },
+    "edit_button": {
+      "label": "Atualizar Membro",
+      "loading": "Atualizando..."
+    },
+    "toast": {
+      "success": "Membro criado com sucesso!",
+      "error": "Erro ao criar membro"
+    },
+    "edit_toast": {
+      "success": "Membro atualizado com sucesso!",
+      "error": "Erro ao atualizar membro"
+    }
+  },
+  "members_page":{
+  "title": "Membros",
+  "member": "Membros",
+  "years": "Anos",
+  "add_member_button": "Criar Membro",
+  "edit_button": "Editar",
+  "no_members": {
+    "title": "Nenhum Membro Cadastrado",
+    "description": "Clique no botão acima para adicionar um membro"
+  },
+  "sex": {
+    "male": "Masculino",
+    "female": "Feminino",
+    "other": "Outro",
+    "": "Não informado"
+  }
   }
 }

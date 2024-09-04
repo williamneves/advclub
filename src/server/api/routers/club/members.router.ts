@@ -49,6 +49,10 @@ export const membersRouter = createTRPCRouter({
       return members
     }),
 
+  getAllAuthUsers: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.supabaseAdmin.auth.admin.listUsers()
+  }),
+
   createMember: protectedProcedure
     .input(membersSchema.insert)
     .mutation(async ({ ctx, input }) => {
