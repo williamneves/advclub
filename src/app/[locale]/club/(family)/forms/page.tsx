@@ -91,7 +91,9 @@ export default function Forms() {
 function SkeletonFormsLoading() {
   return (
     <SimpleGrid cols={{ base: 1, md: 2 }}>
-      <Skeleton height={300} w={'100%'} />
+      {[...Array(4)].map((_, index) => (
+        <Skeleton key={index} height={200} w={'100%'} />
+      ))}
     </SimpleGrid>
   )
 }
@@ -138,7 +140,7 @@ function FormsByKid() {
       if (!acc[kidId]) {
         acc[kidId] = []
       }
-      acc[kidId].push(form)
+      acc[kidId]?.push(form)
       return acc
     },
     {},
@@ -252,7 +254,7 @@ function FormsByType() {
       if (!acc[slug]) {
         acc[slug] = []
       }
-      acc[slug].push(form)
+      acc[slug]?.push(form)
       return acc
     },
     {},
